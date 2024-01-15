@@ -1,0 +1,12 @@
+.btn {
+    padding: 7px 15px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    margin: 0 5px;
+}
+
+.btn.danger {
+    background-color: #dc3545;
+    color: white;
+}
