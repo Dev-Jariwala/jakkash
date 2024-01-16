@@ -15,7 +15,7 @@ const sidemenuProps = {
     },
     {
       title: "Stocks",
-      to: "/",
+      to: "/stocks",
       icon: "leaderboard",
     },
     {

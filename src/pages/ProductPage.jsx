@@ -21,10 +21,14 @@ import EditProduct from "../components/product/EditProduct";
 import Modal from "../components/modal/Modal";
 
 import DeleteProduct from "../components/product/DeleteProduct";
+import Newstock from "../components/stock/NewStock";
+import { fetchAllStocks, stockCreate } from "../controllers/stock";
+import { StockContext } from "../store/stockContext";
 
 const ProductPage = () => {
   const { products, setProducts, fetching } = useContext(ProductsContext);
   const [formState, setFormState] = useState({ status: "", formData: {} });
+  const { setStocks } = useContext(StockContext);
   const [loading, setLoading] = useState(true);
   const focusRef = useRef(null);
 
@@ -37,11 +41,7 @@ const ProductPage = () => {
   }, [fetching]);
   useEffect(() => {
     // Set focus on the "Delete" button when the delete modal opens
-    if (formState.status === "deleteProduct" && focusRef.current) {
-      focusRef.current.focus();
-    } else if (formState.status === "editProduct" && focusRef.current) {
-      focusRef.current.focus();
-    } else if (formState.status === "newProduct" && focusRef.current) {
+    if (focusRef.current) {
       focusRef.current.focus();
     }
   }, [formState.status]);
@@ -115,10 +115,7 @@ const ProductPage = () => {
       setLoading(false);
     }
   }
-  async function handleAddStock(e) {
-    e.preventDefault();
-    alert("stock added");
-  }
+
   async function handleEdit(e, productId, formData) {
     e.preventDefault();
     setLoading(true);
@@ -150,11 +147,52 @@ const ProductPage = () => {
       setLoading(false);
     }
   }
+
+  async function onAdd(e, productId) {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      const res = await fetchProductDetails(productId);
+      setFormState({
+        status: "addStock",
+        formData: { productId: res._id, productName: res.productName },
+      });
+    } catch (error) {
+      console.error("Error fetching product details:", error);
+      // Handle error if needed
+    } finally {
+      setLoading(false);
+    }
+  }
+  async function handleAddStock(e, formData) {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      if (formData.addStock < 0) {
+        alert("negative values not allowed!");
+      } else {
+        await toast.promise(stockCreate(formData.productId, formData), {
+          pending: "Adding Stock..",
+          success: "Stock Added! 👌",
+          error: "Error adding Stock 🤯",
+        });
+
+        await updateProducts();
+        setStocks(await fetchAllStocks());
+      }
+    } catch (error) {
+      console.log(error);
+      throw error;
+    } finally {
+      setLoading(false);
+    }
+  }
   const actions = [
     {
       button: "Add",
       classNames: ["btn-outline", "primary"],
-      onSmash: handleAddStock,
+      onSmash: onAdd,
     },
     {
       button: "Edit",
@@ -206,6 +244,15 @@ const ProductPage = () => {
           formState={formState}
           setFormState={setFormState}
           onSubmit={handleEdit}
+        />
+      )}
+      {/* Add Stock Modal */}
+      {formState.status === "addStock" && (
+        <Newstock
+          ref={focusRef}
+          formState={formState}
+          setFormState={setFormState}
+          onSubmit={handleAddStock}
         />
       )}
 

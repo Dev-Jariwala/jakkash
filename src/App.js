@@ -8,7 +8,9 @@ import Modal from "./components/modal/Modal";
 import { toast } from "react-toastify";
 import LoginModal from "./components/LoginModal";
 import { ProductsProvider } from "./store/productContext";
+import { StockProvider } from "./store/stockContext";
 import { CollectionProvider } from "./store/collectionContext";
+import StockPage from "./pages/StockPage";
 const NotFound = () => {
   return (
     <div>
@@ -39,13 +41,19 @@ const App = () => {
 
           {auth && (
             <ProductsProvider>
-              <SideMenu sidemenuProps={{ ...sidemenuProps }} setAuth={setAuth}>
-                <Routes>
-                  <Route path="/" element={<CollectionPage />}></Route>
-                  <Route path="/products" element={<ProductPage />}></Route>
-                  <Route path="*" element={<NotFound />}></Route>
-                </Routes>
-              </SideMenu>
+              <StockProvider>
+                <SideMenu
+                  sidemenuProps={{ ...sidemenuProps }}
+                  setAuth={setAuth}
+                >
+                  <Routes>
+                    <Route path="/" element={<CollectionPage />}></Route>
+                    <Route path="/products" element={<ProductPage />}></Route>
+                    <Route path="/stocks" element={<StockPage />}></Route>
+                    <Route path="*" element={<NotFound />}></Route>
+                  </Routes>
+                </SideMenu>
+              </StockProvider>
             </ProductsProvider>
           )}
         </CollectionProvider>
