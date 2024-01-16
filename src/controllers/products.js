@@ -1,5 +1,7 @@
 import axios from "axios";
 import BACKEND_URL from "../assets/BACKEND_URL";
+
+// Fetch all products
 export async function fetchAllProducts() {
   try {
     const response = await axios.get(`${BACKEND_URL}product`);
@@ -10,6 +12,7 @@ export async function fetchAllProducts() {
   }
 }
 
+// Create a new product
 export async function productCreate(formData) {
   try {
     const response = await axios.post(`${BACKEND_URL}product`, formData, {
@@ -17,15 +20,20 @@ export async function productCreate(formData) {
     });
     return response;
   } catch (error) {
-    console.log(error);
+    console.error("Error creating product:", error);
+    throw error;
   }
 }
+
+// Update product by ID
 export async function productUpdate(productId, formData) {
   try {
     const response = await axios.put(
       `${BACKEND_URL}product/${productId}`,
       formData,
-      { withCredentials: true }
+      {
+        withCredentials: true,
+      }
     );
     return response;
   } catch (error) {
@@ -34,6 +42,7 @@ export async function productUpdate(productId, formData) {
   }
 }
 
+// Delete product by ID
 export async function productDelete(productId) {
   try {
     const response = await axios.delete(`${BACKEND_URL}product/${productId}`);
@@ -44,12 +53,13 @@ export async function productDelete(productId) {
   }
 }
 
+// Fetch details of a product by ID
 export async function fetchProductDetails(productId) {
   try {
     const response = await axios.get(`${BACKEND_URL}product/${productId}`);
     return response.data.productDetails;
   } catch (error) {
-    console.log(error);
+    console.error("Error fetching product details:", error);
     throw error;
   }
 }

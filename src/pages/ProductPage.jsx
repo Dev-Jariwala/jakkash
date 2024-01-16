@@ -81,9 +81,9 @@ const ProductPage = () => {
     setLoading(true);
     try {
       await toast.promise(productDelete(formState.formData._id), {
-        pending: "Deleting..",
-        success: "Product deleted! 👌",
-        error: "Error deleting product 🤯",
+        pending: "Deleting Product...",
+        success: "Product deleted successfully! 👌",
+        error: "Error deleting Product. Please try again. 🤯",
       });
       await updateProducts();
     } catch (err) {
@@ -103,9 +103,9 @@ const ProductPage = () => {
     setLoading(true);
     try {
       await toast.promise(productCreate(formState.formData), {
-        pending: "Creating product",
-        success: "Product created 👌",
-        error: "Error creating product 🤯",
+        pending: "Creating Product...",
+        success: "Product created successfully! 👌",
+        error: "Error creating Product. Please try again. 🤯",
       });
       await updateProducts();
     } catch (error) {
@@ -121,9 +121,9 @@ const ProductPage = () => {
     setLoading(true);
     try {
       await toast.promise(productUpdate(productId, formData), {
-        pending: "Editing product",
-        success: "Product Edited 👌",
-        error: "Error editing product 🤯",
+        pending: "Editing Product...",
+        success: "Product editied successfully! 👌",
+        error: "Error editing Product. Please try again. 🤯",
       });
       await updateProducts();
     } catch (error) {
@@ -173,9 +173,9 @@ const ProductPage = () => {
         alert("negative values not allowed!");
       } else {
         await toast.promise(stockCreate(formData.productId, formData), {
-          pending: "Adding Stock..",
-          success: "Stock Added! 👌",
-          error: "Error adding Stock 🤯",
+          pending: "Adding Stock...",
+          success: "Stock added successfully! 👌",
+          error: "Error adding Stock. Please try again. 🤯",
         });
 
         await updateProducts();

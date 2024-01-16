@@ -67,25 +67,26 @@ const CollectionPage = () => {
     setLoading(true);
     try {
       if (collId === activeColl._id) {
-        return toast.info("Active Collection can not be deleted");
+        return toast.warn("Active Collection cannot be deleted.");
       }
       const res = await getCollectionDetails(collId);
       setFormState({ status: "deleteCollection", formData: res });
-    } catch (error) {
-      console.error("Error fetching product details:", error);
-      throw error;
+    } catch (err) {
+      console.error("Error confirming delete:", err);
+      toast.error("Error deleting collection");
     } finally {
-      setLoading(false); // Add this line to handle errors gracefully
+      setLoading(false);
     }
   };
   // Function to handle actual product deletion
   const confirmDelete = async () => {
     setLoading(true);
     try {
+      // For collectionDelete
       await toast.promise(collectionDelete(formState.formData._id), {
-        pending: "Deleting..",
-        success: "Collection deleted! 👌",
-        error: "Error deleting Collection 🤯",
+        pending: "Deleting Collection...",
+        success: "Collection deleted successfully! 👌",
+        error: "Error deleting Collection. Please try again. 🤯",
       });
       await reRenderCollections();
     } catch (err) {
@@ -104,10 +105,11 @@ const CollectionPage = () => {
     e.preventDefault();
     setLoading(true);
     try {
+      // For collectionCreate
       await toast.promise(collectionCreate(formState.formData), {
-        pending: "Creating Collection",
-        success: "Collection created 👌",
-        error: "Error creating Collection 🤯",
+        pending: "Creating Collection...",
+        success: "Collection created successfully! 👌",
+        error: "Error creating Collection. Please try again. 🤯",
       });
       await reRenderCollections();
     } catch (error) {
@@ -121,10 +123,11 @@ const CollectionPage = () => {
     e.preventDefault();
     setLoading(true);
     try {
+      // For collectionUpdate
       await toast.promise(collectionUpdate(collectionId, formData), {
-        pending: "Editing Collection",
-        success: "Collection Edited 👌",
-        error: "Error editing Collection 🤯",
+        pending: "Editing Collection...",
+        success: "Collection edited successfully! 👌",
+        error: "Error editing Collection. Please try again. 🤯",
       });
       await reRenderCollections();
     } catch (error) {

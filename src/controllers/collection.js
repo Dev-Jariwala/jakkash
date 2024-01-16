@@ -1,27 +1,30 @@
 import axios from "axios";
 import BACKEND_URL from "../assets/BACKEND_URL";
 
+// Set active collection
 export async function setActiveCollection(collectionId) {
   try {
-    await axios.put(
-      `${BACKEND_URL}collection/${collectionId}`,
-      {},
-      { withCredentials: true }
-    );
+    await axios.put(`${BACKEND_URL}collection/${collectionId}`, null, {
+      withCredentials: true,
+    });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     throw error;
   }
 }
-export async function fetchAllCollections(collectionId) {
+
+// Fetch all collections
+export async function fetchAllCollections() {
   try {
     const response = await axios.get(`${BACKEND_URL}collection`);
-    return response.data.senitizedCollections;
+    return response.data.sanitizedCollections;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     throw error;
   }
 }
+
+// Get collection details by ID
 export async function getCollectionDetails(collectionId) {
   try {
     const response = await axios.get(
@@ -29,18 +32,22 @@ export async function getCollectionDetails(collectionId) {
     );
     return response.data.collectionDetails;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     throw error;
   }
 }
+
+// Delete collection by ID
 export async function collectionDelete(collectionId) {
   try {
     await axios.delete(`${BACKEND_URL}collection/${collectionId}`);
   } catch (error) {
-    console.log(error);
+    console.error(error);
     throw error;
   }
 }
+
+// Create a new collection
 export async function collectionCreate(formData) {
   try {
     const response = await axios.post(`${BACKEND_URL}collection`, formData, {
@@ -48,18 +55,23 @@ export async function collectionCreate(formData) {
     });
     return response;
   } catch (error) {
-    console.log(error);
+    console.error(error);
+    throw error;
   }
 }
+
+// Update collection by ID
 export async function collectionUpdate(collectionId, formData) {
   try {
     await axios.put(
       `${BACKEND_URL}collection/update/${collectionId}`,
       formData,
-      { withCredentials: true }
+      {
+        withCredentials: true,
+      }
     );
   } catch (error) {
-    console.log(error);
+    console.error(error);
     throw error;
   }
 }

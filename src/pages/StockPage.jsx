@@ -80,9 +80,9 @@ const StockPage = () => {
           date: formState.formData.date,
         }),
         {
-          pending: "Editing..",
-          success: "Stock Edited! 👌",
-          error: "Error Editing Stock 🤯",
+          pending: "Editing Stock...",
+          success: "Stock edited successfully! 👌",
+          error: "Error editing Stock. Please try again. 🤯",
         }
       );
       await cleanupFunc();
@@ -113,9 +113,9 @@ const StockPage = () => {
     setLoading(true);
     try {
       await toast.promise(stockDelete(formState.formData._id), {
-        pending: "Deleting..",
-        success: "Product deleted! 👌",
-        error: "Error deleting product 🤯",
+        pending: "Deleting Stock...",
+        success: "Stock deleted successfully! 👌",
+        error: "Error deleting Stock. Please try again. 🤯",
       });
       await cleanupFunc();
     } catch (err) {
