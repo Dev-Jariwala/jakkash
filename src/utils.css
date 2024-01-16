@@ -6,6 +6,10 @@
     margin: 0 5px;
 }
 
+button.disable {
+    opacity: 50%;
+}
+
 .btn.danger {
     background-color: #dc3545;
     color: white;

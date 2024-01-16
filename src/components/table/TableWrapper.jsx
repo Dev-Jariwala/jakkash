@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import "./table.css";
 import TableFeatures from "./TableFeatures";
 import Table from "./Table";
 import Pagination from "./Pagination";
+import { CollectionContext } from "../../store/collectionContext";
 const TableWrapper = ({
   tableName,
   tableBtn,
@@ -12,6 +13,7 @@ const TableWrapper = ({
   actions,
   mainKeys,
 }) => {
+  const { activeColl } = useContext(CollectionContext);
   const [currentPage, setCurrentPage] = useState(1);
   const [goto, setGoto] = useState(currentPage);
   const [searchQuery, setSearchQuery] = useState("");
@@ -27,11 +29,14 @@ const TableWrapper = ({
   const indexOfLastRow = currentPage * PAGE_SIZE;
   const indexOfFirstRow = indexOfLastRow - PAGE_SIZE;
 
-  const currentRows = filteredRows.slice(indexOfFirstRow, indexOfLastRow);
+  const currentRows = filteredRows?.slice(indexOfFirstRow, indexOfLastRow);
   return (
     <div className="table-container">
       <div className="table-head">
-        <div>{tableName}</div>
+        <div>
+          {" "}
+          ( {activeColl?.collectionName} ) {tableName}
+        </div>
         <button onClick={onTableBtn}>{tableBtn}</button>
       </div>
       <div className="table-content">

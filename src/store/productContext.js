@@ -6,23 +6,26 @@ export const ProductsContext = createContext({});
 
 export const ProductsProvider = ({ children }) => {
   const [products, setProducts] = useState([]);
+  const [fetching, setFetching] = useState(true);
 
   useEffect(() => {
-    // Fetch data using Axios
-    axios
-      .get(`${BACKEND_URL}product`)
-      .then((response) => {
-        // Set the fetched data to state
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`${BACKEND_URL}product`);
         setProducts(response.data.products);
-      })
-      .catch((error) => {
-        // Handle error if needed
+      } catch (error) {
         console.error("Error fetching data: ", error);
-      });
+      } finally {
+        // Set fetching to false regardless of success or failure
+        setFetching(false);
+      }
+    };
+
+    fetchData();
   }, []); // Run this effect only once on component mount
 
   return (
-    <ProductsContext.Provider value={{ products, setProducts }}>
+    <ProductsContext.Provider value={{ products, setProducts, fetching }}>
       {children}
     </ProductsContext.Provider>
   );

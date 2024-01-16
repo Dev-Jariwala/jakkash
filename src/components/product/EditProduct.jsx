@@ -1,7 +1,7 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import Modal from "../modal/Modal";
 
-const EditProduct = ({ formState, setFormState, onSubmit }) => {
+const EditProduct = forwardRef(({ formState, setFormState, onSubmit }, ref) => {
   return (
     <Modal
       isOpen={formState.status === "editProduct"}
@@ -22,6 +22,7 @@ const EditProduct = ({ formState, setFormState, onSubmit }) => {
             <label>
               Product Name:
               <input
+                ref={ref}
                 type="text"
                 placeholder="Product Name"
                 value={formState.formData.productName}
@@ -83,6 +84,6 @@ const EditProduct = ({ formState, setFormState, onSubmit }) => {
       </div>
     </Modal>
   );
-};
+});
 
 export default EditProduct;

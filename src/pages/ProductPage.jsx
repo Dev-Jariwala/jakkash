@@ -23,22 +23,26 @@ import Modal from "../components/modal/Modal";
 import DeleteProduct from "../components/product/DeleteProduct";
 
 const ProductPage = () => {
-  const { products, setProducts } = useContext(ProductsContext);
+  const { products, setProducts, fetching } = useContext(ProductsContext);
   const [formState, setFormState] = useState({ status: "", formData: {} });
   const [loading, setLoading] = useState(true);
-  const deleteButtonRef = useRef(null);
+  const focusRef = useRef(null);
 
   useEffect(() => {
-    if (products.length <= 0) {
+    if (fetching) {
       setLoading(true);
     } else {
       setLoading(false);
     }
-  }, [products]);
+  }, [fetching]);
   useEffect(() => {
     // Set focus on the "Delete" button when the delete modal opens
-    if (formState.status === "deleteProduct" && deleteButtonRef.current) {
-      deleteButtonRef.current.focus();
+    if (formState.status === "deleteProduct" && focusRef.current) {
+      focusRef.current.focus();
+    } else if (formState.status === "editProduct" && focusRef.current) {
+      focusRef.current.focus();
+    } else if (formState.status === "newProduct" && focusRef.current) {
+      focusRef.current.focus();
     }
   }, [formState.status]);
 
@@ -60,13 +64,15 @@ const ProductPage = () => {
   // Function to handle delete confirmation
   const handleDeleteConfirmation = async (e, productId) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const res = await fetchProductDetails(productId);
       setFormState({ status: "deleteProduct", formData: res });
     } catch (error) {
       console.error("Error fetching product details:", error);
-      setLoading(false); // Add this line to handle errors gracefully
       throw error;
+    } finally {
+      setLoading(false); // Add this line to handle errors gracefully
     }
   };
 
@@ -132,8 +138,17 @@ const ProductPage = () => {
   }
   async function onEdit(e, productId) {
     e.preventDefault();
-    const res = await fetchProductDetails(productId);
-    setFormState({ status: "editProduct", formData: res });
+    setLoading(true);
+
+    try {
+      const res = await fetchProductDetails(productId);
+      setFormState({ status: "editProduct", formData: res });
+    } catch (error) {
+      console.error("Error fetching product details:", error);
+      // Handle error if needed
+    } finally {
+      setLoading(false);
+    }
   }
   const actions = [
     {
@@ -152,21 +167,13 @@ const ProductPage = () => {
       onSmash: handleDeleteConfirmation,
     },
   ];
-  if (loading) {
-    return (
-      <div className="page">
-        <div className="p-title">
-          <h2>Products Page</h2>
-        </div>
-        <Loader1 />
-      </div>
-    );
-  }
+
   return (
     <div className="page">
       <div className="p-title">
         <h2>Products Page</h2>
       </div>
+      {loading && <Loader1 />}
 
       {/* Confirmation Modal for Delete */}
       {formState.status === "deleteProduct" && (
@@ -175,7 +182,7 @@ const ProductPage = () => {
           onClose={cancelDelete}
         >
           <DeleteProduct
-            ref={deleteButtonRef}
+            ref={focusRef}
             productName={formState.formData.productName}
             cancelDelete={cancelDelete}
             confirmDelete={confirmDelete}
@@ -186,6 +193,7 @@ const ProductPage = () => {
       {/* New Product Modal */}
       {formState.status === "newProduct" && (
         <NewProduct
+          ref={focusRef}
           formState={formState}
           setFormState={setFormState}
           onSubmit={handleSubmit}
@@ -194,6 +202,7 @@ const ProductPage = () => {
       {/* Edit Product Modal */}
       {formState.status === "editProduct" && (
         <EditProduct
+          ref={focusRef}
           formState={formState}
           setFormState={setFormState}
           onSubmit={handleEdit}

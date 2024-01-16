@@ -1,10 +1,11 @@
 import React, { useContext, useState } from "react";
 import "./SideMenu.css";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 // Other styled components can be defined similarly...
 
 // Create your functional component
-const SideMenu = ({ sidemenuProps, children }) => {
+const SideMenu = ({ sidemenuProps, setAuth, children }) => {
   const { brandName, brandSlogan, brandLogo, sbOptions } = sidemenuProps;
   const [darkMode, setDarkMode] = useState(false);
   const [sidebar, setSidebar] = useState(false);
@@ -65,7 +66,13 @@ const SideMenu = ({ sidemenuProps, children }) => {
           </div>
 
           <div className="bottom-content">
-            <li className="">
+            <li
+              className=""
+              onClick={() => {
+                setAuth(false);
+                toast.success("Loged out!");
+              }}
+            >
               <Link to={""}>
                 <i className="bx bx-log-out icon"></i>
                 <span className="text nav-text">Logout</span>

@@ -61,6 +61,9 @@
 }
 
 .form-container input[type="text"],
+.form-container input[type="email"],
+.form-container select,
+.form-container input[type="password"],
 .form-container input[type="number"],
 .form-container input[type="date"] {
     width: calc(100% - 10px);
