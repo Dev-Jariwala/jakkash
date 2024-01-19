@@ -1,7 +1,14 @@
 import React from "react";
 import Row from "./Row";
 
-const Table = ({ currrentRows, indexOfFirstRow, ths, actions, mainKeys }) => {
+const Table = ({
+  showIndex,
+  currrentRows,
+  indexOfFirstRow,
+  ths,
+  actions,
+  mainKeys,
+}) => {
   return (
     <table className="table">
       <thead>
@@ -14,6 +21,7 @@ const Table = ({ currrentRows, indexOfFirstRow, ths, actions, mainKeys }) => {
             return (
               <tr key={rowIndex}>
                 <Row
+                  showIndex={showIndex}
                   row={row}
                   rowIndex={rowNumber}
                   actions={actions}

@@ -24,6 +24,7 @@ import DeleteProduct from "../components/product/DeleteProduct";
 import Newstock from "../components/stock/NewStock";
 import { fetchAllStocks, stockCreate } from "../controllers/stock";
 import { StockContext } from "../store/stockContext";
+import { Link } from "react-router-dom";
 
 const ProductPage = () => {
   const { products, setProducts, fetching } = useContext(ProductsContext);
@@ -209,7 +210,10 @@ const ProductPage = () => {
   return (
     <div className="page">
       <div className="p-title">
-        <h2>Products Page</h2>
+        <h2>
+          <Link to={"/"}>Dashboard</Link>
+          <span className="material-icons">navigate_next</span> Products
+        </h2>
       </div>
       {loading && <Loader1 />}
 

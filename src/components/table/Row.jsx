@@ -1,6 +1,6 @@
 import React from "react";
 
-const Row = ({ row, rowIndex, actions, mainKeys }) => {
+const Row = ({ showIndex, row, rowIndex, actions, mainKeys }) => {
   const renderRowData = () => {
     return mainKeys.map((mainKey, index) => {
       return <td key={index}>{row[mainKey]}</td>;
@@ -9,7 +9,7 @@ const Row = ({ row, rowIndex, actions, mainKeys }) => {
 
   return (
     <>
-      <td>{rowIndex + 1}</td>
+      {showIndex && <td>{rowIndex + 1}</td>}
       {renderRowData()}
       <td>
         <div className="action">

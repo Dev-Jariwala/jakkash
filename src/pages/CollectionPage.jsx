@@ -22,6 +22,7 @@ import NewCollection from "../components/collection/NewCollection";
 import EditCollection from "../components/collection/EditCollection";
 
 import Loader1 from "../components/loaders/Loader1";
+import { Link } from "react-router-dom";
 
 const CollectionPage = () => {
   const { collections, setCollections, activeColl, fetching } =
@@ -198,7 +199,10 @@ const CollectionPage = () => {
       )}
       <div className="page">
         <div className="p-title">
-          <h2>Collection Page</h2>
+          <h2>
+            <Link to={"/"}>Dashboard</Link>
+            <span className="material-icons">navigate_next</span> Collection
+          </h2>
         </div>
         <TableWrapper
           rows={collections}

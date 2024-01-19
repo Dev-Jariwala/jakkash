@@ -18,6 +18,7 @@ import { fetchAllProducts } from "../controllers/products";
 import { ProductsContext } from "../store/productContext";
 import DeleteStock from "../components/stock/DeleteStock";
 import Modal from "../components/modal/Modal";
+import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const StockPage = () => {
@@ -170,7 +171,10 @@ const StockPage = () => {
       )}
       <div className="page">
         <div className="p-title">
-          <h2>Stock Page</h2>
+          <h2>
+            <Link to={"/"}>Dashboard</Link>
+            <span className="material-icons">navigate_next</span> Stocks
+          </h2>
         </div>
         <TableWrapper
           rows={dateFixedStocks}

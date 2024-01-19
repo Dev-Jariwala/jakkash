@@ -5,6 +5,7 @@ import Table from "./Table";
 import Pagination from "./Pagination";
 import { CollectionContext } from "../../store/collectionContext";
 const TableWrapper = ({
+  showIndex = true,
   tableName,
   tableBtn,
   rows,
@@ -37,7 +38,7 @@ const TableWrapper = ({
           {" "}
           ( {activeColl?.collectionName} ) {tableName}
         </div>
-        <button onClick={onTableBtn}>{tableBtn}</button>
+        {tableBtn && <button onClick={onTableBtn}>{tableBtn}</button>}
       </div>
       <div className="table-content">
         <TableFeatures
@@ -47,6 +48,7 @@ const TableWrapper = ({
         />
         <Table
           ths={ths}
+          showIndex={showIndex}
           currrentRows={currentRows}
           indexOfFirstRow={indexOfFirstRow}
           actions={actions}
