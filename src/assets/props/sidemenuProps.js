@@ -20,7 +20,7 @@ const sidemenuProps = {
     },
     {
       title: "Bills",
-      to: "/",
+      to: "/bills",
       icon: "receipt_long",
     },
   ],

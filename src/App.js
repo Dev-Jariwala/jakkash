@@ -14,6 +14,8 @@ import StockPage from "./pages/StockPage";
 import DashboardPage from "./pages/DashboardPage";
 import BillPage from "./pages/BillPage";
 import { RetailBillProvider } from "./store/retailBillContext";
+import { ClientContext, ClientProvider } from "./store/ClientContext";
+import ClientPage from "./pages/ClientPage";
 const NotFound = () => {
   return (
     <div>
@@ -46,22 +48,28 @@ const App = () => {
             <ProductsProvider>
               <StockProvider>
                 <RetailBillProvider>
-                  <SideMenu
-                    sidemenuProps={{ ...sidemenuProps }}
-                    setAuth={setAuth}
-                  >
-                    <Routes>
-                      <Route path="/" element={<DashboardPage />}></Route>
-                      <Route path="/products" element={<ProductPage />}></Route>
-                      <Route
-                        path="/collection"
-                        element={<CollectionPage />}
-                      ></Route>
-                      <Route path="/stocks" element={<StockPage />}></Route>
-                      <Route path="/bills" element={<BillPage />}></Route>
-                      <Route path="*" element={<NotFound />}></Route>
-                    </Routes>
-                  </SideMenu>
+                  <ClientProvider>
+                    <SideMenu
+                      sidemenuProps={{ ...sidemenuProps }}
+                      setAuth={setAuth}
+                    >
+                      <Routes>
+                        <Route path="/" element={<DashboardPage />}></Route>
+                        <Route
+                          path="/products"
+                          element={<ProductPage />}
+                        ></Route>
+                        <Route
+                          path="/collection"
+                          element={<CollectionPage />}
+                        ></Route>
+                        <Route path="/stocks" element={<StockPage />}></Route>
+                        <Route path="/bills" element={<BillPage />}></Route>
+                        <Route path="/clients" element={<ClientPage />}></Route>
+                        <Route path="*" element={<NotFound />}></Route>
+                      </Routes>
+                    </SideMenu>
+                  </ClientProvider>
                 </RetailBillProvider>
               </StockProvider>
             </ProductsProvider>

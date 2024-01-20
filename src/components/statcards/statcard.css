@@ -71,6 +71,30 @@
     background: linear-gradient(45deg, #ff9a55, #ffbf87);
 }
 
+.statcard.pink {
+    background: linear-gradient(45deg, #ff66a2, #ff89b5);
+}
+
+.statcard.teal {
+    background: linear-gradient(45deg, #00bcd4, #4dd0e1);
+}
+
+.statcard.deep-blue {
+    background: linear-gradient(45deg, #001f3f, #003366);
+}
+
+.statcard.gold {
+    background: linear-gradient(45deg, #ffd700, #ffec8b);
+}
+
+.statcard.green-yellow {
+    background: linear-gradient(45deg, #adff2f, #d2ff8b);
+}
+
+.statcard.slate {
+    background: linear-gradient(45deg, #6a5acd, #836fff);
+}
+
 .statcard .d-group {
     width: 85%;
     display: flex;
