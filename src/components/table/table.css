@@ -140,6 +140,26 @@ button.btn-outline.danger:hover {
 }
 
 /* Input Styles */
+.search-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.filter-container {
+    /* background-color: var(--primary-color); */
+}
+
+.filter-dropdown {
+    background-color: var(--primary-color);
+    position: absolute;
+    /* background-color: red; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
 .search-bar input[type="text"],
 .pagination input[type="number"] {
     padding: 8px;

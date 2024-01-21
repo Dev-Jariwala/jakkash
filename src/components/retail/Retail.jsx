@@ -50,19 +50,41 @@ const Retail = () => {
   const [showPDF, setShowPDF] = useState({ status: false, bill: {} });
   const [loading, setLoading] = useState(true);
   const focusRef = useRef(null);
-  const dateFixedBills = retailBills?.map((stock) => {
+  const dateFixedBills = retailBills?.map((bill) => {
     return {
-      ...stock,
-      orderDate: stock.orderDate.slice(0, 10).split("-").reverse().join(" / "),
+      ...bill,
+      orderDate: bill.orderDate.slice(0, 10).split("-").reverse().join(" / "),
       totalDue: (
         <button
-          className={`btn-outline ${stock.totalDue > 0 ? "danger" : "success"}`}
+          className={`btn-outline ${bill.totalDue > 0 ? "danger" : "success"}`}
         >
-          {stock.totalDue > 0 ? stock.totalDue : "Paid"}
+          {bill.totalDue > 0 ? bill.totalDue : "Paid"}
         </button>
       ),
     };
   });
+  // Assuming tomorrow's date is calculated using JavaScript Date object
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+
+  // Filter retail bills with delivery dates ending tomorrow
+  const tomorrowBills = retailBills
+    ?.filter((bill) => new Date(bill.deliveryDate) <= tomorrow)
+    ?.map((bill) => {
+      return {
+        ...bill,
+        orderDate: bill.orderDate.slice(0, 10).split("-").reverse().join(" / "),
+        totalDue: (
+          <button
+            className={`btn-outline ${
+              bill.totalDue > 0 ? "danger" : "success"
+            }`}
+          >
+            {bill.totalDue > 0 ? bill.totalDue : "Paid"}
+          </button>
+        ),
+      };
+    });
   useEffect(() => {
     if (fetching) {
       setLoading(true);
