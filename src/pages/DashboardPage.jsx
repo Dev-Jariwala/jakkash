@@ -4,12 +4,14 @@ import { CollectionContext } from "../store/collectionContext";
 import { ProductsContext } from "../store/productContext";
 import { StockContext } from "../store/stockContext";
 import { RetailBillContext } from "../store/retailBillContext";
+import { ClientContext } from "../store/clientContext";
 
 const DashboardPage = () => {
   const { collections } = useContext(CollectionContext);
   const { products } = useContext(ProductsContext);
   const { stocks } = useContext(StockContext);
   const { retailBills } = useContext(RetailBillContext);
+  const { clients } = useContext(ClientContext);
   return (
     <>
       <div className="page">
@@ -54,7 +56,7 @@ const DashboardPage = () => {
               icon={<span className="material-icons">person_search</span>}
               color={"purple"}
               title={"Clients"}
-              data={stocks.length}
+              data={clients.length}
               stat={1000}
               link={"clients"}
             ></StatCard>

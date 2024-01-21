@@ -1,14 +1,6 @@
-// WholeSaleBillPDF.js
+// RetailBillPdf.js
 import React from "react";
-import {
-  Document,
-  Page,
-  Text,
-  View,
-  StyleSheet,
-  Image,
-  Font,
-} from "@react-pdf/renderer";
+import { Document, Page, Text, View, StyleSheet } from "@react-pdf/renderer";
 const styles = StyleSheet.create({
   billContainer: {
     width: "80%",
@@ -108,7 +100,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const WholeSaleBillPDF = ({ bill }) => {
+const RetailBillPDF = ({ bill }) => {
   const {
     BillNo,
     name,
@@ -310,4 +302,4 @@ const WholeSaleBillPDF = ({ bill }) => {
   );
 };
 
-export default WholeSaleBillPDF;
+export default RetailBillPDF;

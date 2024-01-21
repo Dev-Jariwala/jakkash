@@ -1,90 +1,80 @@
-import React, { useContext, useState } from "react";
+import React, { forwardRef, useContext, useEffect } from "react";
 import { ProductsContext } from "../../store/productContext";
-import axios from "axios";
-import BACKEND_URL from "../../assets/BACKEND_URL";
-import { WholeSaleContext } from "../../store/wholeSaleBillContext";
-const WholeSaleForm = ({ setCreatingBill, setShowPDF }) => {
-  const { products, setProducts } = useContext(ProductsContext);
-  const { wholeSaleBills, setWholeSaleBills } = useContext(WholeSaleContext);
-  const [newRetailBill, setNewRetailBill] = useState({
-    BillNo: wholeSaleBills.length + 1,
-    orderDate: "",
-    name: "",
-    address: "",
-    mobileNumber: "",
-    deliveryDate: "",
-    products: [],
-    totalFirki: "",
-    subTotal: 0,
-    discount: 0,
-    advance: 0,
-    totalDue: 0,
-  });
+import { toast } from "react-toastify";
+import { ClientContext } from "../../store/clientContext";
 
-  async function handleSubmit(e) {
-    try {
-      e.preventDefault();
-      if (newRetailBill.totalDue < 0) {
-        return alert("Total Due cannot be Negative!");
+const NewWholeSale = forwardRef(
+  ({ formState, setFormState, onSubmit }, ref) => {
+    let formData = formState.formData;
+    const { products } = useContext(ProductsContext);
+    const { clients } = useContext(ClientContext);
+    useEffect(() => {
+      // Function to check if mobile number matches any previous bills
+      const findClient = (mobileNumber) => {
+        const Client = clients.find(
+          (client) => client.mobileNumber === mobileNumber
+        );
+
+        if (Client) {
+          // Update the form state with the matched Name and Address
+          setFormState((prev) => ({
+            ...prev,
+            formData: {
+              ...prev.formData,
+              name: Client.name,
+              address: Client.address,
+            },
+          }));
+        }
+      };
+
+      if (
+        formState.status === "newWholesale" &&
+        String(formData.mobileNumber).length === 10
+      ) {
+        // Call the function when mobileNumber changes
+        findClient(formData.mobileNumber);
       } else {
-        await axios.post(
-          `${BACKEND_URL}wholesale/create-wholeSaleBill`,
-          {
-            ...newRetailBill,
+        setFormState((prev) => ({
+          ...prev,
+          formData: {
+            ...prev.formData,
+            name: "",
+            address: "",
           },
-          { withCredentials: true }
-        );
-        const response = await axios.get(
-          `${BACKEND_URL}wholesale/fetch-allWholeSaleBills`
-        );
-        setWholeSaleBills(response.data.wholeSaleBills.reverse());
-        const res = await axios.get(`${BACKEND_URL}product/fetch-allProducts`);
-        setProducts(res.data.products);
-        setNewRetailBill({
-          BillNo: wholeSaleBills.length + 1,
-          orderDate: "",
-          name: "",
-          address: "",
-          mobileNumber: "",
-          deliveryDate: "",
-          products: [],
-          totalFirki: "",
-          subTotal: 0,
-          discount: 0,
-          advance: 0,
-          totalDue: 0,
-        });
-        setCreatingBill(false);
-        setShowPDF((prev) => {
-          return { ...prev, status: true, bill: newRetailBill };
-        });
+        }));
       }
-    } catch (error) {}
-  }
-  return (
-    <>
+    }, [formData.mobileNumber, setFormState]);
+    return (
       <div className="form-container bill">
         <h4>Enter WholeSale Bill details:</h4>
-        <form onSubmit={(e) => handleSubmit(e)}>
+        <form onSubmit={(e) => onSubmit(e)}>
           <div className="form-row">
             <label>
               Bill No:
               <input
                 type="number"
                 placeholder="Bill No."
-                value={newRetailBill.BillNo}
+                value={formData.BillNo}
                 disabled
               />
             </label>
             <label>
-              Date:
+              Mobile No.:
               <input
-                type="date"
-                placeholder="Date"
-                value={newRetailBill.orderDate}
+                type="number"
+                placeholder="Mobile No."
+                ref={ref}
+                value={formData.mobileNumber}
                 onChange={(e) =>
-                  setNewRetailBill((prev) => {
-                    return { ...prev, orderDate: e.target.value };
+                  setFormState((prev) => {
+                    return {
+                      ...prev,
+                      formData: {
+                        ...prev.formData,
+                        mobileNumber: parseInt(e.target.value),
+                      },
+                    };
                   })
                 }
                 required
@@ -98,10 +88,16 @@ const WholeSaleForm = ({ setCreatingBill, setShowPDF }) => {
               <input
                 type="text"
                 placeholder="Name"
-                value={newRetailBill.name}
+                value={formData.name}
                 onChange={(e) =>
-                  setNewRetailBill((prev) => {
-                    return { ...prev, name: String(e.target.value) };
+                  setFormState((prev) => {
+                    return {
+                      ...prev,
+                      formData: {
+                        ...prev.formData,
+                        name: String(e.target.value),
+                      },
+                    };
                   })
                 }
                 required
@@ -112,10 +108,16 @@ const WholeSaleForm = ({ setCreatingBill, setShowPDF }) => {
               <input
                 type="text"
                 placeholder="Address"
-                value={newRetailBill.address}
+                value={formData.address}
                 onChange={(e) =>
-                  setNewRetailBill((prev) => {
-                    return { ...prev, address: String(e.target.value) };
+                  setFormState((prev) => {
+                    return {
+                      ...prev,
+                      formData: {
+                        ...prev.formData,
+                        address: String(e.target.value),
+                      },
+                    };
                   })
                 }
                 required
@@ -124,27 +126,37 @@ const WholeSaleForm = ({ setCreatingBill, setShowPDF }) => {
           </div>
           <div className="form-row">
             <label>
-              Mobile No.:
+              Date:
               <input
-                type="number"
-                placeholder="Mobile No."
-                value={newRetailBill.mobileNo}
+                type="date"
+                placeholder="Date"
+                value={formData.orderDate}
                 onChange={(e) =>
-                  setNewRetailBill((prev) => {
-                    return { ...prev, mobileNumber: parseInt(e.target.value) };
+                  setFormState((prev) => {
+                    return {
+                      ...prev,
+                      formData: { ...prev.formData, orderDate: e.target.value },
+                    };
                   })
                 }
                 required
               />
             </label>
+
             <label>
               Delivery Date:
               <input
                 type="date"
-                value={newRetailBill.deliveryDate}
+                value={formData.deliveryDate}
                 onChange={(e) =>
-                  setNewRetailBill((prev) => {
-                    return { ...prev, deliveryDate: e.target.value };
+                  setFormState((prev) => {
+                    return {
+                      ...prev,
+                      formData: {
+                        ...prev.formData,
+                        deliveryDate: e.target.value,
+                      },
+                    };
                   })
                 }
                 required
@@ -186,7 +198,7 @@ const WholeSaleForm = ({ setCreatingBill, setShowPDF }) => {
                             type="number"
                             placeholder="Qty"
                             value={
-                              newRetailBill.products.find(
+                              formData.products.find(
                                 (product) => product.productId === prod._id
                               )?.quantity
                             }
@@ -195,21 +207,26 @@ const WholeSaleForm = ({ setCreatingBill, setShowPDF }) => {
                                 parseInt(e.target.value) >= 0
                                   ? parseInt(e.target.value)
                                   : "";
-                              setNewRetailBill((prev) => {
-                                const updatedProducts = prev.products.map(
-                                  (product) => {
+
+                              setFormState((prev) => {
+                                const updatedProducts =
+                                  prev.formData.products.map((product) => {
                                     if (product.productId === prod._id) {
-                                      return {
-                                        ...product,
-                                        quantity:
-                                          newQty <= prod.stock
-                                            ? newQty
-                                            : prod.stock,
-                                      };
+                                      if (newQty > prod.stock) {
+                                        toast.warn("Insufficient Quantity!");
+                                        return {
+                                          ...product,
+                                          quantity: "",
+                                        };
+                                      } else {
+                                        return {
+                                          ...product,
+                                          quantity: newQty,
+                                        };
+                                      }
                                     }
                                     return product;
-                                  }
-                                );
+                                  });
 
                                 const existingProduct = updatedProducts.find(
                                   (product) => product.productId === prod._id
@@ -229,12 +246,15 @@ const WholeSaleForm = ({ setCreatingBill, setShowPDF }) => {
                                 );
                                 return {
                                   ...prev,
-                                  products: updatedProducts,
-                                  subTotal: calculateValue,
-                                  totalDue:
-                                    calculateValue -
-                                    prev.discount -
-                                    prev.advance,
+                                  formData: {
+                                    ...prev.formData,
+                                    products: updatedProducts,
+                                    subTotal: calculateValue,
+                                    totalDue:
+                                      calculateValue -
+                                      prev.formData.discount -
+                                      prev.formData.advance,
+                                  },
                                 };
                               });
                             }}
@@ -255,7 +275,7 @@ const WholeSaleForm = ({ setCreatingBill, setShowPDF }) => {
                           placeholder="Total"
                           value={
                             prod.retailPrice *
-                              newRetailBill.products.find(
+                              formData.products.find(
                                 (p) => p.productId === prod._id
                               )?.quantity || 0
                           }
@@ -274,12 +294,18 @@ const WholeSaleForm = ({ setCreatingBill, setShowPDF }) => {
                     <button
                       onClick={(e) => {
                         e.preventDefault();
-                        let totalQty = newRetailBill.products.reduce(
+                        let totalQty = formData.products.reduce(
                           (acc, curr) => acc + curr.quantity,
                           0
                         );
-                        setNewRetailBill((prev) => {
-                          return { ...prev, totalFirki: totalQty };
+                        setFormState((prev) => {
+                          return {
+                            ...prev,
+                            formData: {
+                              ...prev.formData,
+                              totalFirki: totalQty,
+                            },
+                          };
                         });
                       }}
                       className="calculate"
@@ -297,15 +323,18 @@ const WholeSaleForm = ({ setCreatingBill, setShowPDF }) => {
                       Total Firki
                       <input
                         type="number"
-                        value={newRetailBill.totalFirki}
+                        value={formData.totalFirki}
                         onChange={(e) => {
-                          setNewRetailBill((prev) => {
+                          setFormState((prev) => {
                             return {
                               ...prev,
-                              totalFirki:
-                                parseInt(e.target.value) >= 0
-                                  ? parseInt(e.target.value)
-                                  : "",
+                              formData: {
+                                ...prev.formData,
+                                totalFirki:
+                                  parseInt(e.target.value) >= 0
+                                    ? parseInt(e.target.value)
+                                    : "",
+                              },
                             };
                           });
                         }}
@@ -316,11 +345,7 @@ const WholeSaleForm = ({ setCreatingBill, setShowPDF }) => {
                   <td>
                     <label>
                       Sub Total
-                      <input
-                        type="number"
-                        value={newRetailBill.subTotal}
-                        disabled
-                      />
+                      <input type="number" value={formData.subTotal} disabled />
                     </label>
                   </td>
                 </tr>
@@ -335,11 +360,11 @@ const WholeSaleForm = ({ setCreatingBill, setShowPDF }) => {
                       Discount
                       <input
                         type="number"
-                        value={newRetailBill.discount}
+                        value={formData.discount}
                         onChange={(e) => {
-                          setNewRetailBill((prev) => {
+                          setFormState((prev) => {
                             const constSubTotal = parseFloat(
-                              prev.products.reduce(
+                              prev.formData.products.reduce(
                                 (acc, curr) => acc + curr.price * curr.quantity,
                                 0
                               )
@@ -350,18 +375,24 @@ const WholeSaleForm = ({ setCreatingBill, setShowPDF }) => {
                                 : "";
                             return {
                               ...prev,
-                              discount:
-                                enteredDiscount + prev.advance <= constSubTotal
-                                  ? enteredDiscount
-                                  : constSubTotal - prev.advance,
+                              formData: {
+                                ...prev.formData,
+                                discount:
+                                  enteredDiscount + prev.formData.advance <=
+                                  constSubTotal
+                                    ? enteredDiscount
+                                    : constSubTotal - prev.formData.advance,
 
-                              totalDue:
-                                constSubTotal - enteredDiscount - prev.advance <
-                                0
-                                  ? 0
-                                  : constSubTotal -
-                                    prev.advance -
-                                    enteredDiscount,
+                                totalDue:
+                                  constSubTotal -
+                                    enteredDiscount -
+                                    prev.formData.advance <
+                                  0
+                                    ? 0
+                                    : constSubTotal -
+                                      prev.formData.advance -
+                                      enteredDiscount,
+                              },
                             };
                           });
                         }}
@@ -380,25 +411,31 @@ const WholeSaleForm = ({ setCreatingBill, setShowPDF }) => {
                       Advance
                       <input
                         type="number"
-                        value={newRetailBill.advance}
+                        value={formData.advance}
                         onChange={(e) => {
                           const enteredAdvance =
                             parseInt(e.target.value) >= 0
                               ? parseInt(e.target.value)
                               : "";
-                          setNewRetailBill((prev) => {
+                          setFormState((prev) => {
                             return {
                               ...prev,
-                              advance:
-                                enteredAdvance + prev.discount <= prev.subTotal
-                                  ? enteredAdvance
-                                  : prev.subTotal - prev.discount,
-                              totalDue:
-                                enteredAdvance + prev.discount >= prev.subTotal
-                                  ? 0
-                                  : prev.subTotal -
-                                    prev.discount -
-                                    enteredAdvance,
+                              formData: {
+                                ...prev.formData,
+                                advance:
+                                  enteredAdvance + prev.formData.discount <=
+                                  prev.formData.subTotal
+                                    ? enteredAdvance
+                                    : prev.formData.subTotal -
+                                      prev.formData.discount,
+                                totalDue:
+                                  enteredAdvance + prev.formData.discount >=
+                                  prev.formData.subTotal
+                                    ? 0
+                                    : prev.formData.subTotal -
+                                      prev.formData.discount -
+                                      enteredAdvance,
+                              },
                             };
                           });
                         }}
@@ -417,7 +454,7 @@ const WholeSaleForm = ({ setCreatingBill, setShowPDF }) => {
                       Total Due
                       <input
                         type="number"
-                        value={newRetailBill.totalDue}
+                        value={formData.totalDue}
                         disabled
                         // required
                       />
@@ -432,8 +469,8 @@ const WholeSaleForm = ({ setCreatingBill, setShowPDF }) => {
           </div>
         </form>
       </div>
-    </>
-  );
-};
+    );
+  }
+);
 
-export default WholeSaleForm;
+export default NewWholeSale;

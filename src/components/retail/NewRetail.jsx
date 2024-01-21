@@ -1,15 +1,12 @@
-import React, { forwardRef, useContext, useEffect, useState } from "react";
+import React, { forwardRef, useContext, useEffect } from "react";
 import { ProductsContext } from "../../store/productContext";
 import { toast } from "react-toastify";
-import { RetailBillContext } from "../../store/retailBillContext";
-import { fetchAllClients } from "../../controllers/client";
-import Select from "react-select";
-import { ClientContext } from "../../store/ClientContext";
+import { ClientContext } from "../../store/clientContext";
 
 const NewRetail = forwardRef(({ formState, setFormState, onSubmit }, ref) => {
   let formData = formState.formData;
   const { products } = useContext(ProductsContext);
-  const { clients, setClients } = useContext(ClientContext);
+  const { clients } = useContext(ClientContext);
   useEffect(() => {
     // Function to check if mobile number matches any previous bills
     const findClient = (mobileNumber) => {

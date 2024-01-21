@@ -1,82 +1,39 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { ProductsContext } from "../../store/productContext";
-import axios from "axios";
-import BACKEND_URL from "../../assets/BACKEND_URL";
-import { StockContext } from "../../store/stockContext";
-import { WholeSaleContext } from "../../store/wholeSaleBillContext";
+import { toast } from "react-toastify";
 
-const WholeSaleEditForm = ({
-  setEditingBill,
-  editRetailBill,
-  setEditRetailBIll,
-}) => {
-  const { products, setProducts } = useContext(ProductsContext);
-  const { setWholeSaleBills } = useContext(WholeSaleContext);
-  const [billProducts, setBillProducts] = useState(editRetailBill.products);
-  async function handleSubmit(e, retailBillId) {
-    try {
-      e.preventDefault();
-      if (editRetailBill.totalDue < 0) {
-        return alert("Total Due can not be Negative!");
-      } else {
-        await axios.put(
-          `${BACKEND_URL}retail/update-retailbill/${retailBillId}`,
-          {
-            ...editRetailBill,
-          },
-          { withCredentials: true }
-        );
-        const response = await axios.get(
-          `${BACKEND_URL}retail/fetch-allRetailbills`
-        );
-        setWholeSaleBills(response.data.retailBills.reverse());
-        const res = await axios.get(`${BACKEND_URL}product/fetch-allProducts`);
-        setProducts(res.data.products);
-        setEditRetailBIll({
-          BillNo: 0,
-          orderDate: "",
-          name: "",
-          address: "",
-          mobileNumber: 0,
-          deliveryDate: "",
-          products: [],
-          totalFirki: 0,
-          subTotal: 0,
-          discount: 0,
-          advance: 0,
-          totalDue: 0,
-        });
-        setEditingBill(false);
-      }
-    } catch (error) {}
-  }
+const EditWholeSale = ({ formData, setFormState, onSubmit }) => {
+  const { products } = useContext(ProductsContext);
+  const [billProducts, setBillProducts] = useState(formData.products);
   return (
     <div className="form-container bill">
-      <h4>Edit Retail Bill details:</h4>
-      <form onSubmit={(e) => handleSubmit(e, editRetailBill._id)}>
+      <h4>Edit Whole sale Bill details:</h4>
+      <form onSubmit={(e) => onSubmit(e, formData._id, formData)}>
         <div className="form-row">
           <label>
             Bill No:
             <input
               type="number"
               placeholder="Bill No."
-              value={editRetailBill.BillNo}
+              value={formData.BillNo}
               disabled
             />
           </label>
           <label>
-            Date:
+            Mobile No.:
             <input
-              type="date"
-              placeholder="Date"
-              value={
-                editRetailBill.orderDate
-                  ? editRetailBill.orderDate.slice(0, 10)
-                  : ""
-              }
+              type="number"
+              placeholder="Mobile No."
+              value={formData.mobileNumber}
               onChange={(e) =>
-                setEditRetailBIll((prev) => {
-                  return { ...prev, orderDate: e.target.value };
+                setFormState((prev) => {
+                  return {
+                    ...prev,
+                    formData: {
+                      ...prev.formData,
+                      mobileNumber: parseInt(e.target.value),
+                    },
+                  };
                 })
               }
               required
@@ -90,10 +47,16 @@ const WholeSaleEditForm = ({
             <input
               type="text"
               placeholder="Name"
-              value={editRetailBill.name}
+              value={formData.name}
               onChange={(e) =>
-                setEditRetailBIll((prev) => {
-                  return { ...prev, name: String(e.target.value) };
+                setFormState((prev) => {
+                  return {
+                    ...prev,
+                    formData: {
+                      ...prev.formData,
+                      name: String(e.target.value),
+                    },
+                  };
                 })
               }
               required
@@ -104,10 +67,16 @@ const WholeSaleEditForm = ({
             <input
               type="text"
               placeholder="Address"
-              value={editRetailBill.address}
+              value={formData.address}
               onChange={(e) =>
-                setEditRetailBIll((prev) => {
-                  return { ...prev, address: String(e.target.value) };
+                setFormState((prev) => {
+                  return {
+                    ...prev,
+                    formData: {
+                      ...prev.formData,
+                      address: String(e.target.value),
+                    },
+                  };
                 })
               }
               required
@@ -116,14 +85,20 @@ const WholeSaleEditForm = ({
         </div>
         <div className="form-row">
           <label>
-            Mobile No.:
+            Date:
             <input
-              type="number"
-              placeholder="Mobile No."
-              value={editRetailBill.mobileNumber}
+              type="date"
+              placeholder="Date"
+              value={formData.orderDate.slice(0, 10)}
               onChange={(e) =>
-                setEditRetailBIll((prev) => {
-                  return { ...prev, mobileNumber: parseInt(e.target.value) };
+                setFormState((prev) => {
+                  return {
+                    ...prev,
+                    formData: {
+                      ...prev.formData,
+                      orderDate: e.target.value,
+                    },
+                  };
                 })
               }
               required
@@ -133,14 +108,16 @@ const WholeSaleEditForm = ({
             Delivery Date:
             <input
               type="date"
-              value={
-                editRetailBill.deliveryDate
-                  ? editRetailBill.deliveryDate.slice(0, 10)
-                  : ""
-              }
+              value={formData.deliveryDate.slice(0, 10)}
               onChange={(e) =>
-                setEditRetailBIll((prev) => {
-                  return { ...prev, deliveryDate: e.target.value };
+                setFormState((prev) => {
+                  return {
+                    ...prev,
+                    formData: {
+                      ...prev.formData,
+                      deliveryDate: e.target.value,
+                    },
+                  };
                 })
               }
               required
@@ -160,13 +137,12 @@ const WholeSaleEditForm = ({
             </thead>
             <tbody>
               {products.map((prod) => {
-                let currProduct = editRetailBill.products.filter((product) => {
+                let currProduct = formData.products.filter((product) => {
                   return product.productId === prod._id;
                 });
                 let orignalProduct = billProducts.filter((product) => {
                   return product.productId === prod._id;
                 });
-                const existingQuantity = currProduct[0]?.quantity || 0;
                 const originalQuantity = orignalProduct[0]?.quantity || 0;
                 return (
                   <tr key={prod._id}>
@@ -178,7 +154,11 @@ const WholeSaleEditForm = ({
                       <input type="number" value={prod.stock} disabled />
                     </td>
                     <td>
-                      <input type="number" value={prod.retailPrice} disabled />
+                      <input
+                        type="number"
+                        value={prod.wholesalePrice}
+                        disabled
+                      />
                     </td>
                     <td>
                       {prod.stock <= 0 && originalQuantity <= 0 ? (
@@ -198,46 +178,34 @@ const WholeSaleEditForm = ({
                               parseInt(e.target.value) >= 0
                                 ? parseInt(e.target.value)
                                 : "";
-                            setEditRetailBIll((prev) => {
-                              const updatedProducts = prev.products.map(
-                                (product) => {
+                            setFormState((prev) => {
+                              const updatedProducts =
+                                prev.formData.products.map((product) => {
                                   if (product.productId === prod._id) {
                                     if (
-                                      prod.stock <= 0 &&
-                                      originalQuantity > 0
+                                      (prod.stock <= 0 &&
+                                        originalQuantity > 0 &&
+                                        newQty <= originalQuantity) ||
+                                      (prod.stock > 0 &&
+                                        originalQuantity > 0 &&
+                                        newQty <=
+                                          originalQuantity + prod.stock) ||
+                                      newQty <= prod.stock
                                     ) {
                                       return {
                                         ...product,
-                                        quantity:
-                                          newQty <= originalQuantity
-                                            ? newQty
-                                            : originalQuantity,
-                                      };
-                                    } else if (
-                                      prod.stock > 0 &&
-                                      originalQuantity > 0
-                                    ) {
-                                      return {
-                                        ...product,
-                                        quantity:
-                                          newQty <=
-                                          originalQuantity + prod.stock
-                                            ? newQty
-                                            : originalQuantity + prod.stock,
+                                        quantity: newQty,
                                       };
                                     } else {
+                                      toast.warn("Insufficiant Stock");
                                       return {
                                         ...product,
-                                        quantity:
-                                          newQty <= prod.stock
-                                            ? newQty
-                                            : prod.stock,
+                                        quantity: "",
                                       };
                                     }
                                   }
                                   return product;
-                                }
-                              );
+                                });
 
                               const existingProduct = updatedProducts.find(
                                 (product) => product.productId === prod._id
@@ -256,10 +224,15 @@ const WholeSaleEditForm = ({
                               );
                               return {
                                 ...prev,
-                                products: updatedProducts,
-                                subTotal: calculateValue,
-                                totalDue:
-                                  calculateValue - prev.discount - prev.advance,
+                                formData: {
+                                  ...prev.formData,
+                                  products: updatedProducts,
+                                  subTotal: calculateValue,
+                                  totalDue:
+                                    calculateValue -
+                                    prev.formData.discount -
+                                    prev.formData.advance,
+                                },
                               };
                             });
                           }}
@@ -273,7 +246,7 @@ const WholeSaleEditForm = ({
                         placeholder="Total"
                         value={
                           prod.retailPrice *
-                            editRetailBill.products.find(
+                            formData.products.find(
                               (p) => p.productId === prod._id
                             )?.quantity || 0
                         }
@@ -283,7 +256,6 @@ const WholeSaleEditForm = ({
                   </tr>
                 );
               })}
-
               <tr>
                 <td></td>
                 <td></td>
@@ -292,14 +264,14 @@ const WholeSaleEditForm = ({
                   <button
                     onClick={(e) => {
                       e.preventDefault();
-                      let totalQty = editRetailBill.products.reduce(
+                      let totalQty = formData.products.reduce(
                         (acc, curr) => acc + curr.quantity,
                         0
                       );
-                      setEditRetailBIll((prev) => {
+                      setFormState((prev) => {
                         return {
                           ...prev,
-                          totalFirki: totalQty,
+                          formData: { ...prev.formData, totalFirki: totalQty },
                         };
                       });
                     }}
@@ -318,15 +290,18 @@ const WholeSaleEditForm = ({
                     Total Firki
                     <input
                       type="number"
-                      value={editRetailBill.totalFirki}
+                      value={formData.totalFirki}
                       onChange={(e) => {
-                        setEditRetailBIll((prev) => {
+                        setFormState((prev) => {
                           return {
                             ...prev,
-                            totalFirki:
-                              parseInt(e.target.value) >= 0
-                                ? parseInt(e.target.value)
-                                : "",
+                            formData: {
+                              ...prev.formData,
+                              totalFirki:
+                                parseInt(e.target.value) >= 0
+                                  ? parseInt(e.target.value)
+                                  : "",
+                            },
                           };
                         });
                       }}
@@ -337,11 +312,7 @@ const WholeSaleEditForm = ({
                 <td>
                   <label>
                     Sub Total
-                    <input
-                      type="number"
-                      value={editRetailBill.subTotal}
-                      disabled
-                    />
+                    <input type="number" value={formData.subTotal} disabled />
                   </label>
                 </td>
               </tr>
@@ -356,11 +327,11 @@ const WholeSaleEditForm = ({
                     Discount
                     <input
                       type="number"
-                      value={editRetailBill.discount}
+                      value={formData.discount}
                       onChange={(e) => {
-                        setEditRetailBIll((prev) => {
+                        setFormState((prev) => {
                           const constSubTotal = parseFloat(
-                            prev.products.reduce(
+                            prev.formData.products.reduce(
                               (acc, curr) => acc + curr.price * curr.quantity,
                               0
                             )
@@ -371,17 +342,24 @@ const WholeSaleEditForm = ({
                               : "";
                           return {
                             ...prev,
-                            discount:
-                              enteredDiscount + prev.advance <= constSubTotal
-                                ? enteredDiscount
-                                : constSubTotal - prev.advance,
+                            formData: {
+                              ...prev.formData,
+                              discount:
+                                enteredDiscount + prev.formData.advance <=
+                                constSubTotal
+                                  ? enteredDiscount
+                                  : constSubTotal - prev.formData.advance,
 
-                            totalDue:
-                              constSubTotal - enteredDiscount - prev.advance < 0
-                                ? 0
-                                : constSubTotal -
-                                  prev.advance -
-                                  enteredDiscount,
+                              totalDue:
+                                constSubTotal -
+                                  enteredDiscount -
+                                  prev.formData.advance <
+                                0
+                                  ? 0
+                                  : constSubTotal -
+                                    prev.formData.advance -
+                                    enteredDiscount,
+                            },
                           };
                         });
                       }}
@@ -400,25 +378,31 @@ const WholeSaleEditForm = ({
                     Advance
                     <input
                       type="number"
-                      value={editRetailBill.advance}
+                      value={formData.advance}
                       onChange={(e) => {
                         const enteredAdvance =
                           parseInt(e.target.value) >= 0
                             ? parseInt(e.target.value)
                             : "";
-                        setEditRetailBIll((prev) => {
+                        setFormState((prev) => {
                           return {
                             ...prev,
-                            advance:
-                              enteredAdvance + prev.discount <= prev.subTotal
-                                ? enteredAdvance
-                                : prev.subTotal - prev.discount,
-                            totalDue:
-                              enteredAdvance + prev.discount >= prev.subTotal
-                                ? 0
-                                : prev.subTotal -
-                                  prev.discount -
-                                  enteredAdvance,
+                            formData: {
+                              ...prev.formData,
+                              advance:
+                                enteredAdvance + prev.formData.discount <=
+                                prev.formData.subTotal
+                                  ? enteredAdvance
+                                  : prev.formData.subTotal -
+                                    prev.formData.discount,
+                              totalDue:
+                                enteredAdvance + prev.formData.discount >=
+                                prev.formData.subTotal
+                                  ? 0
+                                  : prev.formData.subTotal -
+                                    prev.formData.discount -
+                                    enteredAdvance,
+                            },
                           };
                         });
                       }}
@@ -437,8 +421,9 @@ const WholeSaleEditForm = ({
                     Total Due
                     <input
                       type="number"
-                      value={editRetailBill.totalDue}
+                      value={formData.totalDue}
                       disabled
+                      // required
                     />
                   </label>
                 </td>
@@ -454,4 +439,4 @@ const WholeSaleEditForm = ({
   );
 };
 
-export default WholeSaleEditForm;
+export default EditWholeSale;

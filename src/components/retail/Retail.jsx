@@ -23,12 +23,15 @@ import { fetchAllStocks } from "../../controllers/stock";
 import { fetchAllProducts } from "../../controllers/products";
 import { PDFViewer } from "@react-pdf/renderer";
 import RetailBillPDF from "./RetailBillPDF";
+import { fetchAllClients } from "../../controllers/client";
+import { ClientContext } from "../../store/clientContext";
 
 const Retail = () => {
   const { retailBills, setRetailBIlls, fetching } =
     useContext(RetailBillContext);
   const { setProducts } = useContext(ProductsContext);
   const { setStocks } = useContext(StockContext);
+  const { setClients } = useContext(ClientContext);
   const initialRetail = {
     BillNo: retailBills.length + 1,
     orderDate: "",
@@ -78,6 +81,7 @@ const Retail = () => {
       setRetailBIlls(await fetchAllRetailBIll());
       setProducts(await fetchAllProducts());
       setStocks(await fetchAllStocks());
+      setClients(await fetchAllClients());
       setFormState({ status: "", formData: {} });
     } catch (error) {
       console.error("Error fetching Retail Bills:", error);

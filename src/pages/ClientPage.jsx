@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import TableWrapper from "../components/table/TableWrapper";
-import { ClientContext } from "../store/ClientContext";
+import { ClientContext } from "../store/clientContext";
 import {
   cltableBtn,
   cltableKeys,

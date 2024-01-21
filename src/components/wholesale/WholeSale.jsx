@@ -1,18 +1,41 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
+import TableWrapper from "../table/TableWrapper";
+
+import Loader1 from "../loaders/Loader1";
 import Modal from "../modal/Modal";
+import { toast } from "react-toastify";
+import EditRetail from "./EditWholeSale";
+import { ProductsContext } from "../../store/productContext";
+import { StockContext } from "../../store/stockContext";
+import { fetchAllStocks } from "../../controllers/stock";
+import { fetchAllProducts } from "../../controllers/products";
 import { PDFViewer } from "@react-pdf/renderer";
+import RetailBillPDF from "./RetailBillPDF";
 import { WholeSaleContext } from "../../store/wholeSaleBillContext";
-import WholeSaleTable from "./WholeSaleTable";
-import WholeSalePagination from "./WholeSalePagination";
-import WholeSaleForm from "./WholeSaleForm";
-import WholeSaleEditForm from "./WholeSaleEditForm";
-import WholeSaleBillPDF from "./WholeSaleBillPdf";
+import {
+  fetchAllWholeSaleBills,
+  wholeSaleBillCreate,
+  wholeSaleBillUpdate,
+} from "../../controllers/wholeSale";
+import {
+  wbtableBtn,
+  wbtableKeys,
+  wbtableName,
+  wbtableTHs,
+} from "../../assets/props/tableProps/wbtableProps";
+import NewWholeSale from "./NewWholeSale";
+import EditWholeSale from "./EditWholeSale";
+import { fetchAllClients } from "../../controllers/client";
+import { ClientContext } from "../../store/clientContext";
+
 const WholeSale = () => {
-  const { wholeSaleBills } = useContext(WholeSaleContext);
-  const [creatingBill, setCreatingBill] = useState(false);
-  const [editingBIll, setEditingBill] = useState(false);
-  const [editRetailBill, setEditRetailBIll] = useState({
-    BillNo: 0,
+  const { wholeSaleBills, setWholeSaleBills, fetching } =
+    useContext(WholeSaleContext);
+  const { setProducts } = useContext(ProductsContext);
+  const { setStocks } = useContext(StockContext);
+  const { setClients } = useContext(ClientContext);
+  const initialRetail = {
+    BillNo: wholeSaleBills.length + 1,
     orderDate: "",
     name: "",
     address: "",
@@ -24,125 +47,182 @@ const WholeSale = () => {
     discount: 0,
     advance: 0,
     totalDue: 0,
+  };
+  const [formState, setFormState] = useState({ status: "", formData: {} });
+  const [showPDF, setShowPDF] = useState({ status: false, bill: {} });
+  const [loading, setLoading] = useState(true);
+  const focusRef = useRef(null);
+  const dateFixedBills = wholeSaleBills?.map((stock) => {
+    return {
+      ...stock,
+      orderDate: stock.orderDate.slice(0, 10).split("-").reverse().join(" / "),
+      totalDue: (
+        <button
+          className={`btn-outline ${stock.totalDue > 0 ? "danger" : "success"}`}
+        >
+          {stock.totalDue > 0 ? stock.totalDue : "Paid"}
+        </button>
+      ),
+    };
   });
-  const [showPDF, setShowPDF] = useState({
-    status: false,
-    bill: {},
-  });
-  const [currentPage, setCurrentPage] = useState(1);
-  const [goto, setGoto] = useState(currentPage);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [pageSize, setPageSize] = useState(5);
-  // pagination calculation
-  const PAGE_SIZE = pageSize;
-  const totalPages = Math.ceil(wholeSaleBills.length / PAGE_SIZE);
-  const indexOfLastProduct = currentPage * PAGE_SIZE;
-  const indexOfFirstProduct = indexOfLastProduct - PAGE_SIZE;
-  const filteredProducts = wholeSaleBills.filter((product) =>
-    Object.values(product).some((value) =>
-      String(value).toLowerCase().includes(searchQuery.toLowerCase())
-    )
-  );
+  useEffect(() => {
+    if (fetching) {
+      setLoading(true);
+    } else {
+      setLoading(false);
+    }
+  }, [fetching]);
+  useEffect(() => {
+    // Set focus on the "Delete" button when the delete modal opens
+    if (focusRef.current) {
+      focusRef.current.focus();
+    }
+  }, [formState.status]);
+  const reRenderData = async () => {
+    try {
+      setWholeSaleBills(await fetchAllWholeSaleBills());
+      setProducts(await fetchAllProducts());
+      setStocks(await fetchAllStocks());
+      setClients(await fetchAllClients());
+      setFormState({ status: "", formData: {} });
+    } catch (error) {
+      console.error("Error fetching Retail Bills:", error);
+      toast.error("Error fetching retail bills");
+    }
+  };
 
-  const currentProducts = filteredProducts.slice(
-    indexOfFirstProduct,
-    indexOfLastProduct
-  );
-
-  function onEdit(billId) {
-    setEditingBill(true);
-    wholeSaleBills.map((bill) => {
-      if (billId === bill._id) {
-        setEditRetailBIll(() => {
-          return {
-            _id: bill._id,
-            BillNo: bill.BillNo,
-            orderDate: bill.orderDate,
-            name: bill.name,
-            address: bill.address,
-            mobileNumber: bill.mobileNumber,
-            deliveryDate: bill.deliveryDate,
-            products: bill.products,
-            totalFirki: bill.totalFirki,
-            subTotal: bill.subTotal,
-            discount: bill.discount,
-            advance: bill.advance,
-            totalDue: bill.totalDue,
-          };
-        });
-      }
+  const onNewWholeSale = () =>
+    setFormState({
+      status: "newWholesale",
+      formData: { ...initialRetail },
     });
+  const onShowPDF = (e, billId) => {
+    setLoading(true);
+    try {
+      const bill = wholeSaleBills.find((bill) => bill._id === billId);
+      setShowPDF({
+        status: true,
+        bill,
+      });
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      await toast.promise(wholeSaleBillCreate(formState.formData), {
+        pending: "Creating Bill...",
+        success: "Bill created successfully! 👌",
+        error: "Error creating Bill. Please try again. 🤯",
+      });
+      setShowPDF({ status: true, bill: formState.formData });
+      await reRenderData();
+    } catch (error) {
+      console.log(error);
+      toast.error("Error creating wholesalebill");
+    } finally {
+      setLoading(false);
+    }
   }
 
+  async function handleEdit(e, billId, formData) {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      await toast.promise(wholeSaleBillUpdate(billId, formData), {
+        pending: "Editing Bill...",
+        success: "Bill editied successfully! 👌",
+        error: "Error editing Bill. Please try again. 🤯",
+      });
+      await reRenderData();
+    } catch (error) {
+      console.log(error);
+      toast.error("Error editing Bill");
+    } finally {
+      setLoading(false);
+    }
+  }
+  async function onEdit(e, billId) {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      const res = wholeSaleBills.find((bill) => bill._id === billId);
+      setFormState({ status: "editRetail", formData: res });
+    } catch (error) {
+      console.error("Error fetching bill details:", error);
+      // Handle error if needed
+    } finally {
+      setLoading(false);
+    }
+  }
+  const actions = [
+    {
+      button: "view",
+      classNames: ["btn-outline", "primary"],
+      onSmash: onShowPDF,
+    },
+    {
+      button: "Edit",
+      classNames: ["btn-outline", "success"],
+      onSmash: onEdit,
+    },
+  ];
   return (
     <>
-      <Modal
-        isOpen={showPDF.status}
-        onClose={() => setShowPDF({ status: false, bill: {} })}
-      >
-        <PDFViewer width="1000" height="600">
-          <WholeSaleBillPDF bill={showPDF.bill} />
-        </PDFViewer>
-      </Modal>
-      <div className="bill">
-        <Modal isOpen={creatingBill} onClose={() => setCreatingBill(false)}>
-          <WholeSaleForm
-            setCreatingBill={setCreatingBill}
-            setShowPDF={setShowPDF}
-          ></WholeSaleForm>
+      {loading && <Loader1 />}
+      {showPDF.status && (
+        <Modal
+          isOpen={showPDF.status}
+          onClose={() => setShowPDF({ status: false, bill: {} })}
+        >
+          <PDFViewer width="1000" height="600">
+            <RetailBillPDF bill={showPDF.bill} />
+          </PDFViewer>
         </Modal>
-        <Modal isOpen={editingBIll} onClose={() => setEditingBill(false)}>
-          <WholeSaleEditForm
-            setEditingBill={setEditingBill}
-            editRetailBill={editRetailBill}
-            setEditRetailBIll={setEditRetailBIll}
-          />
-        </Modal>
+      )}
+      <div className="bills">
+        {formState.status === "newWholesale" && (
+          <Modal
+            isOpen={formState.status === "newWholesale"}
+            onClose={() => setFormState({ status: "", formData: {} })}
+          >
+            <NewWholeSale
+              formState={formState}
+              setFormState={setFormState}
+              onSubmit={handleSubmit}
+              ref={focusRef}
+            />
+          </Modal>
+        )}
+        {formState.status === "editRetail" && (
+          <Modal
+            isOpen={formState.status === "editRetail"}
+            onClose={() => setFormState({ status: "", formData: {} })}
+          >
+            <EditWholeSale
+              formData={formState.formData}
+              setFormState={setFormState}
+              onSubmit={handleEdit}
+            />
+          </Modal>
+        )}
       </div>
-      <div className="table-container">
-        <div className="table-head">
-          <h4>WholeSale Bill Table : </h4>
-          <button onClick={() => setCreatingBill(true)}>
-            New &nbsp; WholeSale &nbsp; Bill
-          </button>
-        </div>
-        <div className="table-content">
-          <div className="table-features">
-            <div className="page-size-dropdown">
-              <select
-                id="pageSize"
-                onChange={(e) => setPageSize(e.target.value)}
-              >
-                <option value="5">5</option>
-                <option value="10">10</option>
-                <option value="15">15</option>
-              </select>
-            </div>
-            <div className="search-bar">
-              <form>
-                <input
-                  type="text"
-                  placeholder="Search"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
-              </form>
-            </div>
-          </div>
-
-          <WholeSaleTable
-            onEdit={onEdit}
-            currentProducts={currentProducts}
-          ></WholeSaleTable>
-          <WholeSalePagination
-            setCurrentPage={setCurrentPage}
-            currentPage={currentPage}
-            totalPages={totalPages}
-            setGoto={setGoto}
-            goto={goto}
-          ></WholeSalePagination>
-        </div>
-      </div>
+      <TableWrapper
+        showIndex={false}
+        rows={dateFixedBills}
+        tableName={wbtableName}
+        tableBtn={wbtableBtn}
+        onTableBtn={onNewWholeSale}
+        ths={wbtableTHs}
+        actions={actions}
+        mainKeys={wbtableKeys}
+      ></TableWrapper>
     </>
   );
 };
