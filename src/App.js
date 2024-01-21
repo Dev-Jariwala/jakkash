@@ -39,11 +39,7 @@ const App = () => {
       <BrowserRouter>
         <CollectionProvider>
           {/* {!auth && <LoginPage setAuth={setAuth} />} */}
-          {!auth && (
-            <Modal isOpen={!auth} onClose={() => toast.error("please login")}>
-              <LoginModal setAuth={setAuth}></LoginModal>
-            </Modal>
-          )}
+          {!auth && <LoginModal setAuth={setAuth}></LoginModal>}
 
           {auth && (
             <ProductsProvider>
