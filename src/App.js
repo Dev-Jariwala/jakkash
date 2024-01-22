@@ -17,6 +17,7 @@ import { RetailBillProvider } from "./store/retailBillContext";
 import { ClientProvider } from "./store/clientContext";
 import ClientPage from "./pages/ClientPage";
 import { WholeSaleProvider } from "./store/wholeSaleBillContext";
+import Table2 from "./components/table2/Table2";
 const NotFound = () => {
   return (
     <div>
@@ -63,6 +64,7 @@ const App = () => {
                           ></Route>
                           <Route path="/stocks" element={<StockPage />}></Route>
                           <Route path="/bills" element={<BillPage />}></Route>
+                          <Route path="/table2" element={<Table2 />}></Route>
                           <Route
                             path="/clients"
                             element={<ClientPage />}

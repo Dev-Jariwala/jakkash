@@ -24,7 +24,8 @@ import DeleteProduct from "../components/product/DeleteProduct";
 import Newstock from "../components/stock/NewStock";
 import { fetchAllStocks, stockCreate } from "../controllers/stock";
 import { StockContext } from "../store/stockContext";
-import { Link } from "react-router-dom";
+import PageTitle from "../components/pageTemp/PageTitle";
+import Table2Wrapper from "../components/table2/Table2Wrapper";
 
 const ProductPage = () => {
   const { products, setProducts, fetching } = useContext(ProductsContext);
@@ -191,30 +192,51 @@ const ProductPage = () => {
   }
   const actions = [
     {
-      button: "Add",
-      classNames: ["btn-outline", "primary"],
+      button: (
+        <span className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 mr-2 text-xs font-medium text-blue-600 ring-1 ring-inset ring-blue-700/10">
+          <span className="material-icons text-sm">add</span>
+        </span>
+      ),
+
+      classNames: [],
       onSmash: onAdd,
     },
     {
-      button: "Edit",
-      classNames: ["btn-outline", "success"],
+      button: (
+        <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 mr-2 text-xs font-medium text-green-600 ring-1 ring-inset ring-green-600/20">
+          <span className="material-icons text-sm">edit</span>
+        </span>
+      ),
+      classNames: [],
       onSmash: onEdit,
     },
     {
-      button: "Delete",
-      classNames: ["btn-outline", "danger"],
+      button: (
+        <span class="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-600 ring-1 ring-inset ring-red-600/10">
+          <span className="material-icons text-sm">delete</span>
+        </span>
+      ),
+      classNames: [
+        // "text-red-500",
+        // " cursor-pointer",
+        // " hover:text-red-700",
+        // " transition",
+      ],
       onSmash: handleDeleteConfirmation,
     },
   ];
-
+  const filters = [
+    {
+      title: "High To Low",
+      value: "HighToLow",
+      onChecked: (rows) => {
+        return rows.sort((a, b) => b.retailPrice - a.retailPrice);
+      },
+    },
+    { title: "Low To High", value: "LowToHigh" },
+  ];
   return (
-    <div className="page">
-      <div className="p-title">
-        <h2>
-          <Link to={"/"}>Dashboard</Link>
-          <span className="material-icons">navigate_next</span> Products
-        </h2>
-      </div>
+    <>
       {loading && <Loader1 />}
 
       {/* Confirmation Modal for Delete */}
@@ -259,17 +281,19 @@ const ProductPage = () => {
           onSubmit={handleAddStock}
         />
       )}
-
-      <TableWrapper
-        rows={products}
-        tableName={ptableName}
-        tableBtn={ptableBtn}
-        onTableBtn={onNewProd}
-        ths={ptableTHs}
-        actions={actions}
-        mainKeys={ptableKeys}
-      ></TableWrapper>
-    </div>
+      <PageTitle pageName={"Products"}>
+        <Table2Wrapper
+          rows={products}
+          tableName={ptableName}
+          tableBtn={ptableBtn}
+          onTableBtn={onNewProd}
+          ths={ptableTHs}
+          actions={actions}
+          mainKeys={ptableKeys}
+          filters={filters}
+        ></Table2Wrapper>
+      </PageTitle>
+    </>
   );
 };
 

@@ -18,8 +18,9 @@ import { fetchAllProducts } from "../controllers/products";
 import { ProductsContext } from "../store/productContext";
 import DeleteStock from "../components/stock/DeleteStock";
 import Modal from "../components/modal/Modal";
-import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import PageTitle from "../components/pageTemp/PageTitle";
+import Table2Wrapper from "../components/table2/Table2Wrapper";
 
 const StockPage = () => {
   const { stocks, setStocks, fetching } = useContext(StockContext);
@@ -169,21 +170,15 @@ const StockPage = () => {
           />
         </Modal>
       )}
-      <div className="page">
-        <div className="p-title">
-          <h2>
-            <Link to={"/"}>Dashboard</Link>
-            <span className="material-icons">navigate_next</span> Stocks
-          </h2>
-        </div>
-        <TableWrapper
+      <PageTitle pageName={"Stocks"}>
+        <Table2Wrapper
           rows={dateFixedStocks}
           tableName={stableName}
           ths={stableTHs}
           actions={actions}
           mainKeys={stableKeys}
-        ></TableWrapper>
-      </div>
+        ></Table2Wrapper>
+      </PageTitle>
     </>
   );
 };

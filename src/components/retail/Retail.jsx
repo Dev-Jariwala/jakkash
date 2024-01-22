@@ -25,6 +25,7 @@ import { PDFViewer } from "@react-pdf/renderer";
 import RetailBillPDF from "./RetailBillPDF";
 import { fetchAllClients } from "../../controllers/client";
 import { ClientContext } from "../../store/clientContext";
+import Table2Wrapper from "../table2/Table2Wrapper";
 
 const Retail = () => {
   const { retailBills, setRetailBIlls, fetching } =
@@ -53,13 +54,17 @@ const Retail = () => {
   const dateFixedBills = retailBills?.map((bill) => {
     return {
       ...bill,
-      orderDate: bill.orderDate.slice(0, 10).split("-").reverse().join(" / "),
+      orderDate: bill.orderDate.slice(0, 10).split("-").reverse().join("/"),
       totalDue: (
-        <button
-          className={`btn-outline ${bill.totalDue > 0 ? "danger" : "success"}`}
+        <span
+          class={`inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium ${
+            bill.totalDue > 0
+              ? "bg-red-50 text-red-700  ring-red-600/10"
+              : "bg-green-50 text-green-700 ring-green-600/20"
+          } ring-1 ring-inset`}
         >
           {bill.totalDue > 0 ? bill.totalDue : "Paid"}
-        </button>
+        </span>
       ),
     };
   });
@@ -75,13 +80,13 @@ const Retail = () => {
         ...bill,
         orderDate: bill.orderDate.slice(0, 10).split("-").reverse().join(" / "),
         totalDue: (
-          <button
-            className={`btn-outline ${
-              bill.totalDue > 0 ? "danger" : "success"
-            }`}
+          <span
+            class={`inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium ${
+              bill.totalDue > 0 ? "bg-red-50" : "bg-green-50"
+            } ring-1 ring-inset ring-red-600/10`}
           >
             {bill.totalDue > 0 ? bill.totalDue : "Paid"}
-          </button>
+          </span>
         ),
       };
     });
@@ -183,13 +188,22 @@ const Retail = () => {
   }
   const actions = [
     {
-      button: "view",
-      classNames: ["btn-outline", "primary"],
+      button: (
+        <span className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 mr-2 text-xs font-medium text-blue-600 ring-1 ring-inset ring-blue-700/10">
+          <span className="material-icons text-sm">visibility</span>
+        </span>
+      ),
+
+      classNames: [],
       onSmash: onShowPDF,
     },
     {
-      button: "Edit",
-      classNames: ["btn-outline", "success"],
+      button: (
+        <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 mr-2 text-xs font-medium text-green-600 ring-1 ring-inset ring-green-600/20">
+          <span className="material-icons text-sm">edit</span>
+        </span>
+      ),
+      classNames: [],
       onSmash: onEdit,
     },
   ];
@@ -233,7 +247,7 @@ const Retail = () => {
           </Modal>
         )}
       </div>
-      <TableWrapper
+      <Table2Wrapper
         showIndex={false}
         rows={dateFixedBills}
         tableName={rbtableName}
@@ -242,7 +256,7 @@ const Retail = () => {
         ths={rbtableTHs}
         actions={actions}
         mainKeys={rbtableKeys}
-      ></TableWrapper>
+      ></Table2Wrapper>
     </>
   );
 };

@@ -22,7 +22,7 @@ import NewCollection from "../components/collection/NewCollection";
 import EditCollection from "../components/collection/EditCollection";
 
 import Loader1 from "../components/loaders/Loader1";
-import { Link } from "react-router-dom";
+import PageTitle from "../components/pageTemp/PageTitle";
 
 const CollectionPage = () => {
   const { collections, setCollections, activeColl, fetching } =
@@ -197,13 +197,8 @@ const CollectionPage = () => {
           onSubmit={handleEdit}
         />
       )}
-      <div className="page">
-        <div className="p-title">
-          <h2>
-            <Link to={"/"}>Dashboard</Link>
-            <span className="material-icons">navigate_next</span> Collection
-          </h2>
-        </div>
+
+      <PageTitle pageName={"Collection"}>
         <TableWrapper
           rows={collections}
           tableName={ctableName}
@@ -213,7 +208,7 @@ const CollectionPage = () => {
           actions={actions}
           mainKeys={ctableKeys}
         ></TableWrapper>
-      </div>
+      </PageTitle>
     </>
   );
 };

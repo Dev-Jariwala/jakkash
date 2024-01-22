@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+
 import TableWrapper from "../components/table/TableWrapper";
 import { ClientContext } from "../store/clientContext";
 import {
@@ -9,6 +9,8 @@ import {
   cltableTHs,
 } from "../assets/props/tableProps/cltableProps";
 import Loader1 from "../components/loaders/Loader1";
+import PageTitle from "../components/pageTemp/PageTitle";
+import Table2Wrapper from "../components/table2/Table2Wrapper";
 
 const ClientPage = () => {
   const { clients, fetching } = useContext(ClientContext);
@@ -31,22 +33,16 @@ const ClientPage = () => {
   return (
     <>
       {loading && <Loader1 />}
-      <div className="page">
-        <div className="p-title">
-          <h2>
-            <Link to={"/"}>Dashboard</Link>
-            <span className="material-icons">navigate_next</span> Client
-          </h2>
-        </div>
-        <TableWrapper
+      <PageTitle pageName={"Client"}>
+        <Table2Wrapper
           rows={clients}
           tableName={cltableName}
           tableBtn={cltableBtn}
           onTableBtn={onNewClient}
           ths={cltableTHs}
           mainKeys={cltableKeys}
-        ></TableWrapper>
-      </div>
+        ></Table2Wrapper>
+      </PageTitle>
     </>
   );
 };

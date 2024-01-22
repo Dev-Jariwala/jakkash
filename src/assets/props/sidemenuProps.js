@@ -23,6 +23,11 @@ const sidemenuProps = {
       to: "/bills",
       icon: "receipt_long",
     },
+    {
+      title: "table2",
+      to: "/table2",
+      icon: "apps",
+    },
   ],
 };
 export default sidemenuProps;

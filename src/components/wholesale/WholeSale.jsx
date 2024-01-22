@@ -27,6 +27,7 @@ import NewWholeSale from "./NewWholeSale";
 import EditWholeSale from "./EditWholeSale";
 import { fetchAllClients } from "../../controllers/client";
 import { ClientContext } from "../../store/clientContext";
+import Table2Wrapper from "../table2/Table2Wrapper";
 
 const WholeSale = () => {
   const { wholeSaleBills, setWholeSaleBills, fetching } =
@@ -52,16 +53,20 @@ const WholeSale = () => {
   const [showPDF, setShowPDF] = useState({ status: false, bill: {} });
   const [loading, setLoading] = useState(true);
   const focusRef = useRef(null);
-  const dateFixedBills = wholeSaleBills?.map((stock) => {
+  const dateFixedBills = wholeSaleBills?.map((bill) => {
     return {
-      ...stock,
-      orderDate: stock.orderDate.slice(0, 10).split("-").reverse().join(" / "),
+      ...bill,
+      orderDate: bill.orderDate.slice(0, 10).split("-").reverse().join(" / "),
       totalDue: (
-        <button
-          className={`btn-outline ${stock.totalDue > 0 ? "danger" : "success"}`}
+        <span
+          class={`inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium ${
+            bill.totalDue > 0
+              ? "bg-red-50 text-red-700  ring-red-600/10"
+              : "bg-green-50 text-green-700 ring-green-600/20"
+          } ring-1 ring-inset`}
         >
-          {stock.totalDue > 0 ? stock.totalDue : "Paid"}
-        </button>
+          {bill.totalDue > 0 ? bill.totalDue : "Paid"}
+        </span>
       ),
     };
   });
@@ -163,13 +168,22 @@ const WholeSale = () => {
   }
   const actions = [
     {
-      button: "view",
-      classNames: ["btn-outline", "primary"],
+      button: (
+        <span className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 mr-2 text-xs font-medium text-blue-600 ring-1 ring-inset ring-blue-700/10">
+          <span className="material-icons text-sm">visibility</span>
+        </span>
+      ),
+
+      classNames: [],
       onSmash: onShowPDF,
     },
     {
-      button: "Edit",
-      classNames: ["btn-outline", "success"],
+      button: (
+        <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 mr-2 text-xs font-medium text-green-600 ring-1 ring-inset ring-green-600/20">
+          <span className="material-icons text-sm">edit</span>
+        </span>
+      ),
+      classNames: [],
       onSmash: onEdit,
     },
   ];
@@ -213,7 +227,7 @@ const WholeSale = () => {
           </Modal>
         )}
       </div>
-      <TableWrapper
+      <Table2Wrapper
         showIndex={false}
         rows={dateFixedBills}
         tableName={wbtableName}
@@ -222,7 +236,7 @@ const WholeSale = () => {
         ths={wbtableTHs}
         actions={actions}
         mainKeys={wbtableKeys}
-      ></TableWrapper>
+      ></Table2Wrapper>
     </>
   );
 };

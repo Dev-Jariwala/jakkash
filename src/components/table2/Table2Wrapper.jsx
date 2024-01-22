@@ -1,10 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
-import "./table.css";
-import TableFeatures from "./TableFeatures";
 import Table from "./Table";
 import Pagination from "./Pagination";
 import { CollectionContext } from "../../store/collectionContext";
-const TableWrapper = ({
+import Table2Features from "./Table2Features";
+const Table2Wrapper = ({
   showIndex = true,
   tableName,
   tableBtn,
@@ -34,16 +33,24 @@ const TableWrapper = ({
 
   const currentRows = filteredRows?.slice(indexOfFirstRow, indexOfLastRow);
   return (
-    <div className="table-container">
-      <div className="table-head">
-        <div>
+    <div className="mx-auto mt-5 max-w-screen-xl px-4 lg:px-12">
+      {/* Start coding here */}
+      <div className="bg-white flex items-center justify-between mb-3 py-2 px-4 dark:bg-gray-800  relative shadow-md sm:rounded-lg overflow-hidden">
+        <div className="text-sm font-bold text-gray-600 uppercase dark:text-gray-400">
           {" "}
           ( {activeColl?.collectionName} ) {tableName}
         </div>
-        {tableBtn && <button onClick={onTableBtn}>{tableBtn}</button>}
+        {tableBtn && (
+          <button
+            className="bg-blue-600 text-white py-2 px-4 rounded-md text-sm"
+            onClick={onTableBtn}
+          >
+            {tableBtn}
+          </button>
+        )}
       </div>
-      <div className="table-content">
-        <TableFeatures
+      <div className="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
+        <Table2Features
           filters={filters}
           selectedFilters={selectedFilters}
           setSelectedFilters={setSelectedFilters}
@@ -65,10 +72,13 @@ const TableWrapper = ({
           totalPages={totalPages}
           setGoto={setGoto}
           goto={goto}
+          indexOfFirstRow={indexOfFirstRow}
+          indexOfLastRow={indexOfLastRow}
+          totalRows={rows.length}
         />
       </div>
     </div>
   );
 };
 
-export default TableWrapper;
+export default Table2Wrapper;

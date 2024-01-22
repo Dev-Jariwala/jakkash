@@ -18,7 +18,7 @@ const SideMenu = ({ sidemenuProps, setAuth, children }) => {
   };
 
   return (
-    <div className={`body ${darkMode ? "dark" : ""}`}>
+    <div className={`body ${darkMode ? "dark" : ""} dark:bg-gray-900`}>
       <nav
         className={`sidebar ${sidebar ? "" : "close"}`}
         onMouseEnter={handleSidebarOpen}
