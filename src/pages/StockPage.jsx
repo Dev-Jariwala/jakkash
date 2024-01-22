@@ -134,13 +134,21 @@ const StockPage = () => {
   };
   const actions = [
     {
-      button: "Edit",
-      classNames: ["btn-outline", "success"],
+      button: (
+        <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 mr-2 text-xs font-medium text-green-600 ring-1 ring-inset ring-green-600/20">
+          <span className="material-icons text-sm">edit</span>
+        </span>
+      ),
+      classNames: [],
       onSmash: onEdit,
     },
     {
-      button: "Delete",
-      classNames: ["btn-outline", "danger"],
+      button: (
+        <span class="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-600 ring-1 ring-inset ring-red-600/10">
+          <span className="material-icons text-sm">delete</span>
+        </span>
+      ),
+      classNames: [],
       onSmash: onDelete,
     },
   ];

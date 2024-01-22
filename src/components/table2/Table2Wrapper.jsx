@@ -35,14 +35,14 @@ const Table2Wrapper = ({
   return (
     <div className="mx-auto mt-5 max-w-screen-xl px-4 lg:px-12">
       {/* Start coding here */}
-      <div className="bg-white flex items-center justify-between mb-3 py-2 px-4 dark:bg-gray-800  relative shadow-md sm:rounded-lg overflow-hidden">
+      <div className="bg-white flex items-center justify-between mb-3 py-3 px-4 dark:bg-gray-800  relative shadow-md sm:rounded-lg overflow-hidden">
         <div className="text-sm font-bold text-gray-600 uppercase dark:text-gray-400">
           {" "}
           ( {activeColl?.collectionName} ) {tableName}
         </div>
         {tableBtn && (
           <button
-            className="bg-blue-600 text-white py-2 px-4 rounded-md text-sm"
+            className="bg-blue-600 text-white py-2 px-4 rounded-md text-xs"
             onClick={onTableBtn}
           >
             {tableBtn}

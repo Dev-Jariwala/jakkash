@@ -23,6 +23,7 @@ import EditCollection from "../components/collection/EditCollection";
 
 import Loader1 from "../components/loaders/Loader1";
 import PageTitle from "../components/pageTemp/PageTitle";
+import Table2Wrapper from "../components/table2/Table2Wrapper";
 
 const CollectionPage = () => {
   const { collections, setCollections, activeColl, fetching } =
@@ -154,13 +155,21 @@ const CollectionPage = () => {
   }
   const actions = [
     {
-      button: "Edit",
-      classNames: ["btn-outline", "success"],
+      button: (
+        <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 mr-2 text-xs font-medium text-green-600 ring-1 ring-inset ring-green-600/20">
+          <span className="material-icons text-sm">edit</span>
+        </span>
+      ),
+      classNames: [],
       onSmash: onEdit,
     },
     {
-      button: "Delete",
-      classNames: ["btn-outline", "danger"],
+      button: (
+        <span class="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-600 ring-1 ring-inset ring-red-600/10">
+          <span className="material-icons text-sm">delete</span>
+        </span>
+      ),
+      classNames: [],
       onSmash: handleDeleteConfirmation,
     },
   ];
@@ -199,7 +208,7 @@ const CollectionPage = () => {
       )}
 
       <PageTitle pageName={"Collection"}>
-        <TableWrapper
+        <Table2Wrapper
           rows={collections}
           tableName={ctableName}
           tableBtn={ctableBtn}
@@ -207,7 +216,7 @@ const CollectionPage = () => {
           ths={ctableTHs}
           actions={actions}
           mainKeys={ctableKeys}
-        ></TableWrapper>
+        ></Table2Wrapper>
       </PageTitle>
     </>
   );

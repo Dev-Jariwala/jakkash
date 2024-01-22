@@ -14,7 +14,7 @@ const BillPage = () => {
   return (
     <PageTitle pageName={"Bills"}>
       <>
-        <div className="mx-auto mt-5 max-w-screen-xl px-4 lg:px-12">
+        <div className="mx-auto max-w-screen-xl px-4 lg:px-12">
           <div className="mb-4 border-b border-blue-200 dark:border-gray-700">
             <ul className="flex flex-wrap -mb-px text-sm font-medium text-center">
               <li className="w-1/4">
