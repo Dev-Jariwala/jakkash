@@ -27,10 +27,10 @@ const NewCollection = forwardRef(
       >
         <div className="px-4 pt-3">
           <form onSubmit={(e) => onSubmit(e)}>
-            <div class="mb-6">
+            <div className="mb-6">
               <label
                 for="success"
-                class={`block mb-2 text-sm font-medium dark:text-gray-300
+                className={`block mb-2 text-sm font-medium dark:text-gray-300
                 ${valid === "error" && " text-red-500 dark:text-red-500"}
                  `}
               >
@@ -38,7 +38,8 @@ const NewCollection = forwardRef(
               </label>
               <input
                 type="text"
-                class={`${
+                ref={ref}
+                className={`${
                   valid === "success"
                     ? " border border-green-500 text-gray-800 dark:text-gray-300 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5 dark:bg-gray-700 dark:border-green-500"
                     : valid === "error"
@@ -60,11 +61,11 @@ const NewCollection = forwardRef(
               />
               {formState.formData.collectionName && (
                 <p
-                  class={`mt-2 text-sm ${
+                  className={`mt-2 text-sm ${
                     valid === "error" && "text-red-500 dark:text-red-500"
                   }`}
                 >
-                  <span class="font-medium">
+                  <span className="font-medium">
                     {valid === "error" && `Collection already exists!`}
                   </span>
                 </p>
@@ -122,10 +123,14 @@ const NewCollection = forwardRef(
 
             <div className="flex justify-end w-full">
               <button
-                disabled={false}
+                disabled={
+                  valid === "error" || formState.formData.collectionName === ""
+                }
                 type="submit"
                 className={`text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 inline-flex items-center ${
-                  false && "opacity-50 cursor-not-allowed"
+                  valid === "error" ||
+                  (formState.formData.collectionName === "" &&
+                    "opacity-50 cursor-not-allowed")
                 }`}
               >
                 {false && (
