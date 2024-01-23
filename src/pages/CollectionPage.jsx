@@ -186,6 +186,7 @@ const CollectionPage = () => {
         <Modal
           isOpen={formState.status === "deleteCollection"}
           onClose={cancelDelete}
+          title={"Drop Collection"}
         >
           <DeleteCollection
             ref={focusRef}

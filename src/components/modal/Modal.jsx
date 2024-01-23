@@ -16,7 +16,10 @@ const Modal = ({ isOpen, onClose, title, children }) => {
             <div className="text-l font-bold text-gray-700 dark:text-gray-300">
               {title}
             </div>
-            <i className="material-icons dark:text-gray-300" onClick={onClose}>
+            <i
+              className="material-icons dark:text-gray-300 cursor-pointer"
+              onClick={onClose}
+            >
               close
             </i>
           </div>
