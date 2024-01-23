@@ -19,6 +19,7 @@ import {
 } from "../../controllers/wholeSale";
 import {
   wbtableBtn,
+  wbtableHeaders,
   wbtableKeys,
   wbtableName,
   wbtableTHs,
@@ -53,10 +54,20 @@ const WholeSale = () => {
   const [showPDF, setShowPDF] = useState({ status: false, bill: {} });
   const [loading, setLoading] = useState(true);
   const focusRef = useRef(null);
-  const dateFixedBills = wholeSaleBills?.map((bill) => {
+  const exportData = wholeSaleBills?.map((bill) => {
     return {
       ...bill,
       orderDate: bill.orderDate.slice(0, 10).split("-").reverse().join(" / "),
+      deliveryDate: bill.deliveryDate
+        .slice(0, 10)
+        .split("-")
+        .reverse()
+        .join(" / "),
+    };
+  });
+  const dateFixedBills = exportData?.map((bill) => {
+    return {
+      ...bill,
       totalDue: (
         <span
           class={`inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium ${
@@ -179,7 +190,7 @@ const WholeSale = () => {
     },
     {
       button: (
-        <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 mr-2 text-xs font-medium text-green-600 ring-1 ring-inset ring-green-600/20">
+        <span className="inline-flex items-center rounded-md bg-green-50 px-2 py-1 mr-2 text-xs font-medium text-green-600 ring-1 ring-inset ring-green-600/20">
           <span className="material-icons text-sm">edit</span>
         </span>
       ),
@@ -235,7 +246,9 @@ const WholeSale = () => {
         onTableBtn={onNewWholeSale}
         ths={wbtableTHs}
         actions={actions}
+        headers={wbtableHeaders}
         mainKeys={wbtableKeys}
+        exportData={exportData}
       ></Table2Wrapper>
     </>
   );

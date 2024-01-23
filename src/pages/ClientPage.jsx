@@ -4,6 +4,7 @@ import TableWrapper from "../components/table/TableWrapper";
 import { ClientContext } from "../store/clientContext";
 import {
   cltableBtn,
+  cltableHeaders,
   cltableKeys,
   cltableName,
   cltableTHs,
@@ -41,6 +42,8 @@ const ClientPage = () => {
           onTableBtn={onNewClient}
           ths={cltableTHs}
           mainKeys={cltableKeys}
+          exportData={clients}
+          headers={cltableHeaders}
         ></Table2Wrapper>
       </PageTitle>
     </>

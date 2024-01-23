@@ -16,3 +16,10 @@ export const cltableKeys = [
   "retailDebt",
   "wholeSaleDebt",
 ];
+export const cltableHeaders = [
+  { label: "Name", key: "name" },
+  { label: "Mobile", key: "mobileNumber" },
+  { label: "Address", key: "address" },
+  { label: "Retail Debt", key: "retailDebt" },
+  { label: "Wholesale Debt", key: "wholeSaleDebt" },
+];

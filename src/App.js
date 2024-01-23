@@ -4,8 +4,7 @@ import { Route, Routes, BrowserRouter } from "react-router-dom";
 import sidemenuProps from "./assets/props/sidemenuProps";
 import ProductPage from "./pages/ProductPage";
 import CollectionPage from "./pages/CollectionPage";
-import Modal from "./components/modal/Modal";
-import { toast } from "react-toastify";
+
 import LoginModal from "./components/LoginModal";
 import { ProductsProvider } from "./store/productContext";
 import { StockProvider } from "./store/stockContext";
@@ -17,7 +16,6 @@ import { RetailBillProvider } from "./store/retailBillContext";
 import { ClientProvider } from "./store/clientContext";
 import ClientPage from "./pages/ClientPage";
 import { WholeSaleProvider } from "./store/wholeSaleBillContext";
-import Table2 from "./components/table2/Table2";
 const NotFound = () => {
   return (
     <div>

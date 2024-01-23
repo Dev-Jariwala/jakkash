@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import TableWrapper from "../components/table/TableWrapper";
 import { StockContext } from "../store/stockContext";
 import {
+  stableHeaders,
   stableKeys,
   stableName,
   stableTHs,
@@ -135,7 +136,7 @@ const StockPage = () => {
   const actions = [
     {
       button: (
-        <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 mr-2 text-xs font-medium text-green-600 ring-1 ring-inset ring-green-600/20">
+        <span className="inline-flex items-center rounded-md bg-green-50 px-2 py-1 mr-2 text-xs font-medium text-green-600 ring-1 ring-inset ring-green-600/20">
           <span className="material-icons text-sm">edit</span>
         </span>
       ),
@@ -144,7 +145,7 @@ const StockPage = () => {
     },
     {
       button: (
-        <span class="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-600 ring-1 ring-inset ring-red-600/10">
+        <span className="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-600 ring-1 ring-inset ring-red-600/10">
           <span className="material-icons text-sm">delete</span>
         </span>
       ),
@@ -185,6 +186,8 @@ const StockPage = () => {
           ths={stableTHs}
           actions={actions}
           mainKeys={stableKeys}
+          exportData={dateFixedStocks}
+          headers={stableHeaders}
         ></Table2Wrapper>
       </PageTitle>
     </>

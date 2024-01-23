@@ -13,6 +13,7 @@ import { toast } from "react-toastify";
 import TableWrapper from "../components/table/TableWrapper";
 import {
   ptableBtn,
+  ptableHeaders,
   ptableKeys,
   ptableName,
   ptableTHs,
@@ -203,7 +204,7 @@ const ProductPage = () => {
     },
     {
       button: (
-        <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 mr-2 text-xs font-medium text-green-600 ring-1 ring-inset ring-green-600/20">
+        <span className="inline-flex items-center rounded-md bg-green-50 px-2 py-1 mr-2 text-xs font-medium text-green-600 ring-1 ring-inset ring-green-600/20">
           <span className="material-icons text-sm">edit</span>
         </span>
       ),
@@ -212,7 +213,7 @@ const ProductPage = () => {
     },
     {
       button: (
-        <span class="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-600 ring-1 ring-inset ring-red-600/10">
+        <span className="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-600 ring-1 ring-inset ring-red-600/10">
           <span className="material-icons text-sm">delete</span>
         </span>
       ),
@@ -291,6 +292,8 @@ const ProductPage = () => {
           actions={actions}
           mainKeys={ptableKeys}
           filters={filters}
+          exportData={products}
+          headers={ptableHeaders}
         ></Table2Wrapper>
       </PageTitle>
     </>

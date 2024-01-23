@@ -3,6 +3,7 @@ import TableWrapper from "../table/TableWrapper";
 import { RetailBillContext } from "../../store/retailBillContext";
 import {
   rbtableBtn,
+  rbtableHeaders,
   rbtableKeys,
   rbtableName,
   rbtableTHs,
@@ -51,10 +52,20 @@ const Retail = () => {
   const [showPDF, setShowPDF] = useState({ status: false, bill: {} });
   const [loading, setLoading] = useState(true);
   const focusRef = useRef(null);
-  const dateFixedBills = retailBills?.map((bill) => {
+  const exportData = retailBills?.map((bill) => {
     return {
       ...bill,
       orderDate: bill.orderDate.slice(0, 10).split("-").reverse().join("/"),
+      deliveryDate: bill.deliveryDate
+        .slice(0, 10)
+        .split("-")
+        .reverse()
+        .join("/"),
+    };
+  });
+  const dateFixedBills = exportData?.map((bill) => {
+    return {
+      ...bill,
       totalDue: (
         <span
           class={`inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium ${
@@ -68,28 +79,7 @@ const Retail = () => {
       ),
     };
   });
-  // Assuming tomorrow's date is calculated using JavaScript Date object
-  const tomorrow = new Date();
-  tomorrow.setDate(tomorrow.getDate() + 1);
 
-  // Filter retail bills with delivery dates ending tomorrow
-  const tomorrowBills = retailBills
-    ?.filter((bill) => new Date(bill.deliveryDate) <= tomorrow)
-    ?.map((bill) => {
-      return {
-        ...bill,
-        orderDate: bill.orderDate.slice(0, 10).split("-").reverse().join(" / "),
-        totalDue: (
-          <span
-            class={`inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium ${
-              bill.totalDue > 0 ? "bg-red-50" : "bg-green-50"
-            } ring-1 ring-inset ring-red-600/10`}
-          >
-            {bill.totalDue > 0 ? bill.totalDue : "Paid"}
-          </span>
-        ),
-      };
-    });
   useEffect(() => {
     if (fetching) {
       setLoading(true);
@@ -199,7 +189,7 @@ const Retail = () => {
     },
     {
       button: (
-        <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 mr-2 text-xs font-medium text-green-600 ring-1 ring-inset ring-green-600/20">
+        <span className="inline-flex items-center rounded-md bg-green-50 px-2 py-1 mr-2 text-xs font-medium text-green-600 ring-1 ring-inset ring-green-600/20">
           <span className="material-icons text-sm">edit</span>
         </span>
       ),
@@ -255,7 +245,9 @@ const Retail = () => {
         onTableBtn={onNewRetail}
         ths={rbtableTHs}
         actions={actions}
+        headers={rbtableHeaders}
         mainKeys={rbtableKeys}
+        exportData={exportData}
       ></Table2Wrapper>
     </>
   );
