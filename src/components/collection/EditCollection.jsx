@@ -7,6 +7,7 @@ const EditCollection = forwardRef(
       <Modal
         isOpen={formState.status === "editCollection"}
         onClose={() => setFormState({ status: "", formData: {} })}
+        title={"Edit Collection"}
       >
         <div className="form-container">
           <form
@@ -16,7 +17,7 @@ const EditCollection = forwardRef(
               })
             }
           >
-            <h4>Edit Collection details:</h4>
+            <div className="text-l">Edit Collection details:</div>
             <div>
               <label>
                 Collection Name:

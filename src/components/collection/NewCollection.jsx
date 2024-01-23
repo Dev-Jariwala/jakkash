@@ -1,49 +1,78 @@
-import React, { forwardRef, useContext, useState } from "react";
+import React, { forwardRef, useContext, useEffect, useState } from "react";
 import Modal from "../modal/Modal";
 import { CollectionContext } from "../../store/collectionContext";
 
 const NewCollection = forwardRef(
   ({ formState, setFormState, onSubmit }, ref) => {
-    const { activeColl } = useContext(CollectionContext);
+    const { activeColl, collections } = useContext(CollectionContext);
+    const [valid, setValid] = useState(undefined);
+    useEffect(() => {
+      const found = collections.find(
+        (coll) => coll.collectionName === formState.formData.collectionName
+      );
+      if (found && formState.formData.collectionName.length > 0) {
+        setValid("error");
+      } else if (!found && formState.formData.collectionName.length > 0) {
+        setValid("success");
+      } else {
+        setValid(undefined);
+      }
+    }, [formState.formData.collectionName]);
 
     return (
       <Modal
         isOpen={formState.status === "newCollection"}
         onClose={() => setFormState({ status: "", formData: {} })}
+        title={"New Collection"}
       >
-        <div className="form-container">
+        <div className="px-4 pt-3">
           <form onSubmit={(e) => onSubmit(e)}>
-            <h4>Enter Collection details:</h4>
-            <div>
-              <label>
-                Collection Name:
-                <input
-                  ref={ref}
-                  type="text"
-                  placeholder="Collection Name"
-                  value={formState.formData.collectionName}
-                  onChange={(e) =>
-                    setFormState((prev) => ({
-                      ...prev,
-                      formData: {
-                        ...prev.formData,
-                        collectionName: String(e.target.value),
-                      },
-                    }))
-                  }
-                  required
-                />
-              </label>
+            <div class="mb-6">
               <label
-                htmlFor="collection_name"
-                className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                for="success"
+                class={`block mb-2 text-sm font-medium dark:text-gray-300
+                ${valid === "error" && " text-red-500 dark:text-red-500"}
+                 `}
               >
                 Collection Name
               </label>
+              <input
+                type="text"
+                class={`${
+                  valid === "success"
+                    ? " border border-green-500 text-gray-800 dark:text-gray-300 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5 dark:bg-gray-700 dark:border-green-500"
+                    : valid === "error"
+                    ? "bg-red-50 border border-red-500 text-red-900 text-sm rounded-lg focus:ring-red-200 dark:focus:ring-red-600 dark:bg-gray-700 focus:border-red-600 block w-full p-2.5 dark:text-red-500  dark:border-red-500"
+                    : "border text-sm rounded-lg  block w-full p-2.5"
+                }`}
+                placeholder=""
+                value={formState.formData.collectionName}
+                onChange={(e) =>
+                  setFormState((prev) => ({
+                    ...prev,
+                    formData: {
+                      ...prev.formData,
+                      collectionName: String(e.target.value),
+                    },
+                  }))
+                }
+                required
+              />
+              {formState.formData.collectionName && (
+                <p
+                  class={`mt-2 text-sm ${
+                    valid === "error" && "text-red-500 dark:text-red-500"
+                  }`}
+                >
+                  <span class="font-medium">
+                    {valid === "error" && `Collection already exists!`}
+                  </span>
+                </p>
+              )}
             </div>
             <div className="relative z-0 w-full mb-5 group">
               <label
-                className="flex items-center cursor-pointer select-none text-sm font-medium text-dark dark:text-white"
+                className="flex items-center cursor-pointer select-none text-sm font-medium text-dark  dark:text-gray-300"
                 htmlFor="checkbox_input"
               >
                 <div className="relative">

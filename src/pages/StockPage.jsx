@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import TableWrapper from "../components/table/TableWrapper";
 import { StockContext } from "../store/stockContext";
 import {
   stableHeaders,
