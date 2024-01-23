@@ -51,7 +51,7 @@ const CollectionPage = () => {
   function onNewCollection() {
     setFormState({
       status: "newCollection",
-      formData: { collectionName: "" },
+      formData: { collectionName: "", addProducts: true },
     });
   }
   const reRenderCollections = async () => {
@@ -107,16 +107,21 @@ const CollectionPage = () => {
     e.preventDefault();
     setLoading(true);
     try {
+      const repeteColl = collections.find(
+        (coll) => coll.collectionName === formState.formData.collectionName
+      );
+      if (repeteColl) {
+        return toast.warn("Collection already exists.");
+      }
       // For collectionCreate
       await toast.promise(collectionCreate(formState.formData), {
         pending: "Creating Collection...",
         success: "Collection created successfully! 👌",
-        error: "Error creating Collection. Please try again. 🤯",
+        error: "Error creating Collection. 🤯",
       });
       await reRenderCollections();
     } catch (error) {
       console.log(error);
-      toast.error("Error adding product");
     } finally {
       setLoading(false);
     }
