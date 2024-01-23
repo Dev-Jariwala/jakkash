@@ -1,6 +1,22 @@
 // Modal component
+import { useEffect } from "react";
 import "./Modal.css";
 const Modal = ({ isOpen, onClose, title, children }) => {
+  useEffect(() => {
+    const handleKeyPress = (event) => {
+      if (event.key === "Escape") {
+        onClose();
+      }
+    };
+
+    // Add event listener for key press
+    document.addEventListener("keydown", handleKeyPress);
+
+    // Clean up the event listener on component unmount
+    return () => {
+      document.removeEventListener("keydown", handleKeyPress);
+    };
+  }, [isOpen, onClose]);
   if (!isOpen) return null;
 
   return (

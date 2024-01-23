@@ -7,13 +7,15 @@ const DeleteCollection = forwardRef(
       <div className="px-4 pt-3 w-[500px]">
         <div className="text-sm *:dark:text-gray-300"></div>
         <div
-          class="flex items-center p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+          class="flex flex-col p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
           role="alert"
         >
-          <span className="material-icons mr-2">warning</span>
+          <div className="flex items-center">
+            <span className="material-icons text-m mr-2">warning</span>
+            <span class="font-bold text-m">Droping {collectionName}!</span>
+          </div>
 
-          <div>
-            <span class="font-medium">Droping {collectionName}!</span> ,
+          <div className="mt-2">
             Unexpected bad things can happen if you don’t read this!
           </div>
         </div>
@@ -47,16 +49,6 @@ const DeleteCollection = forwardRef(
             marginTop: "20px",
           }}
         >
-          {/* <button className="btn primary" onClick={cancelDelete}>
-            Cancle
-          </button> */}
-          {/* <button
-            className={`btn danger ${cname !== collectionName && "disable"}`}
-            onClick={confirmDelete}
-            disabled={cname !== collectionName}
-          >
-            Delete
-          </button> */}
           <button
             type="button"
             onClick={confirmDelete}

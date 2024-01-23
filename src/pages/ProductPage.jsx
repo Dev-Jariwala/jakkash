@@ -245,6 +245,7 @@ const ProductPage = () => {
         <Modal
           isOpen={formState.status === "deleteProduct"}
           onClose={cancelDelete}
+          title={"Delete Product :"}
         >
           <DeleteProduct
             ref={focusRef}
