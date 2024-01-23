@@ -23,7 +23,7 @@ const NewCollection = forwardRef(
       <Modal
         isOpen={formState.status === "newCollection"}
         onClose={() => setFormState({ status: "", formData: {} })}
-        title={"New Collection"}
+        title={"New Collection :"}
       >
         <div className="px-4 pt-3">
           <form onSubmit={(e) => onSubmit(e)}>

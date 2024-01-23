@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import TableWrapper from "../components/table/TableWrapper";
 import { toast } from "react-toastify";
 import { CollectionContext } from "../store/collectionContext";
 import {
@@ -186,7 +185,7 @@ const CollectionPage = () => {
         <Modal
           isOpen={formState.status === "deleteCollection"}
           onClose={cancelDelete}
-          title={"Drop Collection"}
+          title={"Drop Collection :"}
         >
           <DeleteCollection
             ref={focusRef}
