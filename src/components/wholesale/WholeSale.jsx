@@ -1,16 +1,12 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import TableWrapper from "../table/TableWrapper";
-
 import Loader1 from "../loaders/Loader1";
 import Modal from "../modal/Modal";
 import { toast } from "react-toastify";
-import EditRetail from "./EditWholeSale";
 import { ProductsContext } from "../../store/productContext";
 import { StockContext } from "../../store/stockContext";
 import { fetchAllStocks } from "../../controllers/stock";
 import { fetchAllProducts } from "../../controllers/products";
 import { PDFViewer } from "@react-pdf/renderer";
-import RetailBillPDF from "./RetailBillPDF";
 import { WholeSaleContext } from "../../store/wholeSaleBillContext";
 import {
   fetchAllWholeSaleBills,
@@ -29,6 +25,7 @@ import EditWholeSale from "./EditWholeSale";
 import { fetchAllClients } from "../../controllers/client";
 import { ClientContext } from "../../store/clientContext";
 import Table2Wrapper from "../table2/Table2Wrapper";
+import BillPDF from "../bill-pdf/BillPDF";
 
 const WholeSale = () => {
   const { wholeSaleBills, setWholeSaleBills, fetching } =
@@ -205,10 +202,13 @@ const WholeSale = () => {
         <Modal
           isOpen={showPDF.status}
           onClose={() => setShowPDF({ status: false, bill: {} })}
+          title={"View Wholesale Bill PDF :"}
         >
-          <PDFViewer width="1000" height="600">
-            <RetailBillPDF bill={showPDF.bill} />
-          </PDFViewer>
+          <div className="my-3">
+            <PDFViewer width="1000" height="600">
+              <BillPDF bill={showPDF.bill} />
+            </PDFViewer>
+          </div>
         </Modal>
       )}
       <div className="bills">

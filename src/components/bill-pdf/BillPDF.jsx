@@ -1,4 +1,4 @@
-// RetailBillPdf.js
+// BillPDF.js
 import React from "react";
 import { Document, Page, Text, View, StyleSheet } from "@react-pdf/renderer";
 const styles = StyleSheet.create({
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const RetailBillPDF = ({ bill }) => {
+const BillPDF = ({ bill }) => {
   const {
     BillNo,
     name,
@@ -302,4 +302,4 @@ const RetailBillPDF = ({ bill }) => {
   );
 };
 
-export default RetailBillPDF;
+export default BillPDF;

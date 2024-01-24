@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import TableWrapper from "../table/TableWrapper";
 import { RetailBillContext } from "../../store/retailBillContext";
 import {
   rbtableBtn,
@@ -23,10 +22,10 @@ import { StockContext } from "../../store/stockContext";
 import { fetchAllStocks } from "../../controllers/stock";
 import { fetchAllProducts } from "../../controllers/products";
 import { PDFViewer } from "@react-pdf/renderer";
-import RetailBillPDF from "./RetailBillPDF";
 import { fetchAllClients } from "../../controllers/client";
 import { ClientContext } from "../../store/clientContext";
 import Table2Wrapper from "../table2/Table2Wrapper";
+import BillPDF from "../bill-pdf/BillPDF";
 
 const Retail = () => {
   const { retailBills, setRetailBIlls, fetching } =
@@ -204,10 +203,13 @@ const Retail = () => {
         <Modal
           isOpen={showPDF.status}
           onClose={() => setShowPDF({ status: false, bill: {} })}
+          title={`View Retail Bill PDF:`}
         >
-          <PDFViewer width="1000" height="600">
-            <RetailBillPDF bill={showPDF.bill} />
-          </PDFViewer>
+          <div className="my-3">
+            <PDFViewer width="1000" height="600">
+              <BillPDF bill={showPDF.bill} />
+            </PDFViewer>
+          </div>
         </Modal>
       )}
       <div className="bills">

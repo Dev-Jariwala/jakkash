@@ -285,7 +285,7 @@ const NewWholeSale = forwardRef(
                                   updatedProducts.push({
                                     productId: prod._id,
                                     productName: prod.productName,
-                                    price: prod.retailPrice,
+                                    price: prod.wholesalePrice,
                                     quantity: newQty,
                                   });
                                 }
@@ -326,7 +326,7 @@ const NewWholeSale = forwardRef(
                           className="block w-full p-2 text-black font-semibold opacity-50 border-2 border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                           placeholder="Total"
                           value={
-                            prod.retailPrice *
+                            prod.wholesalePrice *
                               formData.products.find(
                                 (p) => p.productId === prod._id
                               )?.quantity || 0
