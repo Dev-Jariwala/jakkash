@@ -10,7 +10,6 @@ import {
 } from "../controllers/products";
 import NewProduct from "../components/product/NewProduct";
 import { toast } from "react-toastify";
-import TableWrapper from "../components/table/TableWrapper";
 import {
   ptableBtn,
   ptableHeaders,
@@ -35,6 +34,10 @@ const ProductPage = () => {
   const { setStocks } = useContext(StockContext);
   const [loading, setLoading] = useState(true);
   const focusRef = useRef(null);
+  const releventProducts = [
+    ...products.filter((product) => !product.muted),
+    ...products.filter((product) => product.muted),
+  ];
 
   useEffect(() => {
     if (fetching) {
@@ -158,6 +161,9 @@ const ProductPage = () => {
 
     try {
       const res = await fetchProductDetails(productId);
+      if (res.muted) {
+        return toast.warn("Product is muted!");
+      }
       setFormState({ status: "editProduct", formData: res });
     } catch (error) {
       console.error("Error fetching product details:", error);
@@ -173,6 +179,10 @@ const ProductPage = () => {
 
     try {
       const res = await fetchProductDetails(productId);
+      if (res.muted) {
+        return toast.warn("Product is muted!");
+      }
+      alert("barabar");
       setFormState({
         status: "addStock",
         formData: {
@@ -312,7 +322,7 @@ const ProductPage = () => {
       )}
       <PageTitle pageName={"Products"}>
         <Table2Wrapper
-          rows={products}
+          rows={releventProducts}
           tableName={ptableName}
           tableBtn={ptableBtn}
           onTableBtn={onNewProd}
