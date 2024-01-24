@@ -1,14 +1,36 @@
-import React, { forwardRef, useState } from "react";
+import React, { forwardRef, useContext, useEffect, useState } from "react";
+import {
+  fetchAllProducts,
+  fetchProductDetails,
+  productDelete,
+  productMute,
+} from "../../controllers/products";
+import { toast } from "react-toastify";
+import { ProductsContext } from "../../store/productContext";
 
 const DeleteProduct = forwardRef(
   ({ formData, setFormState, cancelDelete, confirmDelete }, ref) => {
+    const { products, setProducts } = useContext(ProductsContext);
     const { productName, muted } = formData;
     const [wantToDelete, setWantToDelete] = useState(false);
-    function handleMute() {
-      setFormState((prev) => {
-        return { ...prev, formData: { ...prev.formData, muted: !muted } };
-      });
+    async function handleMute() {
+      await toast.promise(
+        productMute(formData._id, { muted: !formData.muted }),
+        {
+          pending: `${formData.muted ? "UnMuting" : "Muting"} Product...`,
+          success: `Product ${!formData.muted ? "Muted" : "UnMuted"}!`,
+          error: `Error ${!formData.muted ? "Muting" : "UnMuting"} Product.`,
+        }
+      );
+      setProducts(await fetchAllProducts());
     }
+    useEffect(() => {
+      async function reRender() {
+        const res = await fetchProductDetails(formData._id);
+        setFormState({ status: "deleteProduct", formData: res });
+      }
+      reRender();
+    }, [products]);
     return (
       <div className="px-4 pt-3 w-[500px]">
         <div

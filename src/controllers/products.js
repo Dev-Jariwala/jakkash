@@ -63,3 +63,19 @@ export async function fetchProductDetails(productId) {
     throw error;
   }
 }
+// Mute product by ID
+export async function productMute(productId, formData) {
+  try {
+    const response = await axios.put(
+      `${BACKEND_URL}product/mute/${productId}`,
+      formData,
+      {
+        withCredentials: true,
+      }
+    );
+    return response;
+  } catch (error) {
+    console.error("Error updating product:", error);
+    throw error;
+  }
+}
