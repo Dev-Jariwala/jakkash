@@ -5,6 +5,15 @@ import { toast } from "react-toastify";
 const EditRetail = forwardRef(({ formData, setFormState, onSubmit }, ref) => {
   const { products } = useContext(ProductsContext);
   const [billProducts, setBillProducts] = useState(formData.products);
+  const releventProducts = products.filter(
+    (prod) =>
+      (prod.retailPrice > 0 && !prod.muted) ||
+      (prod.muted &&
+        formData.products.some(
+          (billProduct) =>
+            billProduct.productId === prod._id && billProduct.quantity > 0
+        ))
+  );
   return (
     <div className="pt-3 px-3">
       <form
@@ -172,7 +181,7 @@ const EditRetail = forwardRef(({ formData, setFormState, onSubmit }, ref) => {
               </tr>
             </thead>
             <tbody>
-              {products.map((prod) => {
+              {releventProducts.map((prod) => {
                 let currProduct = formData.products.filter((product) => {
                   return product.productId === prod._id;
                 });
