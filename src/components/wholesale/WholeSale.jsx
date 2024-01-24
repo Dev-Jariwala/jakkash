@@ -216,6 +216,7 @@ const WholeSale = () => {
           <Modal
             isOpen={formState.status === "newWholesale"}
             onClose={() => setFormState({ status: "", formData: {} })}
+            title={"New Wholesale Bill :"}
           >
             <NewWholeSale
               formState={formState}
@@ -229,11 +230,13 @@ const WholeSale = () => {
           <Modal
             isOpen={formState.status === "editRetail"}
             onClose={() => setFormState({ status: "", formData: {} })}
+            title={"Edit Wholesale Bill :"}
           >
             <EditWholeSale
               formData={formState.formData}
               setFormState={setFormState}
               onSubmit={handleEdit}
+              ref={focusRef}
             />
           </Modal>
         )}
