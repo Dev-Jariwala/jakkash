@@ -7,12 +7,12 @@ const DeleteCollection = forwardRef(
       <div className="px-4 pt-3 w-[500px]">
         <div className="text-sm *:dark:text-gray-300"></div>
         <div
-          class="flex flex-col p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+          className="flex flex-col p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
           role="alert"
         >
           <div className="flex items-center">
             <span className="material-icons text-m mr-2">warning</span>
-            <span class="font-bold text-m">Droping {collectionName}!</span>
+            <span className="font-bold text-m">Droping {collectionName}!</span>
           </div>
 
           <div className="mt-2">
@@ -53,7 +53,7 @@ const DeleteCollection = forwardRef(
             type="button"
             onClick={confirmDelete}
             disabled={cname !== collectionName}
-            class={`py-3 px-4 w-full inline-flex items-center justify-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-red-500 text-white hover:bg-red-600 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600${
+            className={`py-3 px-4 w-full inline-flex items-center justify-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-red-500 text-white hover:bg-red-600 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600${
               cname !== collectionName && "opacity-50"
             }`}
           >

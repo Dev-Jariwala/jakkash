@@ -76,18 +76,22 @@ const StockPage = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      await toast.promise(
-        stockUpdate(formState.formData._id, {
-          addStock: formState.formData.addStock,
-          date: formState.formData.date,
-        }),
-        {
-          pending: "Editing Stock...",
-          success: "Stock edited successfully! 👌",
-          error: "Error editing Stock. Please try again. 🤯",
-        }
-      );
-      await cleanupFunc();
+      if (formState.formData.addStock < 50) {
+        return toast.warn("No Negative value!");
+      } else {
+        await toast.promise(
+          stockUpdate(formState.formData._id, {
+            addStock: formState.formData.addStock,
+            date: formState.formData.date,
+          }),
+          {
+            pending: "Editing Stock...",
+            success: "Stock edited successfully! 👌",
+            error: "Error editing Stock. Please try again. 🤯",
+          }
+        );
+        await cleanupFunc();
+      }
     } catch (error) {
       console.log(error);
       throw error;
@@ -169,6 +173,7 @@ const StockPage = () => {
         <Modal
           isOpen={formState.status === "deleteStock"}
           onClose={cancelDelete}
+          title={"Delete Stock :"}
         >
           <DeleteStock
             ref={focusRef}

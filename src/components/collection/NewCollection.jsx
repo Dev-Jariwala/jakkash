@@ -29,7 +29,6 @@ const NewCollection = forwardRef(
           <form onSubmit={(e) => onSubmit(e)}>
             <div className="mb-6">
               <label
-                for="success"
                 className={`block mb-2 text-sm font-medium dark:text-gray-300
                 ${valid === "error" && " text-red-500 dark:text-red-500"}
                  `}
@@ -72,10 +71,7 @@ const NewCollection = forwardRef(
               )}
             </div>
             <div className="relative z-0 w-full mb-5 group">
-              <label
-                className="flex items-center cursor-pointer select-none text-sm font-medium text-dark  dark:text-gray-300"
-                htmlFor="checkbox_input"
-              >
+              <label className="flex items-center cursor-pointer select-none text-sm font-medium text-dark  dark:text-gray-300">
                 <div className="relative">
                   <input
                     type="checkbox"

@@ -107,12 +107,19 @@ const ProductPage = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      await toast.promise(productCreate(formState.formData), {
-        pending: "Creating Product...",
-        success: "Product created successfully! 👌",
-        error: "Error creating Product. Please try again. 🤯",
-      });
-      await updateProducts();
+      if (
+        formState.formData.retailPrice < 0 ||
+        formState.formData.wholesalePrice < 0
+      ) {
+        return toast.warn("No Negative value!");
+      } else {
+        await toast.promise(productCreate(formState.formData), {
+          pending: "Creating Product...",
+          success: "Product created successfully! 👌",
+          error: "Error creating Product. Please try again. 🤯",
+        });
+        await updateProducts();
+      }
     } catch (error) {
       console.log(error);
       toast.error("Error adding product");
@@ -125,12 +132,19 @@ const ProductPage = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      await toast.promise(productUpdate(productId, formData), {
-        pending: "Editing Product...",
-        success: "Product editied successfully! 👌",
-        error: "Error editing Product. Please try again. 🤯",
-      });
-      await updateProducts();
+      if (
+        formState.formData.retailPrice < 0 ||
+        formState.formData.wholesalePrice < 0
+      ) {
+        return toast.warn("No Negative value!");
+      } else {
+        await toast.promise(productUpdate(productId, formData), {
+          pending: "Editing Product...",
+          success: "Product editied successfully! 👌",
+          error: "Error editing Product. Please try again. 🤯",
+        });
+        await updateProducts();
+      }
     } catch (error) {
       console.log(error);
       toast.error("Error editing product");
@@ -161,7 +175,11 @@ const ProductPage = () => {
       const res = await fetchProductDetails(productId);
       setFormState({
         status: "addStock",
-        formData: { productId: res._id, productName: res.productName },
+        formData: {
+          productId: res._id,
+          productName: res.productName,
+          addStock: "",
+        },
       });
     } catch (error) {
       console.error("Error fetching product details:", error);
@@ -175,7 +193,7 @@ const ProductPage = () => {
     setLoading(true);
     try {
       if (formData.addStock < 0) {
-        alert("negative values not allowed!");
+        return toast.warn("Negative stock value!");
       } else {
         await toast.promise(stockCreate(formData.productId, formData), {
           pending: "Adding Stock...",
@@ -257,7 +275,8 @@ const ProductPage = () => {
         >
           <DeleteProduct
             ref={focusRef}
-            productName={formState.formData.productName}
+            formData={formState.formData}
+            setFormState={setFormState}
             cancelDelete={cancelDelete}
             confirmDelete={confirmDelete}
           />

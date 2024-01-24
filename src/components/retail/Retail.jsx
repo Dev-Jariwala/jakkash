@@ -215,6 +215,7 @@ const Retail = () => {
           <Modal
             isOpen={formState.status === "newRetail"}
             onClose={() => setFormState({ status: "", formData: {} })}
+            title={"New Retail Bill :"}
           >
             <NewRetail
               formState={formState}
@@ -227,12 +228,14 @@ const Retail = () => {
         {formState.status === "editRetail" && (
           <Modal
             isOpen={formState.status === "editRetail"}
+            title={"Edit Retail :"}
             onClose={() => setFormState({ status: "", formData: {} })}
           >
             <EditRetail
               formData={formState.formData}
               setFormState={setFormState}
               onSubmit={handleEdit}
+              ref={focusRef}
             />
           </Modal>
         )}

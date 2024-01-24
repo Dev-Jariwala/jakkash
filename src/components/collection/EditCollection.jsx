@@ -36,7 +36,6 @@ const EditCollection = forwardRef(
           >
             <div className="mb-6">
               <label
-                for="success"
                 className={`block mb-2 text-sm font-medium dark:text-gray-300
                 ${valid === "error" && " text-red-500 dark:text-red-500"}
                  `}

@@ -60,10 +60,7 @@ const LodingModal = ({ setAuth }) => {
             }}
           >
             <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
+              <label className="block text-sm font-medium leading-6 text-gray-900">
                 Email address
               </label>
               <div className="mt-2">
@@ -87,10 +84,7 @@ const LodingModal = ({ setAuth }) => {
 
             <div>
               <div className="flex items-center justify-between">
-                <label
-                  htmlFor="password"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
+                <label className="block text-sm font-medium leading-6 text-gray-900">
                   Password
                 </label>
               </div>
@@ -112,10 +106,7 @@ const LodingModal = ({ setAuth }) => {
               </div>
             </div>
             <div>
-              <label
-                htmlFor="collection"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
+              <label className="block text-sm font-medium leading-6 text-gray-900">
                 Collections
               </label>
               <div className="mt-2">

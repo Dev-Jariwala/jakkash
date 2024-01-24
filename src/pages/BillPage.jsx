@@ -19,7 +19,7 @@ const BillPage = () => {
             <ul className="flex flex-wrap -mb-px text-sm font-medium text-center">
               <li className="w-1/4">
                 <button
-                  className={`inline-block w-full text-xl p-4 border-b-2 rounded-t-lg  ${
+                  className={`inline-block w-full text-xl font-semibold p-4 border-b-2 rounded-t-lg  ${
                     activeTab === "retail"
                       ? "border-blue-500  dark:text-gray-200"
                       : "border-blue-200 text-gray-700 dark:border-gray-700 dark:text-gray-500"
@@ -32,7 +32,7 @@ const BillPage = () => {
               </li>
               <li className="w-1/4">
                 <button
-                  className={`inline-bloc w-full text-xl p-4 border-b-2 rounded-t-lg  ${
+                  className={`inline-bloc w-full text-xl font-semibold p-4 border-b-2 rounded-t-lg  ${
                     activeTab === "wholesale"
                       ? "border-blue-500 dark:text-gray-200"
                       : "border-blue-200 text-gray-700 dark:border-gray-700 dark:text-gray-500"
