@@ -14,7 +14,7 @@ import {
   stockDelete,
   stockUpdate,
 } from "../controllers/stock";
-import { fetchAllProducts } from "../controllers/products";
+import { fetchAllProducts, fetchProductDetails } from "../controllers/products";
 import { ProductsContext } from "../store/productContext";
 import DeleteStock from "../components/stock/DeleteStock";
 import Modal from "../components/modal/Modal";
@@ -24,14 +24,27 @@ import Table2Wrapper from "../components/table2/Table2Wrapper";
 
 const StockPage = () => {
   const { stocks, setStocks, fetching } = useContext(StockContext);
-  const { setProducts } = useContext(ProductsContext);
+  const { products, setProducts } = useContext(ProductsContext);
+
   const [formState, setFormState] = useState({ status: "", formData: {} });
   const [loading, setLoading] = useState(true);
   const focusRef = useRef(null);
   const dateFixedStocks = stocks?.map((stock) => {
+    let muted = false;
+    try {
+      const curProduct = products.find(
+        (product) => product._id === stock.productId
+      );
+      if (curProduct.muted) {
+        muted = true;
+      }
+    } catch (error) {
+      console.log(error);
+    }
     return {
       ...stock,
       date: stock.date.slice(0, 10).split("-").reverse().join(" / "),
+      muted,
     };
   });
   useEffect(() => {
@@ -64,6 +77,10 @@ const StockPage = () => {
 
     try {
       const res = await fetchStockDetails(stockId);
+      const curProduct = await fetchProductDetails(res.productId);
+      if (curProduct.muted) {
+        return toast.info("Product is muted!");
+      }
       setFormState({ status: "editStock", formData: res });
     } catch (error) {
       console.error("Error fetching stock details:", error);
@@ -76,7 +93,15 @@ const StockPage = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      if (formState.formData.addStock < 50) {
+      const curProduct = await fetchProductDetails(
+        formState.formData.productId
+      );
+
+      const curStock = await fetchStockDetails(formState.formData._id);
+      if (curStock.addStock - curProduct.stock > formState.formData.addStock) {
+        return toast.warn("Stock Missing!");
+      }
+      if (formState.formData.addStock < 0) {
         return toast.warn("No Negative value!");
       } else {
         await toast.promise(
@@ -104,8 +129,15 @@ const StockPage = () => {
     setLoading(true);
 
     try {
-      const res = await fetchStockDetails(stockId);
-      setFormState({ status: "deleteStock", formData: res });
+      const curStock = await fetchStockDetails(stockId);
+      const curProduct = await fetchProductDetails(curStock.productId);
+      if (curProduct.muted) {
+        return toast.info("Product is muted!");
+      }
+      if (curStock.addStock > curProduct.stock) {
+        return toast.warn("Stock Missing!");
+      }
+      setFormState({ status: "deleteStock", formData: curStock });
     } catch (error) {
       console.error("Error fetching stock details:", error);
       // Handle error if needed

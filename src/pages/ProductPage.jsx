@@ -162,7 +162,7 @@ const ProductPage = () => {
     try {
       const res = await fetchProductDetails(productId);
       if (res.muted) {
-        return toast.warn("Product is muted!");
+        return toast.info("Product is muted!");
       }
       setFormState({ status: "editProduct", formData: res });
     } catch (error) {
@@ -180,7 +180,7 @@ const ProductPage = () => {
     try {
       const res = await fetchProductDetails(productId);
       if (res.muted) {
-        return toast.warn("Product is muted!");
+        return toast.info("Product is muted!");
       }
       alert("barabar");
       setFormState({
