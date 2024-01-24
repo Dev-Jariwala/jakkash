@@ -29,7 +29,12 @@ const Table = ({
               currrentRows.map((row, rowIndex) => {
                 const rowNumber = indexOfFirstRow + rowIndex;
                 return (
-                  <tr key={rowIndex} className="border-b dark:border-gray-700">
+                  <tr
+                    key={rowIndex}
+                    className={`${
+                      row?.muted ? "bg-gray-100 opacity-50" : ""
+                    }  border-b dark:border-gray-700`}
+                  >
                     <Row
                       showIndex={showIndex}
                       row={row}
