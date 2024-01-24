@@ -27,6 +27,7 @@ import { fetchAllStocks, stockCreate } from "../controllers/stock";
 import { StockContext } from "../store/stockContext";
 import PageTitle from "../components/pageTemp/PageTitle";
 import Table2Wrapper from "../components/table2/Table2Wrapper";
+import TooltipItem from "../components/tooltip/ToolTipItem";
 
 const ProductPage = () => {
   const { products, setProducts, fetching } = useContext(ProductsContext);
@@ -89,6 +90,7 @@ const ProductPage = () => {
         error: "Error deleting Product. Please try again. 🤯",
       });
       await updateProducts();
+      setStocks(await fetchAllStocks());
     } catch (err) {
       console.error("Error confirming delete:", err);
       toast.error("Error deleting product");
@@ -194,9 +196,11 @@ const ProductPage = () => {
   const actions = [
     {
       button: (
-        <span className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 mr-2 text-xs font-medium text-blue-600 ring-1 ring-inset ring-blue-700/10">
-          <span className="material-icons text-sm">add</span>
-        </span>
+        <TooltipItem position="left" tooltipsText="Add stock">
+          <span className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 mr-2 text-xs font-medium text-blue-600 ring-1 ring-inset ring-blue-700/10">
+            <span className="material-icons text-sm">add</span>
+          </span>
+        </TooltipItem>
       ),
 
       classNames: [],
@@ -204,18 +208,22 @@ const ProductPage = () => {
     },
     {
       button: (
-        <span className="inline-flex items-center rounded-md bg-green-50 px-2 py-1 mr-2 text-xs font-medium text-green-600 ring-1 ring-inset ring-green-600/20">
-          <span className="material-icons text-sm">edit</span>
-        </span>
+        <TooltipItem position="top" tooltipsText="Edit">
+          <span className="inline-flex items-center rounded-md bg-green-50 px-2 py-1 mr-2 text-xs font-medium text-green-600 ring-1 ring-inset ring-green-600/20">
+            <span className="material-icons text-sm">edit</span>
+          </span>
+        </TooltipItem>
       ),
       classNames: [],
       onSmash: onEdit,
     },
     {
       button: (
-        <span className="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-600 ring-1 ring-inset ring-red-600/10">
-          <span className="material-icons text-sm">delete</span>
-        </span>
+        <TooltipItem position="right" tooltipsText="Delete">
+          <span className="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-600 ring-1 ring-inset ring-red-600/10">
+            <span className="material-icons text-sm">delete</span>
+          </span>
+        </TooltipItem>
       ),
       classNames: [
         // "text-red-500",
