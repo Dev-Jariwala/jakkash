@@ -8,6 +8,9 @@ const NewWholeSale = forwardRef(
     let formData = formState.formData;
     const { products } = useContext(ProductsContext);
     const { clients } = useContext(ClientContext);
+    const unMutedProducts = products?.filter(
+      (product) => !product.muted && product.wholesalePrice > 0
+    );
     useEffect(() => {
       // Function to check if mobile number matches any previous bills
       const findClient = (mobileNumber) => {
@@ -210,7 +213,7 @@ const NewWholeSale = forwardRef(
                 </tr>
               </thead>
               <tbody>
-                {products.map((prod) => {
+                {unMutedProducts.map((prod) => {
                   return (
                     <tr
                       key={prod._id}

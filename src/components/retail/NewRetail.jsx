@@ -7,6 +7,9 @@ const NewRetail = forwardRef(({ formState, setFormState, onSubmit }, ref) => {
   let formData = formState.formData;
   const { products } = useContext(ProductsContext);
   const { clients } = useContext(ClientContext);
+  const unMutedProducts = products?.filter(
+    (product) => !product.muted && product.retailPrice > 0
+  );
   useEffect(() => {
     // Function to check if mobile number matches any previous bills
     const findClient = (mobileNumber) => {
@@ -209,7 +212,7 @@ const NewRetail = forwardRef(({ formState, setFormState, onSubmit }, ref) => {
               </tr>
             </thead>
             <tbody>
-              {products.map((prod) => {
+              {unMutedProducts.map((prod) => {
                 return (
                   <tr key={prod._id} className="border-b dark:border-gray-700">
                     <td className="px-4 py-3">
