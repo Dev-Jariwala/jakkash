@@ -17,6 +17,8 @@ import { ClientProvider } from "./store/clientContext";
 import ClientPage from "./pages/ClientPage";
 import { WholeSaleProvider } from "./store/wholeSaleBillContext";
 import NotFound from "./pages/NotFound";
+import PurchasePage from "./pages/PurchasePage";
+import { PurchasesProvider } from "./store/purchaseContext";
 
 const App = () => {
   // Check if auth status is stored in localStorage
@@ -35,38 +37,47 @@ const App = () => {
 
           {auth && (
             <ProductsProvider>
-              <StockProvider>
-                <RetailBillProvider>
-                  <WholeSaleProvider>
-                    <ClientProvider>
-                      <SideMenu
-                        sidemenuProps={{ ...sidemenuProps }}
-                        setAuth={setAuth}
-                      >
-                        <Routes>
-                          <Route path="/" element={<DashboardPage />}></Route>
-                          <Route
-                            path="/products"
-                            element={<ProductPage />}
-                          ></Route>
-                          <Route
-                            path="/collection"
-                            element={<CollectionPage />}
-                          ></Route>
-                          <Route path="/stocks" element={<StockPage />}></Route>
-                          <Route path="/bills" element={<BillPage />}></Route>
+              <PurchasesProvider>
+                <StockProvider>
+                  <RetailBillProvider>
+                    <WholeSaleProvider>
+                      <ClientProvider>
+                        <SideMenu
+                          sidemenuProps={{ ...sidemenuProps }}
+                          setAuth={setAuth}
+                        >
+                          <Routes>
+                            <Route path="/" element={<DashboardPage />}></Route>
+                            <Route
+                              path="/products"
+                              element={<ProductPage />}
+                            ></Route>
+                            <Route
+                              path="/purchase"
+                              element={<PurchasePage />}
+                            ></Route>
+                            <Route
+                              path="/collection"
+                              element={<CollectionPage />}
+                            ></Route>
+                            <Route
+                              path="/stocks"
+                              element={<StockPage />}
+                            ></Route>
+                            <Route path="/bills" element={<BillPage />}></Route>
 
-                          <Route
-                            path="/clients"
-                            element={<ClientPage />}
-                          ></Route>
-                          <Route path="*" element={<NotFound />}></Route>
-                        </Routes>
-                      </SideMenu>
-                    </ClientProvider>
-                  </WholeSaleProvider>
-                </RetailBillProvider>
-              </StockProvider>
+                            <Route
+                              path="/clients"
+                              element={<ClientPage />}
+                            ></Route>
+                            <Route path="*" element={<NotFound />}></Route>
+                          </Routes>
+                        </SideMenu>
+                      </ClientProvider>
+                    </WholeSaleProvider>
+                  </RetailBillProvider>
+                </StockProvider>
+              </PurchasesProvider>
             </ProductsProvider>
           )}
         </CollectionProvider>
