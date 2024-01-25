@@ -9,9 +9,14 @@ const sidemenuProps = {
       icon: "dashboard",
     },
     {
+      title: "Purchase",
+      to: "/purchase",
+      icon: "shopping_cart",
+    },
+    {
       title: "Products",
       to: "/products",
-      icon: "shopping_cart",
+      icon: "add_business",
     },
     {
       title: "Stocks",

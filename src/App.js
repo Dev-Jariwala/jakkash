@@ -16,14 +16,7 @@ import { RetailBillProvider } from "./store/retailBillContext";
 import { ClientProvider } from "./store/clientContext";
 import ClientPage from "./pages/ClientPage";
 import { WholeSaleProvider } from "./store/wholeSaleBillContext";
-const NotFound = () => {
-  return (
-    <div>
-      <h1>404 Not Found</h1>
-      <p>Oops! The page you are looking for does not exist.</p>
-    </div>
-  );
-};
+import NotFound from "./pages/NotFound";
 
 const App = () => {
   // Check if auth status is stored in localStorage

@@ -5,7 +5,6 @@ import { ProductsContext } from "../store/productContext";
 import { StockContext } from "../store/stockContext";
 import { RetailBillContext } from "../store/retailBillContext";
 import { ClientContext } from "../store/clientContext";
-
 const DashboardPage = () => {
   const { collections } = useContext(CollectionContext);
   const { products } = useContext(ProductsContext);
@@ -31,18 +30,18 @@ const DashboardPage = () => {
             <StatCard
               icon={<span className="material-icons">shopping_cart</span>}
               color={"red"}
+              title={"Purchase"}
+              data={stocks.length}
+              stat={1000}
+              link={"purchase"}
+            ></StatCard>
+            <StatCard
+              icon={<span className="material-icons">add_business</span>}
+              color={"slate"}
               title={"Products"}
               data={products.length}
               stat={25}
               link={"products"}
-            ></StatCard>
-            <StatCard
-              icon={<span className="material-icons">receipt_long</span>}
-              color={"green"}
-              title={"Bills"}
-              data={retailBills.length}
-              stat={3000}
-              link={"bills"}
             ></StatCard>
             <StatCard
               icon={<span className="material-icons">leaderboard</span>}
@@ -60,13 +59,14 @@ const DashboardPage = () => {
               stat={1000}
               link={"clients"}
             ></StatCard>
+
             <StatCard
-              icon={<span className="material-icons">person_search</span>}
-              color={"slate"}
-              title={"Reports"}
-              data={stocks.length}
-              stat={1000}
-              link={"clients"}
+              icon={<span className="material-icons">receipt_long</span>}
+              color={"teal"}
+              title={"Bills"}
+              data={retailBills.length}
+              stat={3000}
+              link={"bills"}
             ></StatCard>
           </div>
         </div>

@@ -45,9 +45,10 @@ const NewProduct = forwardRef(({ formState, setFormState, onSubmit }, ref) => {
                     ...prev,
                     formData: {
                       ...prev.formData,
-                      retailPrice: parseFloat(e.target.value)
-                        ? parseFloat(e.target.value)
-                        : "",
+                      retailPrice:
+                        parseFloat(e.target.value) >= 0
+                          ? parseFloat(e.target.value)
+                          : "",
                     },
                   }));
                 }}
@@ -68,9 +69,10 @@ const NewProduct = forwardRef(({ formState, setFormState, onSubmit }, ref) => {
                     ...prev,
                     formData: {
                       ...prev.formData,
-                      wholesalePrice: parseFloat(e.target.value)
-                        ? parseFloat(e.target.value)
-                        : "",
+                      wholesalePrice:
+                        parseFloat(e.target.value) >= 0
+                          ? parseFloat(e.target.value)
+                          : "",
                     },
                   }))
                 }

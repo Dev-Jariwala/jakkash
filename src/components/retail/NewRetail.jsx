@@ -262,7 +262,8 @@ const NewRetail = forwardRef(({ formState, setFormState, onSubmit }, ref) => {
                                 prev.formData.products.map((product) => {
                                   if (product.productId === prod._id) {
                                     if (newQty > prod.stock) {
-                                      toast.warn("Insufficient Quantity!");
+                                      toast.warn("Insufficient stock!");
+                                      alert("Insufficient stock!");
                                       return {
                                         ...product,
                                         quantity: "",

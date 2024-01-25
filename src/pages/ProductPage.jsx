@@ -182,7 +182,6 @@ const ProductPage = () => {
       if (res.muted) {
         return toast.info("Product is muted!");
       }
-      alert("barabar");
       setFormState({
         status: "addStock",
         formData: {

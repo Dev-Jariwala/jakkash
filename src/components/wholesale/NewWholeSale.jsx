@@ -266,7 +266,8 @@ const NewWholeSale = forwardRef(
                                   prev.formData.products.map((product) => {
                                     if (product.productId === prod._id) {
                                       if (newQty > prod.stock) {
-                                        toast.warn("Insufficient Quantity!");
+                                        toast.warn("Insufficient Stock!");
+                                        alert("Insufficient stock!");
                                         return {
                                           ...product,
                                           quantity: "",

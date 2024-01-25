@@ -9,7 +9,7 @@ const EditRetail = forwardRef(({ formData, setFormState, onSubmit }, ref) => {
     (prod) =>
       (prod.retailPrice > 0 && !prod.muted) ||
       (prod.muted &&
-        formData.products.some(
+        billProducts.some(
           (billProduct) =>
             billProduct.productId === prod._id && billProduct.quantity > 0
         ))
@@ -256,6 +256,7 @@ const EditRetail = forwardRef(({ formData, setFormState, onSubmit }, ref) => {
                                       };
                                     } else {
                                       toast.warn("Insufficiant Stock");
+                                      alert("Insufficient stock!");
                                       return {
                                         ...product,
                                         quantity: "",
