@@ -3,7 +3,7 @@ import BarChart from "./BarChart";
 import { WholeSaleContext } from "../../store/wholeSaleBillContext";
 import { PurchasesContext } from "../../store/purchaseContext";
 
-const PurchaseChart = () => {
+const PurchaseChart = ({ height = 205 }) => {
   const { purchases } = useContext(PurchasesContext);
   // Extract monthly sales data
   const monthlyPurchases = Array.from({ length: 12 }, () => 0); // Initialize an array with zeros for each month
@@ -13,9 +13,12 @@ const PurchaseChart = () => {
     const month = date.getMonth();
     monthlyPurchases[month] += purchase.rate * purchase.quantity;
   });
+  const total = monthlyPurchases.reduce((acc, curr) => {
+    return acc + curr;
+  }, 0);
   const chartConfig = {
     type: "bar",
-    height: 205,
+    height,
     series: [
       {
         name: "purchases",
@@ -107,7 +110,7 @@ const PurchaseChart = () => {
     <BarChart
       chartConfig={chartConfig}
       icon={"shopping_cart"}
-      barChartTitle={`Monthly Purchases :`}
+      barChartTitle={`Monthly Purchases : ₹ ${total}/-`}
       smallTitle={"Sum of (rate X quantity) per Month"}
     />
   );

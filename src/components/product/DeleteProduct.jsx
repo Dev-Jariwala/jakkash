@@ -34,7 +34,7 @@ const DeleteProduct = forwardRef(
     return (
       <div className="px-4 pt-3 w-[500px]">
         <div
-          className="flex flex-col p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+          className="flex flex-col p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50"
           role="alert"
         >
           <div className="flex items-center">
@@ -49,7 +49,7 @@ const DeleteProduct = forwardRef(
           </div>
         </div>
         <div
-          className="flex p-4 mb-4 text-sm text-blue-800 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400"
+          className="flex p-4 mb-4 text-sm text-blue-800 rounded-lg bg-blue-50 "
           role="alert"
         >
           <svg
@@ -89,7 +89,7 @@ const DeleteProduct = forwardRef(
                 checked={muted}
               />
               <div className="w-11 h-6 bg-blue-200 peer-focus:outline-none rounded-full peer peer-focus:ring-1 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-              <span className="ms-3 text-sm font-medium text-blue-800 dark:text-gray-300">
+              <span className="ms-3 text-sm font-medium text-blue-800 ">
                 {muted ? "Muted" : "UnMuted"}
               </span>
             </label>
@@ -97,13 +97,16 @@ const DeleteProduct = forwardRef(
         </div>
         <div className="flex items-center mb-4">
           <input
-            id="default-checkbox"
+            id="deleteProduct"
             type="checkbox"
             checked={wantToDelete}
             onChange={() => setWantToDelete((prev) => !prev)}
             className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
           />
-          <label className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+          <label
+            htmlFor="deleteProduct"
+            className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+          >
             I Understand, delete '{productName}'
           </label>
         </div>

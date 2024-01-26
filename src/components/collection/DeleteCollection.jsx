@@ -5,9 +5,8 @@ const DeleteCollection = forwardRef(
     const [cname, setCname] = useState("");
     return (
       <div className="px-4 pt-3 w-[500px]">
-        <div className="text-sm *:dark:text-gray-300"></div>
         <div
-          className="flex flex-col p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+          className="flex flex-col p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50  "
           role="alert"
         >
           <div className="flex items-center">
@@ -19,14 +18,14 @@ const DeleteCollection = forwardRef(
             Unexpected bad things can happen if you don’t read this!
           </div>
         </div>
-        <div className="text-sm text-justify">
+        <div className="text-sm text-justify dark:text-gray-300">
           This action <span className="font-semibold">CANNOT</span> be undone.
           This will permanently delete the{" "}
           <span className="font-semibold">Products</span>,{" "}
           <span className="font-semibold">Stocks</span>, and{" "}
           <span className="font-semibold">Bills</span> from database.
         </div>
-        <div className="text-sm text-justify my-2">
+        <div className="text-sm text-justify my-2 dark:text-gray-200">
           <span className="font-semibold">
             Please type in the name of the collection to confirm.
           </span>

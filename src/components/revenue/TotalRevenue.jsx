@@ -3,7 +3,7 @@ import BarChart from "./BarChart";
 import { RetailBillContext } from "../../store/retailBillContext";
 import { WholeSaleContext } from "../../store/wholeSaleBillContext";
 
-const TotalRevenue = () => {
+const TotalRevenue = ({ height = 205 }) => {
   const { retailBills } = useContext(RetailBillContext);
   const { wholeSaleBills } = useContext(WholeSaleContext);
   // Extract monthly sales data
@@ -19,9 +19,12 @@ const TotalRevenue = () => {
     const month = orderDate.getMonth();
     monthlySales[month] += bill.subTotal;
   });
+  const total = monthlySales.reduce((acc, curr) => {
+    return acc + curr;
+  }, 0);
   const chartConfig = {
     type: "bar",
-    height: 205,
+    height,
     series: [
       {
         name: "Sales",
@@ -113,7 +116,7 @@ const TotalRevenue = () => {
     <BarChart
       chartConfig={chartConfig}
       icon={"paid"}
-      barChartTitle={`Overall Sales :`}
+      barChartTitle={`Overall Sales : ₹ ${total}/-`}
       smallTitle={"Sum of Sub Totals per Month"}
     />
   );

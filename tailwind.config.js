@@ -23,6 +23,7 @@ module.exports = {
         "retail-color": "#256D85",
         "wholesale-color": "#31304D",
         "investment-color": "#DBCC95",
+        "primary-light": "#e4e9f7",
       },
     },
     fontFamily: {

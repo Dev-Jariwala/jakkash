@@ -68,7 +68,7 @@ const Table2Wrapper = ({
                     data-tip="Export" // Set the tooltip message
                     data-for="export-tooltip" // Specify the tooltip ID
                     type="button"
-                    className="w-8 h-8 inline-flex items-center justify-center ml-3 gap-x-2 text-xs font-medium rounded-lg border border-gray-200  bg-teal-500 text-white shadow-sm hover:bg-teal-600 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-white dark:hover:bg-gray-800 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
+                    className="w-8 h-8 inline-flex items-center justify-center ml-3 gap-x-2 text-xs font-medium rounded-lg border border-gray-200  bg-teal-500 text-white shadow-sm hover:bg-teal-600 disabled:opacity-50 disabled:pointer-events-none dark:bg-green-600 dark:border-gray-700 dark:text-white dark:hover:bg-green-800 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
                   >
                     <span className="material-icons text-sm">ios_share</span>
                   </button>

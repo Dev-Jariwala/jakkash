@@ -1,7 +1,7 @@
 const sidemenuProps = {
   brandName: "Jakkash",
   brandSlogan: "patent mango",
-  brandLogo: "img/logo.avif",
+  brandLogo: "img/logo.png",
   sbOptions: [
     {
       title: "Dashboard",

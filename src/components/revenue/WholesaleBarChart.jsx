@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import BarChart from "./BarChart";
 import { WholeSaleContext } from "../../store/wholeSaleBillContext";
 
-const WholesaleBarChart = () => {
+const WholesaleBarChart = ({ height = 205 }) => {
   const { wholeSaleBills } = useContext(WholeSaleContext);
   // Extract monthly sales data
   const monthlySales = Array.from({ length: 12 }, () => 0); // Initialize an array with zeros for each month
@@ -12,9 +12,12 @@ const WholesaleBarChart = () => {
     const month = orderDate.getMonth();
     monthlySales[month] += bill.subTotal;
   });
+  const total = monthlySales.reduce((acc, curr) => {
+    return acc + curr;
+  }, 0);
   const chartConfig = {
     type: "bar",
-    height: 205,
+    height,
     series: [
       {
         name: "Sales",
@@ -106,7 +109,7 @@ const WholesaleBarChart = () => {
     <BarChart
       icon={"receipt_long"}
       chartConfig={chartConfig}
-      barChartTitle={`Wholesale Sales :`}
+      barChartTitle={`Wholesale Sales : ₹ ${total}/-`}
       smallTitle={"Sum of Sub Totals per Month"}
     />
   );

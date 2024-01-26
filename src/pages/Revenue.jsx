@@ -1,66 +1,117 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PageTitle from "../components/pageTemp/PageTitle";
-import TotalSales from "../components/revenue/TotalSales";
-import TotalPurchases from "../components/revenue/TotalPurchases";
-import TotalRevenue from "../components/revenue/TotalRevenue";
+import All from "../components/revenue/All";
 
 const Revenue = () => {
-  const [activeTab, setActiveTab] = useState("totalSales");
+  const [activeTab, setActiveTab] = useState("tab1");
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
+    scrollToTab(tab);
   };
+
+  const scrollToTab = (tab) => {
+    const tabElement = document.getElementById(tab);
+    if (tabElement) {
+      tabElement.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+  useEffect(() => {
+    const tabs = ["tab1", "tab2", "tab3", "tab4"];
+
+    const handleIntersection = (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setActiveTab(entry.target.id);
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(handleIntersection, {
+      threshold: 0.5, // Adjust the threshold based on your needs
+    });
+
+    tabs.forEach((tab) => {
+      const tabElement = document.getElementById(tab);
+      if (tabElement) {
+        observer.observe(tabElement);
+      }
+    });
+
+    // Clean up the observer on component unmount
+    return () => {
+      tabs.forEach((tab) => {
+        const tabElement = document.getElementById(tab);
+        if (tabElement) {
+          observer.unobserve(tabElement);
+        }
+      });
+    };
+  }, []); // Empty dependency array to run the effect only once on mount
+
   return (
     <PageTitle pageName={"Revenue"}>
-      <div className="mx-auto max-w-screen-xl px-4 lg:px-12">
+      {/* Tabs  */}
+      <div className="mx-auto sticky top-0 z-50 bg-primary-light max-w-screen-xl">
         <div className="mb-4 border-b border-blue-200 dark:border-gray-700">
           <ul className="flex flex-wrap -mb-px text-sm font-medium text-center">
             <li className="w-1/4">
               <button
                 className={`inline-block w-full text-xl font-semibold p-4 border-b-2 rounded-t-lg  ${
-                  activeTab === "totalSales"
+                  activeTab === "tab1"
                     ? "border-blue-500  dark:text-gray-200"
                     : "border-blue-200 text-gray-700 dark:border-gray-700 dark:text-gray-500"
                 } `}
                 type="button"
-                onClick={() => handleTabClick("totalSales")}
+                onClick={() => handleTabClick("tab1")}
               >
-                Total Sales
+                Bills
               </button>
             </li>
             <li className="w-1/4">
               <button
-                className={`inline-bloc w-full text-xl font-semibold p-4 border-b-2 rounded-t-lg  ${
-                  activeTab === "totalPurchases"
-                    ? "border-blue-500 dark:text-gray-200"
+                className={`inline-block w-full text-xl font-semibold p-4 border-b-2 rounded-t-lg  ${
+                  activeTab === "tab2"
+                    ? "border-blue-500  dark:text-gray-200"
                     : "border-blue-200 text-gray-700 dark:border-gray-700 dark:text-gray-500"
                 } `}
                 type="button"
-                onClick={() => handleTabClick("totalPurchases")}
+                onClick={() => handleTabClick("tab2")}
               >
-                Total Purchases
+                Purchases
               </button>
             </li>
             <li className="w-1/4">
               <button
-                className={`inline-bloc w-full text-xl font-semibold p-4 border-b-2 rounded-t-lg  ${
-                  activeTab === "totalRevenue"
+                className={`inline-block w-full text-xl font-semibold p-4 border-b-2 rounded-t-lg  ${
+                  activeTab === "tab3"
                     ? "border-blue-500 dark:text-gray-200"
                     : "border-blue-200 text-gray-700 dark:border-gray-700 dark:text-gray-500"
                 } `}
                 type="button"
-                onClick={() => handleTabClick("totalRevenue")}
+                onClick={() => handleTabClick("tab3")}
               >
-                Total Revenue
+                Revenue
+              </button>
+            </li>
+            <li className="w-1/4">
+              <button
+                className={`inline-block w-full text-xl font-semibold p-4 border-b-2 rounded-t-lg  ${
+                  activeTab === "tab4"
+                    ? "border-blue-500 dark:text-gray-200"
+                    : "border-blue-200 text-gray-700 dark:border-gray-700 dark:text-gray-500"
+                } `}
+                type="button"
+                onClick={() => handleTabClick("tab4")}
+              >
+                All Data
               </button>
             </li>
           </ul>
         </div>
       </div>
-      <div className="mx-auto max-w-screen-xl  px-4 lg:px-12">
-        {activeTab === "totalSales" && <TotalSales />}
-        {activeTab === "totalPurchases" && <TotalPurchases />}
-        {activeTab === "totalRevenue" && <TotalRevenue />}
+      <div className="mx-auto max-w-screen-xl px-4">
+        <All />
       </div>
     </PageTitle>
   );
