@@ -32,6 +32,7 @@ const PurchasePage = () => {
     return {
       ...purchase,
       date: purchase.date.slice(0, 10).split("-").reverse().join(" / "),
+      total: purchase.rate * purchase.quantity,
     };
   });
   useEffect(() => {

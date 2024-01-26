@@ -19,6 +19,7 @@ import { WholeSaleProvider } from "./store/wholeSaleBillContext";
 import NotFound from "./pages/NotFound";
 import PurchasePage from "./pages/PurchasePage";
 import { PurchasesProvider } from "./store/purchaseContext";
+import Revenue from "./pages/Revenue";
 
 const App = () => {
   // Check if auth status is stored in localStorage
@@ -65,6 +66,10 @@ const App = () => {
                               element={<StockPage />}
                             ></Route>
                             <Route path="/bills" element={<BillPage />}></Route>
+                            <Route
+                              path="/revenue"
+                              element={<Revenue />}
+                            ></Route>
 
                             <Route
                               path="/clients"

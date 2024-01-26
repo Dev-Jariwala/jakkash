@@ -19,6 +19,11 @@ module.exports = {
           950: "#172554",
         },
       },
+      backgroundColor: {
+        "retail-color": "#256D85",
+        "wholesale-color": "#31304D",
+        "investment-color": "#DBCC95",
+      },
     },
     fontFamily: {
       body: [

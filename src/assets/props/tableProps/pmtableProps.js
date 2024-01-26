@@ -6,6 +6,7 @@ export const pmtableTHs = [
   "Item Description",
   "Rate",
   "Quantity",
+  "Total",
   "Actions",
 ];
 export const pmtableName = "Pruchase Table : ";
@@ -17,6 +18,7 @@ export const pmtableKeys = [
   "itemDescription",
   "rate",
   "quantity",
+  "total",
 ];
 export const pmtableHeaders = [
   "date",
@@ -25,4 +27,5 @@ export const pmtableHeaders = [
   "itemDescription",
   "rate",
   "quantity",
+  "total",
 ];
