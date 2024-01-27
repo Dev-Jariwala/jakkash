@@ -16,6 +16,7 @@ import {
   ptableHeaders,
   ptableKeys,
   ptableName,
+  ptableReport,
   ptableTHs,
 } from "../assets/props/tableProps/ptableProps";
 import EditProduct from "../components/product/EditProduct";
@@ -28,6 +29,8 @@ import { StockContext } from "../store/stockContext";
 import PageTitle from "../components/pageTemp/PageTitle";
 import Table2Wrapper from "../components/table2/Table2Wrapper";
 import TooltipItem from "../components/tooltip/ToolTipItem";
+import { PDFViewer } from "@react-pdf/renderer";
+import ExportPDF from "../components/table2/ExportPDF";
 
 const ProductPage = () => {
   const { products, setProducts, fetching } = useContext(ProductsContext);
@@ -35,6 +38,9 @@ const ProductPage = () => {
   const { setStocks } = useContext(StockContext);
   const [exportData, setExportData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [exportPDF, setExportPDF] = useState({
+    status: false,
+  });
   const focusRef = useRef(null);
   const releventProducts = [
     ...products.filter((product) => !product.muted),
@@ -81,6 +87,18 @@ const ProductPage = () => {
       focusRef.current.focus();
     }
   }, [formState.status]);
+  const onexportPDF = () => {
+    setLoading(true);
+    try {
+      setExportPDF({
+        status: true,
+      });
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const updateProducts = async () => {
     try {
@@ -303,7 +321,19 @@ const ProductPage = () => {
   return (
     <>
       {loading && <Loader1 />}
-
+      {exportPDF.status && (
+        <Modal
+          isOpen={exportPDF.status}
+          onClose={() => setExportPDF({ status: false })}
+          title={`View Retail Bill PDF:`}
+        >
+          <div className="my-3">
+            <PDFViewer width="1000" height="600">
+              <ExportPDF exportData={exportData} headers={ptableReport} />
+            </PDFViewer>
+          </div>
+        </Modal>
+      )}
       {/* Confirmation Modal for Delete */}
       {formState.status === "deleteProduct" && (
         <Modal
@@ -360,6 +390,7 @@ const ProductPage = () => {
           filters={filters}
           exportData={exportData}
           headers={ptableHeaders}
+          onexportPDF={onexportPDF}
         ></Table2Wrapper>
       </PageTitle>
     </>

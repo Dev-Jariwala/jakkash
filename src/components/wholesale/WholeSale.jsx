@@ -18,6 +18,7 @@ import {
   wbtableHeaders,
   wbtableKeys,
   wbtableName,
+  wbtableReport,
   wbtableTHs,
 } from "../../assets/props/tableProps/wbtableProps";
 import NewWholeSale from "./NewWholeSale";
@@ -26,6 +27,7 @@ import { fetchAllClients } from "../../controllers/client";
 import { ClientContext } from "../../store/clientContext";
 import Table2Wrapper from "../table2/Table2Wrapper";
 import BillPDF from "../bill-pdf/BillPDF";
+import ExportPDF from "../table2/ExportPDF";
 
 const WholeSale = () => {
   const { wholeSaleBills, setWholeSaleBills, fetching } =
@@ -51,6 +53,9 @@ const WholeSale = () => {
   const [showPDF, setShowPDF] = useState({ status: false, bill: {} });
   const [loading, setLoading] = useState(true);
   const focusRef = useRef(null);
+  const [exportPDF, setExportPDF] = useState({
+    status: false,
+  });
   const exportData = wholeSaleBills?.map((bill) => {
     return {
       ...bill,
@@ -103,7 +108,18 @@ const WholeSale = () => {
       toast.error("Error fetching retail bills");
     }
   };
-
+  const onexportPDF = () => {
+    setLoading(true);
+    try {
+      setExportPDF({
+        status: true,
+      });
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
   const onNewWholeSale = () =>
     setFormState({
       status: "newWholesale",
@@ -198,6 +214,19 @@ const WholeSale = () => {
   return (
     <>
       {loading && <Loader1 />}
+      {exportPDF.status && (
+        <Modal
+          isOpen={exportPDF.status}
+          onClose={() => setExportPDF({ status: false })}
+          title={`View Retail Bill PDF:`}
+        >
+          <div className="my-3">
+            <PDFViewer width="1000" height="600">
+              <ExportPDF exportData={exportData} headers={wbtableReport} />
+            </PDFViewer>
+          </div>
+        </Modal>
+      )}
       {showPDF.status && (
         <Modal
           isOpen={showPDF.status}
@@ -252,6 +281,7 @@ const WholeSale = () => {
         headers={wbtableHeaders}
         mainKeys={wbtableKeys}
         exportData={exportData}
+        onexportPDF={onexportPDF}
       ></Table2Wrapper>
     </>
   );

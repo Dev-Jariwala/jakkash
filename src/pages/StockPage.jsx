@@ -21,11 +21,15 @@ import Modal from "../components/modal/Modal";
 import { toast } from "react-toastify";
 import PageTitle from "../components/pageTemp/PageTitle";
 import Table2Wrapper from "../components/table2/Table2Wrapper";
+import { PDFViewer } from "@react-pdf/renderer";
+import ExportPDF from "../components/table2/ExportPDF";
 
 const StockPage = () => {
   const { stocks, setStocks, fetching } = useContext(StockContext);
   const { products, setProducts } = useContext(ProductsContext);
-
+  const [exportPDF, setExportPDF] = useState({
+    status: false,
+  });
   const [formState, setFormState] = useState({ status: "", formData: {} });
   const [loading, setLoading] = useState(true);
   const focusRef = useRef(null);
@@ -60,6 +64,18 @@ const StockPage = () => {
       focusRef.current.focus();
     }
   }, [formState.status]);
+  const onexportPDF = () => {
+    setLoading(true);
+    try {
+      setExportPDF({
+        status: true,
+      });
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
   const cleanupFunc = async () => {
     try {
       setProducts(await fetchAllProducts());
@@ -191,6 +207,19 @@ const StockPage = () => {
   return (
     <>
       {loading && <Loader1 />}
+      {exportPDF.status && (
+        <Modal
+          isOpen={exportPDF.status}
+          onClose={() => setExportPDF({ status: false })}
+          title={`View Retail Bill PDF:`}
+        >
+          <div className="my-3">
+            <PDFViewer width="1000" height="600">
+              <ExportPDF exportData={dateFixedStocks} headers={stableHeaders} />
+            </PDFViewer>
+          </div>
+        </Modal>
+      )}
       {/* Edit Stock Modal */}
       {formState.status === "editStock" && (
         <EditStock
@@ -224,6 +253,7 @@ const StockPage = () => {
           mainKeys={stableKeys}
           exportData={dateFixedStocks}
           headers={stableHeaders}
+          onexportPDF={onexportPDF}
         ></Table2Wrapper>
       </PageTitle>
     </>

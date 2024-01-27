@@ -8,6 +8,7 @@ import {
   pmtableHeaders,
   pmtableKeys,
   pmtableName,
+  pmtableReport,
   pmtableTHs,
 } from "../assets/props/tableProps/pmtableProps";
 import TooltipItem from "../components/tooltip/ToolTipItem";
@@ -22,12 +23,17 @@ import Modal from "../components/modal/Modal";
 import NewPurchase from "../components/purchase/NewPurchase";
 import EditPurchase from "../components/purchase/EditPurchase";
 import DeletePurchase from "../components/purchase/DeletePurchase";
+import { PDFViewer } from "@react-pdf/renderer";
+import ExportPDF from "../components/table2/ExportPDF";
 
 const PurchasePage = () => {
   const { purchases, setPurchases, fetching } = useContext(PurchasesContext);
   const [formState, setFormState] = useState({ status: "", formData: {} });
   const [loading, setLoading] = useState(true);
   const focusRef = useRef(null);
+  const [exportPDF, setExportPDF] = useState({
+    status: false,
+  });
   const dateFixedPurchases = purchases?.map((purchase) => {
     return {
       ...purchase,
@@ -57,7 +63,18 @@ const PurchasePage = () => {
       toast.error("Error updating purchases");
     }
   };
-
+  const onexportPDF = () => {
+    setLoading(true);
+    try {
+      setExportPDF({
+        status: true,
+      });
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
   const onNewPurchase = () =>
     setFormState({
       status: "newPurchase",
@@ -194,6 +211,22 @@ const PurchasePage = () => {
   return (
     <>
       {loading && <Loader1 />}
+      {exportPDF.status && (
+        <Modal
+          isOpen={exportPDF.status}
+          onClose={() => setExportPDF({ status: false })}
+          title={`View Retail Bill PDF:`}
+        >
+          <div className="my-3">
+            <PDFViewer width="1000" height="600">
+              <ExportPDF
+                exportData={dateFixedPurchases}
+                headers={pmtableReport}
+              />
+            </PDFViewer>
+          </div>
+        </Modal>
+      )}
       {/* Confirmation Modal for Delete */}
       {formState.status === "deletePurchase" && (
         <Modal
@@ -248,6 +281,7 @@ const PurchasePage = () => {
           ]}
           exportData={dateFixedPurchases}
           headers={pmtableHeaders}
+          onexportPDF={onexportPDF}
         ></Table2Wrapper>
       </PageTitle>
     </>

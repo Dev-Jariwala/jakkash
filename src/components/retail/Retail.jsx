@@ -5,6 +5,7 @@ import {
   rbtableHeaders,
   rbtableKeys,
   rbtableName,
+  rbtableReport,
   rbtableTHs,
 } from "../../assets/props/tableProps/rbtableProps";
 import Loader1 from "../loaders/Loader1";
@@ -26,6 +27,7 @@ import { fetchAllClients } from "../../controllers/client";
 import { ClientContext } from "../../store/clientContext";
 import Table2Wrapper from "../table2/Table2Wrapper";
 import BillPDF from "../bill-pdf/BillPDF";
+import ExportPDF from "../table2/ExportPDF";
 
 const Retail = () => {
   const { retailBills, setRetailBIlls, fetching } =
@@ -51,6 +53,9 @@ const Retail = () => {
   const [showPDF, setShowPDF] = useState({ status: false, bill: {} });
   const [loading, setLoading] = useState(true);
   const focusRef = useRef(null);
+  const [exportPDF, setExportPDF] = useState({
+    status: false,
+  });
   const exportData = retailBills?.map((bill) => {
     return {
       ...bill,
@@ -104,7 +109,18 @@ const Retail = () => {
       toast.error("Error fetching retail bills");
     }
   };
-
+  const onexportPDF = () => {
+    setLoading(true);
+    try {
+      setExportPDF({
+        status: true,
+      });
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
   const onNewRetail = () =>
     setFormState({
       status: "newRetail",
@@ -199,6 +215,19 @@ const Retail = () => {
   return (
     <>
       {loading && <Loader1 />}
+      {exportPDF.status && (
+        <Modal
+          isOpen={exportPDF.status}
+          onClose={() => setExportPDF({ status: false })}
+          title={`View Retail Bill PDF:`}
+        >
+          <div className="my-3">
+            <PDFViewer width="1000" height="600">
+              <ExportPDF exportData={exportData} headers={rbtableReport} />
+            </PDFViewer>
+          </div>
+        </Modal>
+      )}
       {showPDF.status && (
         <Modal
           isOpen={showPDF.status}
@@ -253,6 +282,7 @@ const Retail = () => {
         headers={rbtableHeaders}
         mainKeys={rbtableKeys}
         exportData={exportData}
+        onexportPDF={onexportPDF}
       ></Table2Wrapper>
     </>
   );
