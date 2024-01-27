@@ -4,6 +4,14 @@ import All from "../components/revenue/All";
 
 const Revenue = () => {
   const [activeTab, setActiveTab] = useState("tab1");
+  const tabClassName = (tab) =>
+    `inline-block w-full text-xl font-semibold p-4 border-b-2 rounded-t-lg button-transition ${
+      activeTab === tab
+        ? "border-blue-500 dark:text-gray-200"
+        : "border-blue-200 text-gray-700 dark:border-gray-700 dark:text-gray-500"
+    }`;
+
+  // ...
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
@@ -57,11 +65,7 @@ const Revenue = () => {
           <ul className="flex flex-wrap -mb-px text-sm font-medium text-center">
             <li className="w-1/4">
               <button
-                className={`inline-block w-full text-xl font-semibold p-4 border-b-2 rounded-t-lg  ${
-                  activeTab === "tab1"
-                    ? "border-blue-500  dark:text-gray-200"
-                    : "border-blue-200 text-gray-700 dark:border-gray-700 dark:text-gray-500"
-                } `}
+                className={tabClassName("tab1")}
                 type="button"
                 onClick={() => handleTabClick("tab1")}
               >
@@ -70,11 +74,7 @@ const Revenue = () => {
             </li>
             <li className="w-1/4">
               <button
-                className={`inline-block w-full text-xl font-semibold p-4 border-b-2 rounded-t-lg  ${
-                  activeTab === "tab2"
-                    ? "border-blue-500  dark:text-gray-200"
-                    : "border-blue-200 text-gray-700 dark:border-gray-700 dark:text-gray-500"
-                } `}
+                className={tabClassName("tab2")}
                 type="button"
                 onClick={() => handleTabClick("tab2")}
               >
@@ -83,11 +83,7 @@ const Revenue = () => {
             </li>
             <li className="w-1/4">
               <button
-                className={`inline-block w-full text-xl font-semibold p-4 border-b-2 rounded-t-lg  ${
-                  activeTab === "tab3"
-                    ? "border-blue-500 dark:text-gray-200"
-                    : "border-blue-200 text-gray-700 dark:border-gray-700 dark:text-gray-500"
-                } `}
+                className={tabClassName("tab3")}
                 type="button"
                 onClick={() => handleTabClick("tab3")}
               >
@@ -96,11 +92,7 @@ const Revenue = () => {
             </li>
             <li className="w-1/4">
               <button
-                className={`inline-block w-full text-xl font-semibold p-4 border-b-2 rounded-t-lg  ${
-                  activeTab === "tab4"
-                    ? "border-blue-500 dark:text-gray-200"
-                    : "border-blue-200 text-gray-700 dark:border-gray-700 dark:text-gray-500"
-                } `}
+                className={tabClassName("tab4")}
                 type="button"
                 onClick={() => handleTabClick("tab4")}
               >

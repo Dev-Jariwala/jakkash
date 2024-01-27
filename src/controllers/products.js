@@ -11,6 +11,16 @@ export async function fetchAllProducts() {
     throw error;
   }
 }
+// Fetch all products
+export async function getProductSales() {
+  try {
+    const response = await axios.get(`${BACKEND_URL}product/productSales`);
+    return response.data.productSalesData;
+  } catch (error) {
+    console.error("Error fetching productsales:", error);
+    throw error;
+  }
+}
 
 // Create a new product
 export async function productCreate(formData) {

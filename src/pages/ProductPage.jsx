@@ -4,6 +4,7 @@ import Loader1 from "../components/loaders/Loader1";
 import {
   fetchAllProducts,
   fetchProductDetails,
+  getProductSales,
   productCreate,
   productDelete,
   productUpdate,
@@ -32,6 +33,7 @@ const ProductPage = () => {
   const { products, setProducts, fetching } = useContext(ProductsContext);
   const [formState, setFormState] = useState({ status: "", formData: {} });
   const { setStocks } = useContext(StockContext);
+  const [exportData, setExportData] = useState([]);
   const [loading, setLoading] = useState(true);
   const focusRef = useRef(null);
   const releventProducts = [
@@ -46,6 +48,33 @@ const ProductPage = () => {
       setLoading(false);
     }
   }, [fetching]);
+  useEffect(() => {
+    async function fetchProductSales() {
+      setLoading(true);
+      try {
+        const res = await getProductSales();
+        const exportReadyData = products.map((prod) => {
+          const existproduct = res.find(
+            (product) => product.productId === prod._id
+          );
+          if (!existproduct) {
+            prod.retailSale = 0;
+            prod.wholesaleSale = 0;
+          } else {
+            prod.retailSale = existproduct.retail;
+            prod.wholesaleSale = existproduct.wholesale;
+          }
+          return prod;
+        });
+        setExportData(exportReadyData);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchProductSales();
+  }, [products]);
   useEffect(() => {
     // Set focus on the "Delete" button when the delete modal opens
     if (focusRef.current) {
@@ -329,7 +358,7 @@ const ProductPage = () => {
           actions={actions}
           mainKeys={ptableKeys}
           filters={filters}
-          exportData={products}
+          exportData={exportData}
           headers={ptableHeaders}
         ></Table2Wrapper>
       </PageTitle>

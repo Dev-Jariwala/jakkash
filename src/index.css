@@ -85,5 +85,5 @@ input::-webkit-inner-spin-button {
   margin: 0;
 }
 .button-transition {
-  transition: border-color 0.3s ease; /* Adjust the duration and timing function as needed */
+  transition: border-color 1s ease; /* Adjust the duration and timing function as needed */
 }
