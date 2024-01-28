@@ -215,13 +215,14 @@ const PurchasePage = () => {
         <Modal
           isOpen={exportPDF.status}
           onClose={() => setExportPDF({ status: false })}
-          title={`View Retail Bill PDF:`}
+          title={`Purchase Report PDF:`}
         >
           <div className="my-3">
             <PDFViewer width="1000" height="600">
               <ExportPDF
                 exportData={dateFixedPurchases}
                 headers={pmtableReport}
+                title={"PURCHASE REPORT"}
               />
             </PDFViewer>
           </div>

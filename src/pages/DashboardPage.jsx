@@ -6,6 +6,7 @@ import { StockContext } from "../store/stockContext";
 import { RetailBillContext } from "../store/retailBillContext";
 import { ClientContext } from "../store/clientContext";
 import { PurchasesContext } from "../store/purchaseContext";
+
 const DashboardPage = () => {
   const { collections } = useContext(CollectionContext);
   const { products } = useContext(ProductsContext);
@@ -13,6 +14,7 @@ const DashboardPage = () => {
   const { retailBills } = useContext(RetailBillContext);
   const { clients } = useContext(ClientContext);
   const { purchases } = useContext(PurchasesContext);
+
   return (
     <>
       <div className="page">

@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const ExportPDF = ({ exportData, headers }) => {
+const ExportPDF = ({ exportData, headers, title }) => {
   console.log(exportData);
   console.log(headers);
   return (
@@ -109,6 +109,16 @@ const ExportPDF = ({ exportData, headers }) => {
         <Page size="A4" style={styles.page}>
           <View style={styles.billContainer}>
             <View>
+              <Text
+                style={{
+                  textAlign: "center",
+                  marginBottom: "20px",
+                  fontWeight: "bold",
+                  fontSize: "22px",
+                }}
+              >
+                {title}
+              </Text>
               <View style={styles.table}>
                 {/* Table Header */}
                 <View style={styles.tHead}>

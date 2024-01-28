@@ -218,11 +218,15 @@ const WholeSale = () => {
         <Modal
           isOpen={exportPDF.status}
           onClose={() => setExportPDF({ status: false })}
-          title={`View Retail Bill PDF:`}
+          title={`Wholesale Report PDF:`}
         >
           <div className="my-3">
             <PDFViewer width="1000" height="600">
-              <ExportPDF exportData={exportData} headers={wbtableReport} />
+              <ExportPDF
+                exportData={exportData}
+                headers={wbtableReport}
+                title={"WHOLESALE REPORT"}
+              />
             </PDFViewer>
           </div>
         </Modal>

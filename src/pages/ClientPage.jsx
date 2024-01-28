@@ -57,11 +57,15 @@ const ClientPage = () => {
         <Modal
           isOpen={exportPDF.status}
           onClose={() => setExportPDF({ status: false })}
-          title={`View Retail Bill PDF:`}
+          title={`Client Report PDF:`}
         >
           <div className="my-3">
             <PDFViewer width="1000" height="600">
-              <ExportPDF exportData={clients} headers={cltableReport} />
+              <ExportPDF
+                exportData={clients}
+                headers={cltableReport}
+                title={"CLIENT REPORT"}
+              />
             </PDFViewer>
           </div>
         </Modal>

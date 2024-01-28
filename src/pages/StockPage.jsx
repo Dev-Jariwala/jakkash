@@ -211,11 +211,15 @@ const StockPage = () => {
         <Modal
           isOpen={exportPDF.status}
           onClose={() => setExportPDF({ status: false })}
-          title={`View Retail Bill PDF:`}
+          title={`Stock Report PDF:`}
         >
           <div className="my-3">
             <PDFViewer width="1000" height="600">
-              <ExportPDF exportData={dateFixedStocks} headers={stableHeaders} />
+              <ExportPDF
+                exportData={dateFixedStocks}
+                headers={stableHeaders}
+                title={"STOCK REPORT"}
+              />
             </PDFViewer>
           </div>
         </Modal>

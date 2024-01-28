@@ -219,11 +219,15 @@ const Retail = () => {
         <Modal
           isOpen={exportPDF.status}
           onClose={() => setExportPDF({ status: false })}
-          title={`View Retail Bill PDF:`}
+          title={`Retail Report PDF:`}
         >
           <div className="my-3">
             <PDFViewer width="1000" height="600">
-              <ExportPDF exportData={exportData} headers={rbtableReport} />
+              <ExportPDF
+                exportData={exportData}
+                headers={rbtableReport}
+                title={"RETAIL REPORT"}
+              />
             </PDFViewer>
           </div>
         </Modal>
