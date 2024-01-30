@@ -1,6 +1,4 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-
-import TableWrapper from "../components/table/TableWrapper";
 import { ClientContext } from "../store/clientContext";
 import {
   cltableBtn,

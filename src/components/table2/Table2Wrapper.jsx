@@ -1,12 +1,10 @@
-import React, { Fragment, useContext, useEffect, useState } from "react";
+import React, { Fragment, useContext, useState } from "react";
 import Table from "./Table";
 import Pagination from "./Pagination";
 import { CollectionContext } from "../../store/collectionContext";
 import Table2Features from "./Table2Features";
 import { CSVLink } from "react-csv";
-import { Tooltip } from "react-tooltip";
 import TooltipItem from "../tooltip/ToolTipItem";
-import { Link } from "react-router-dom";
 import { Menu, Transition } from "@headlessui/react";
 
 const Table2Wrapper = ({
@@ -29,7 +27,6 @@ const Table2Wrapper = ({
   const [searchQuery, setSearchQuery] = useState("");
   const [pageSize, setPageSize] = useState(5);
   const [selectedFilters, setSelectedFilters] = useState([]);
-  const [expoDrop, setExpoDrop] = useState(false);
   const filteredRows = rows?.filter((row) =>
     Object.values(row).some((value) =>
       String(value).toLowerCase().includes(searchQuery.toLowerCase())

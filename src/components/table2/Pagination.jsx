@@ -43,6 +43,7 @@ const Pagination = ({
           </p>
         </div>
         <div className="flex items-center">
+          {/* go to page */}
           {/* <div className="flex items-center">
             <input
               className="block w-20 py-2 px-2 text-gray-900 border border-gray-300 rounded-lg mr-1 bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
