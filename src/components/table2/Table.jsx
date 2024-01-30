@@ -18,7 +18,7 @@ const Table = ({
             <tr>
               {ths &&
                 ths.map((th, index) => (
-                  <th scope="col" className="px-4 py-3" key={index}>
+                  <th scope="col" className="px-4 py-3 " key={index}>
                     {th}
                   </th>
                 ))}

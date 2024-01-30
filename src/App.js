@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import SideMenu from "./components/sidemenu/SideMenu";
-import { Route, Routes, BrowserRouter } from "react-router-dom";
+import { Route, Routes, BrowserRouter, Link } from "react-router-dom";
 import sidemenuProps from "./assets/props/sidemenuProps";
 import ProductPage from "./pages/ProductPage";
 import CollectionPage from "./pages/CollectionPage";
@@ -20,6 +20,7 @@ import NotFound from "./pages/NotFound";
 import PurchasePage from "./pages/PurchasePage";
 import { PurchasesProvider } from "./store/purchaseContext";
 import Revenue from "./pages/Revenue";
+import { toast } from "react-toastify";
 
 const App = () => {
   // Check if auth status is stored in localStorage
@@ -103,7 +104,7 @@ const App = () => {
                             <Routes>
                               <Route
                                 path="/"
-                                element={<DashboardPage />}
+                                element={<DashboardPage setAuth={setAuth} />}
                               ></Route>
                               <Route
                                 path="/products"

@@ -61,12 +61,12 @@ const WholeSale = () => {
   const exportData = wholeSaleBills?.map((bill) => {
     return {
       ...bill,
-      orderDate: bill.orderDate.slice(0, 10).split("-").reverse().join(" / "),
+      orderDate: bill.orderDate.slice(0, 10).split("-").reverse().join("/"),
       deliveryDate: bill.deliveryDate
         .slice(0, 10)
         .split("-")
         .reverse()
-        .join(" / "),
+        .join("/"),
     };
   });
   const dateFixedBills = exportData?.map((bill) => {

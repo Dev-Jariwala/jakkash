@@ -6,8 +6,9 @@ import { StockContext } from "../store/stockContext";
 import { RetailBillContext } from "../store/retailBillContext";
 import { ClientContext } from "../store/clientContext";
 import { PurchasesContext } from "../store/purchaseContext";
+import { toast } from "react-toastify";
 
-const DashboardPage = () => {
+const DashboardPage = ({ setAuth }) => {
   const { collections } = useContext(CollectionContext);
   const { products } = useContext(ProductsContext);
   const { stocks } = useContext(StockContext);
@@ -80,6 +81,15 @@ const DashboardPage = () => {
               stat={1}
               link={"revenue"}
             ></StatCard>
+            {/* <button
+              className="bg-blue-500 text-white px-3 py-2  mb-5"
+              onClick={() => {
+                setAuth(false);
+                toast.success("Loged out!");
+              }}
+            >
+              <span className="text nav-text">Logout</span>
+            </button> */}
           </div>
         </div>
       </div>
