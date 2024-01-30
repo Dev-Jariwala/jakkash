@@ -3,11 +3,15 @@ import { ProductsContext } from "../../store/productContext";
 import { toast } from "react-toastify";
 import { ClientContext } from "../../store/clientContext";
 import { preventScrollInNumber } from "../../assets/helper";
+import { fetchAllStocks, stockCreate } from "../../controllers/stock";
+import { fetchAllProducts } from "../../controllers/products";
+import { StockContext } from "../../store/stockContext";
 
 const NewWholeSale = forwardRef(
   ({ formState, setFormState, onSubmit }, ref) => {
     let formData = formState.formData;
-    const { products } = useContext(ProductsContext);
+    const { products, setProducts } = useContext(ProductsContext);
+    const { setStocks } = useContext(StockContext);
     const { clients } = useContext(ClientContext);
     const unMutedProducts = products?.filter(
       (product) => !product.muted && product.wholesalePrice > 0
@@ -70,13 +74,29 @@ const NewWholeSale = forwardRef(
             {/* Mobile No. */}
             <div className="relative z-0 w-full mb-5 group">
               <input
-                type="number"
+                id="nw-mobile"
+                type="tel"
+                // maxLength={"10"}
+                minLength={"10"}
                 onFocus={preventScrollInNumber}
                 className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                 placeholder=" "
                 ref={ref}
                 value={formData.mobileNumber}
-                onChange={(e) =>
+                onChange={(e) => {
+                  if (
+                    e.target.value.length < 10 &&
+                    e.target.value.length >= 0
+                  ) {
+                    document.getElementById("nw-mobile").style.borderColor =
+                      "red";
+                  } else {
+                    document.getElementById("nw-mobile").style.borderColor =
+                      "green";
+                  }
+                  if (e.target.value.length > 10) {
+                    return alert("Max 10 Digit Allowed!");
+                  }
                   setFormState((prev) => {
                     return {
                       ...prev,
@@ -88,8 +108,8 @@ const NewWholeSale = forwardRef(
                             : "",
                       },
                     };
-                  })
-                }
+                  });
+                }}
                 required
               />
               <label className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
@@ -215,19 +235,66 @@ const NewWholeSale = forwardRef(
                 </tr>
               </thead>
               <tbody>
-                {unMutedProducts.map((prod) => {
+                {unMutedProducts.map((prod, indexOfProd) => {
                   return (
                     <tr
                       key={prod._id}
                       className="border-b dark:border-gray-700"
                     >
                       <td className="px-4 py-3">
-                        <input
-                          type="text"
-                          className="block w-full p-2 text-black font-semibold opacity-50 border-2 border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                          value={prod.productName}
-                          disabled
-                        />
+                        <div className="flex">
+                          <button
+                            disabled
+                            className="block w-full p-2 text-black font-semibold opacity-50 border-2 border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                          >
+                            {prod.productName}
+                          </button>
+                          {/* Add Stock Button */}
+
+                          <button
+                            tabIndex={`-1`}
+                            className="block w-10 p-1 ml-1 text-black font-semibold border-2 border-gray-300 rounded-lg bg-gray-100  sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            onClick={async (e) => {
+                              e.preventDefault();
+
+                              const addStock = Number(
+                                prompt(`Add Stock in "${prod.productName}": `)
+                              );
+
+                              try {
+                                if (
+                                  !addStock ||
+                                  isNaN(addStock) ||
+                                  addStock < 0
+                                ) {
+                                  return toast.warn("Invalid stock value!");
+                                } else {
+                                  await toast.promise(
+                                    stockCreate(prod._id, {
+                                      productId: prod._id,
+                                      productName: prod.productName,
+                                      addStock: Number(addStock),
+                                    }),
+                                    {
+                                      pending: "Adding Stock...",
+                                      success: "Stock added successfully! 👌",
+                                      error:
+                                        "Error adding Stock. Please try again. 🤯",
+                                    }
+                                  );
+
+                                  setProducts(await fetchAllProducts());
+                                  setStocks(await fetchAllStocks());
+                                }
+                              } catch (error) {
+                                console.log(error);
+                                throw error;
+                              }
+                            }}
+                          >
+                            +
+                          </button>
+                        </div>
                       </td>
                       <td className="px-4 py-3">
                         {" "}
@@ -267,6 +334,7 @@ const NewWholeSale = forwardRef(
                       <td className="px-4 py-3">
                         {prod.stock > 0 ? (
                           <input
+                            id={`nw-qty-${indexOfProd}`}
                             type="number"
                             onFocus={(e) =>
                               e.target.addEventListener(
