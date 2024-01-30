@@ -1,6 +1,7 @@
 import React, { forwardRef, useContext, useState } from "react";
 import { ProductsContext } from "../../store/productContext";
 import { toast } from "react-toastify";
+import { preventScrollInNumber } from "../../assets/helper";
 
 const EditRetail = forwardRef(({ formData, setFormState, onSubmit }, ref) => {
   const { products } = useContext(ProductsContext);
@@ -39,6 +40,15 @@ const EditRetail = forwardRef(({ formData, setFormState, onSubmit }, ref) => {
           <div className="relative z-0 w-full mb-5 group">
             <input
               type="number"
+              onFocus={(e) =>
+                e.target.addEventListener(
+                  "wheel",
+                  function (e) {
+                    e.preventDefault();
+                  },
+                  { passive: false }
+                )
+              }
               className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
               placeholder=" "
               ref={ref}
@@ -203,6 +213,15 @@ const EditRetail = forwardRef(({ formData, setFormState, onSubmit }, ref) => {
                       {" "}
                       <input
                         type="number"
+                        onFocus={(e) =>
+                          e.target.addEventListener(
+                            "wheel",
+                            function (e) {
+                              e.preventDefault();
+                            },
+                            { passive: false }
+                          )
+                        }
                         className="block w-full p-2 text-black font-semibold opacity-50 border-2 border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         value={prod.stock}
                         disabled
@@ -211,6 +230,15 @@ const EditRetail = forwardRef(({ formData, setFormState, onSubmit }, ref) => {
                     <td className="px-4 py-3">
                       <input
                         type="number"
+                        onFocus={(e) =>
+                          e.target.addEventListener(
+                            "wheel",
+                            function (e) {
+                              e.preventDefault();
+                            },
+                            { passive: false }
+                          )
+                        }
                         className="block w-full p-2 text-black font-semibold opacity-50 border-2 border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         value={prod.retailPrice}
                         disabled
@@ -228,6 +256,15 @@ const EditRetail = forwardRef(({ formData, setFormState, onSubmit }, ref) => {
                       ) : (
                         <input
                           type="number"
+                          onFocus={(e) =>
+                            e.target.addEventListener(
+                              "wheel",
+                              function (e) {
+                                e.preventDefault();
+                              },
+                              { passive: false }
+                            )
+                          }
                           placeholder="Qty"
                           value={currProduct[0]?.quantity}
                           className="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -302,6 +339,15 @@ const EditRetail = forwardRef(({ formData, setFormState, onSubmit }, ref) => {
                       {" "}
                       <input
                         type="number"
+                        onFocus={(e) =>
+                          e.target.addEventListener(
+                            "wheel",
+                            function (e) {
+                              e.preventDefault();
+                            },
+                            { passive: false }
+                          )
+                        }
                         className="block w-full p-2 text-black font-semibold opacity-50 border-2 border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         placeholder="Total"
                         value={
@@ -350,6 +396,15 @@ const EditRetail = forwardRef(({ formData, setFormState, onSubmit }, ref) => {
                     Total Firki
                     <input
                       type="number"
+                      onFocus={(e) =>
+                        e.target.addEventListener(
+                          "wheel",
+                          function (e) {
+                            e.preventDefault();
+                          },
+                          { passive: false }
+                        )
+                      }
                       className="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       value={formData.totalFirki}
                       onChange={(e) => {
@@ -375,6 +430,15 @@ const EditRetail = forwardRef(({ formData, setFormState, onSubmit }, ref) => {
                     Sub Total
                     <input
                       type="number"
+                      onFocus={(e) =>
+                        e.target.addEventListener(
+                          "wheel",
+                          function (e) {
+                            e.preventDefault();
+                          },
+                          { passive: false }
+                        )
+                      }
                       className="block w-full p-2 text-black font-semibold opacity-50 border-2 border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       value={formData.subTotal}
                       disabled
@@ -388,11 +452,19 @@ const EditRetail = forwardRef(({ formData, setFormState, onSubmit }, ref) => {
                 <td className="px-4 py-3"></td>
                 <td className="px-4 py-3"></td>
                 <td className="px-4 py-3">
-                  {" "}
                   <label>
                     Discount
                     <input
                       type="number"
+                      onFocus={(e) =>
+                        e.target.addEventListener(
+                          "wheel",
+                          function (e) {
+                            e.preventDefault();
+                          },
+                          { passive: false }
+                        )
+                      }
                       className="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       value={formData.discount}
                       onChange={(e) => {
@@ -407,25 +479,36 @@ const EditRetail = forwardRef(({ formData, setFormState, onSubmit }, ref) => {
                             parseFloat(e.target.value) >= 0
                               ? parseFloat(e.target.value)
                               : "";
+
+                          // Ensure discount is not greater than available amount
+                          const maxDiscount =
+                            constSubTotal -
+                            prev.formData.advance -
+                            prev.formData.paid;
+
+                          const validDiscount =
+                            enteredDiscount <= maxDiscount
+                              ? enteredDiscount
+                              : maxDiscount;
+
                           return {
                             ...prev,
                             formData: {
                               ...prev.formData,
-                              discount:
-                                enteredDiscount + prev.formData.advance <=
-                                constSubTotal
-                                  ? enteredDiscount
-                                  : constSubTotal - prev.formData.advance,
+                              discount: validDiscount,
 
+                              // Adjust totalDue considering the entered discount
                               totalDue:
                                 constSubTotal -
-                                  enteredDiscount -
-                                  prev.formData.advance <
+                                  validDiscount -
+                                  prev.formData.advance -
+                                  prev.formData.paid >=
                                 0
-                                  ? 0
-                                  : constSubTotal -
+                                  ? constSubTotal -
+                                    validDiscount -
                                     prev.formData.advance -
-                                    enteredDiscount,
+                                    prev.formData.paid
+                                  : 0,
                             },
                           };
                         });
@@ -445,10 +528,81 @@ const EditRetail = forwardRef(({ formData, setFormState, onSubmit }, ref) => {
                     Advance
                     <input
                       type="number"
+                      onFocus={(e) =>
+                        e.target.addEventListener(
+                          "wheel",
+                          function (e) {
+                            e.preventDefault();
+                          },
+                          { passive: false }
+                        )
+                      }
                       className="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       value={formData.advance}
                       onChange={(e) => {
                         const enteredAdvance =
+                          parseInt(e.target.value) >= 0
+                            ? parseInt(e.target.value)
+                            : "";
+
+                        // Ensure advance is not greater than available amount
+                        const maxAdvance =
+                          formData.subTotal - formData.discount - formData.paid;
+
+                        const validAdvance =
+                          enteredAdvance <= maxAdvance
+                            ? enteredAdvance
+                            : maxAdvance;
+
+                        setFormState((prev) => {
+                          return {
+                            ...prev,
+                            formData: {
+                              ...prev.formData,
+                              advance: validAdvance,
+                              totalDue:
+                                formData.subTotal -
+                                  formData.discount -
+                                  validAdvance -
+                                  formData.paid >=
+                                0
+                                  ? formData.subTotal -
+                                    formData.discount -
+                                    validAdvance -
+                                    formData.paid
+                                  : 0,
+                            },
+                          };
+                        });
+                      }}
+                      required
+                    />
+                  </label>
+                </td>
+              </tr>
+              <tr>
+                <td className="px-4 py-3"></td>
+                <td className="px-4 py-3"></td>
+                <td className="px-4 py-3"></td>
+                <td className="px-4 py-3"></td>
+                <td className="px-4 py-3">
+                  <label>
+                    Paid
+                    <input
+                      type="number"
+                      onFocus={(e) =>
+                        e.target.addEventListener(
+                          "wheel",
+                          function (e) {
+                            e.preventDefault();
+                          },
+                          { passive: false }
+                        )
+                      }
+                      className="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      value={formData.paid}
+                      onChange={(e) => {
+                        const enteredPaid =
                           parseInt(e.target.value) >= 0
                             ? parseInt(e.target.value)
                             : "";
@@ -457,19 +611,26 @@ const EditRetail = forwardRef(({ formData, setFormState, onSubmit }, ref) => {
                             ...prev,
                             formData: {
                               ...prev.formData,
-                              advance:
-                                enteredAdvance + prev.formData.discount <=
-                                prev.formData.subTotal
-                                  ? enteredAdvance
-                                  : prev.formData.subTotal -
-                                    prev.formData.discount,
-                              totalDue:
-                                enteredAdvance + prev.formData.discount >=
-                                prev.formData.subTotal
-                                  ? 0
+                              paid:
+                                enteredPaid <=
+                                prev.formData.subTotal -
+                                  prev.formData.discount -
+                                  prev.formData.advance
+                                  ? enteredPaid
                                   : prev.formData.subTotal -
                                     prev.formData.discount -
-                                    enteredAdvance,
+                                    prev.formData.advance,
+                              totalDue:
+                                prev.formData.subTotal -
+                                  prev.formData.discount -
+                                  prev.formData.advance -
+                                  enteredPaid >=
+                                0
+                                  ? prev.formData.subTotal -
+                                    prev.formData.discount -
+                                    prev.formData.advance -
+                                    enteredPaid
+                                  : 0,
                             },
                           };
                         });
@@ -490,6 +651,15 @@ const EditRetail = forwardRef(({ formData, setFormState, onSubmit }, ref) => {
                     <input
                       className="block w-full p-2 text-black font-semibold border-2 opacity-50 border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       type="number"
+                      onFocus={(e) =>
+                        e.target.addEventListener(
+                          "wheel",
+                          function (e) {
+                            e.preventDefault();
+                          },
+                          { passive: false }
+                        )
+                      }
                       value={formData.totalDue}
                       disabled
                       // required

@@ -33,7 +33,7 @@ export const pmtableReport = [
   { label: "Date", key: "date" },
   { label: "Invoice No", key: "invoiceNo" },
   { label: "Supplier Name", key: "supplierName" },
-  { label: "Item Description", key: "itemDescription" },
+  { label: "Description", key: "itemDescription" },
   { label: "Rate", key: "rate" },
   { label: "Quantity", key: "quantity" },
   { label: "Total", key: "total" },

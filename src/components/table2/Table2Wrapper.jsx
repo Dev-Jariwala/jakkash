@@ -41,6 +41,7 @@ const Table2Wrapper = ({
   const indexOfFirstRow = indexOfLastRow - PAGE_SIZE;
 
   const currentRows = filteredRows?.slice(indexOfFirstRow, indexOfLastRow);
+
   return (
     <div className="mx-auto mt-5 max-w-screen-xl px-4 lg:px-12">
       {/* Start coding here */}

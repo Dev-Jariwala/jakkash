@@ -18,3 +18,12 @@ export function convertToReadableDate(dateTimeString) {
 
   return `${formattedDate}`;
 }
+export function preventScrollInNumber(e) {
+  e.target.addEventListener(
+    "wheel",
+    function (e) {
+      e.preventDefault();
+    },
+    { passive: false }
+  );
+}

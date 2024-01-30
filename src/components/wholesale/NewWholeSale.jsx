@@ -2,6 +2,7 @@ import React, { forwardRef, useContext, useEffect } from "react";
 import { ProductsContext } from "../../store/productContext";
 import { toast } from "react-toastify";
 import { ClientContext } from "../../store/clientContext";
+import { preventScrollInNumber } from "../../assets/helper";
 
 const NewWholeSale = forwardRef(
   ({ formState, setFormState, onSubmit }, ref) => {
@@ -70,6 +71,7 @@ const NewWholeSale = forwardRef(
             <div className="relative z-0 w-full mb-5 group">
               <input
                 type="number"
+                onFocus={preventScrollInNumber}
                 className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                 placeholder=" "
                 ref={ref}
@@ -231,6 +233,15 @@ const NewWholeSale = forwardRef(
                         {" "}
                         <input
                           type="number"
+                          onFocus={(e) =>
+                            e.target.addEventListener(
+                              "wheel",
+                              function (e) {
+                                e.preventDefault();
+                              },
+                              { passive: false }
+                            )
+                          }
                           className="block w-full p-2 text-black font-semibold opacity-50 border-2 border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                           value={prod.stock}
                           disabled
@@ -239,6 +250,15 @@ const NewWholeSale = forwardRef(
                       <td className="px-4 py-3">
                         <input
                           type="number"
+                          onFocus={(e) =>
+                            e.target.addEventListener(
+                              "wheel",
+                              function (e) {
+                                e.preventDefault();
+                              },
+                              { passive: false }
+                            )
+                          }
                           className="block w-full p-2 text-black font-semibold opacity-50 border-2 border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                           value={prod.wholesalePrice}
                           disabled
@@ -248,6 +268,15 @@ const NewWholeSale = forwardRef(
                         {prod.stock > 0 ? (
                           <input
                             type="number"
+                            onFocus={(e) =>
+                              e.target.addEventListener(
+                                "wheel",
+                                function (e) {
+                                  e.preventDefault();
+                                },
+                                { passive: false }
+                              )
+                            }
                             placeholder="Qty"
                             className="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             value={
@@ -327,6 +356,15 @@ const NewWholeSale = forwardRef(
                         {" "}
                         <input
                           type="number"
+                          onFocus={(e) =>
+                            e.target.addEventListener(
+                              "wheel",
+                              function (e) {
+                                e.preventDefault();
+                              },
+                              { passive: false }
+                            )
+                          }
                           className="block w-full p-2 text-black font-semibold opacity-50 border-2 border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                           placeholder="Total"
                           value={
@@ -380,6 +418,15 @@ const NewWholeSale = forwardRef(
                       <input
                         className="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         type="number"
+                        onFocus={(e) =>
+                          e.target.addEventListener(
+                            "wheel",
+                            function (e) {
+                              e.preventDefault();
+                            },
+                            { passive: false }
+                          )
+                        }
                         value={formData.totalFirki}
                         onChange={(e) => {
                           setFormState((prev) => {
@@ -405,6 +452,15 @@ const NewWholeSale = forwardRef(
                       <input
                         className="block w-full p-2 text-black font-semibold opacity-50 border-2 border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         type="number"
+                        onFocus={(e) =>
+                          e.target.addEventListener(
+                            "wheel",
+                            function (e) {
+                              e.preventDefault();
+                            },
+                            { passive: false }
+                          )
+                        }
                         value={formData.subTotal}
                         disabled
                       />
@@ -423,6 +479,15 @@ const NewWholeSale = forwardRef(
                       <input
                         className="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         type="number"
+                        onFocus={(e) =>
+                          e.target.addEventListener(
+                            "wheel",
+                            function (e) {
+                              e.preventDefault();
+                            },
+                            { passive: false }
+                          )
+                        }
                         value={formData.discount}
                         onChange={(e) => {
                           setFormState((prev) => {
@@ -475,6 +540,15 @@ const NewWholeSale = forwardRef(
                       <input
                         className="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         type="number"
+                        onFocus={(e) =>
+                          e.target.addEventListener(
+                            "wheel",
+                            function (e) {
+                              e.preventDefault();
+                            },
+                            { passive: false }
+                          )
+                        }
                         value={formData.advance}
                         onChange={(e) => {
                           const enteredAdvance =
@@ -519,6 +593,15 @@ const NewWholeSale = forwardRef(
                       <input
                         className="block w-full p-2 text-black font-semibold border-2 opacity-50 border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         type="number"
+                        onFocus={(e) =>
+                          e.target.addEventListener(
+                            "wheel",
+                            function (e) {
+                              e.preventDefault();
+                            },
+                            { passive: false }
+                          )
+                        }
                         value={formData.totalDue}
                         disabled
                         // required

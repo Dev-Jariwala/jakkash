@@ -1,4 +1,5 @@
 import React from "react";
+import { preventScrollInNumber } from "../../assets/helper";
 
 const Pagination = ({
   setCurrentPage,
@@ -56,6 +57,15 @@ const Pagination = ({
       <div className="page-go">
         <input
           type="number"
+          onFocus={(e) =>
+            e.target.addEventListener(
+              "wheel",
+              function (e) {
+                e.preventDefault();
+              },
+              { passive: false }
+            )
+          }
           placeholder="Page No."
           onChange={(e) => setGoto(Number(e.target.value))}
           min="1"
