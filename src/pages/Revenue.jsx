@@ -28,7 +28,7 @@ const Revenue = () => {
     };
     handleRevenueClick();
   }, []);
-  const [activeTab, setActiveTab] = useState("tab1");
+  const [activeTab, setActiveTab] = useState("tab4");
   const tabClassName = (tab) =>
     `inline-block w-full text-xl font-semibold p-4 border-b-2 rounded-t-lg button-transition ${
       activeTab === tab
@@ -38,49 +38,12 @@ const Revenue = () => {
 
   // ...
 
-  const handleTabClick = (tab) => {
-    setActiveTab(tab);
-    scrollToTab(tab);
-  };
-
   const scrollToTab = (tab) => {
     const tabElement = document.getElementById(tab);
     if (tabElement) {
       tabElement.scrollIntoView({ behavior: "smooth" });
     }
   };
-  useEffect(() => {
-    const tabs = ["tab1", "tab2", "tab3", "tab4"];
-
-    const handleIntersection = (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          setActiveTab(entry.target.id);
-        }
-      });
-    };
-
-    const observer = new IntersectionObserver(handleIntersection, {
-      threshold: 0.5, // Adjust the threshold based on your needs
-    });
-
-    tabs.forEach((tab) => {
-      const tabElement = document.getElementById(tab);
-      if (tabElement) {
-        observer.observe(tabElement);
-      }
-    });
-
-    // Clean up the observer on component unmount
-    return () => {
-      tabs.forEach((tab) => {
-        const tabElement = document.getElementById(tab);
-        if (tabElement) {
-          observer.unobserve(tabElement);
-        }
-      });
-    };
-  }, []); // Empty dependency array to run the effect only once on mount
   if (isPasswordValid === "Jakash") {
     return <NotFound />;
   }
@@ -93,14 +56,23 @@ const Revenue = () => {
       {isPasswordValid && (
         <PageTitle pageName={"Revenue"}>
           {/* Tabs  */}
-          <div className="mx-auto sticky top-0 z-50 bg-primary-light max-w-screen-xl">
+          <div className="mx-auto sticky top-0 z-50  max-w-screen-xl">
             <div className="mb-4 border-b border-blue-200 dark:border-gray-700">
               <ul className="flex flex-wrap -mb-px text-sm font-medium text-center">
                 <li className="w-1/4">
                   <button
+                    className={tabClassName("tab4")}
+                    type="button"
+                    onClick={() => setActiveTab("tab4")}
+                  >
+                    All Data
+                  </button>
+                </li>
+                <li className="w-1/4">
+                  <button
                     className={tabClassName("tab1")}
                     type="button"
-                    onClick={() => handleTabClick("tab1")}
+                    onClick={() => setActiveTab("tab1")}
                   >
                     Bills
                   </button>
@@ -109,7 +81,7 @@ const Revenue = () => {
                   <button
                     className={tabClassName("tab2")}
                     type="button"
-                    onClick={() => handleTabClick("tab2")}
+                    onClick={() => setActiveTab("tab2")}
                   >
                     Purchases
                   </button>
@@ -118,25 +90,16 @@ const Revenue = () => {
                   <button
                     className={tabClassName("tab3")}
                     type="button"
-                    onClick={() => handleTabClick("tab3")}
+                    onClick={() => setActiveTab("tab3")}
                   >
                     Revenue
-                  </button>
-                </li>
-                <li className="w-1/4">
-                  <button
-                    className={tabClassName("tab4")}
-                    type="button"
-                    onClick={() => handleTabClick("tab4")}
-                  >
-                    All Data
                   </button>
                 </li>
               </ul>
             </div>
           </div>
           <div className="mx-auto max-w-screen-xl px-4">
-            <All />
+            <All activeTab={activeTab} />
           </div>
         </PageTitle>
       )}

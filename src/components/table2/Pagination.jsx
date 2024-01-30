@@ -36,15 +36,45 @@ const Pagination = ({
       </div>
       <div className="flex items-center text-sm justify-between sm:flex sm:flex-1 sm:items-center sm:justify-between">
         <div>
-          <p className="text-sm text-gray-700 dark:text-white">
+          <p className="text-sm text-gray-700 dark:text-white mr-5">
             Showing <span className="font-medium">{indexOfFirstRow}</span> to{" "}
             <span className="font-medium">{indexOfLastRow}</span> of{" "}
             <span className="font-medium">{totalRows}</span> results
           </p>
         </div>
-        <div>
+        <div className="flex items-center">
+          {/* <div className="flex items-center">
+            <input
+              className="block w-20 py-2 px-2 text-gray-900 border border-gray-300 rounded-lg mr-1 bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              type="number"
+              onFocus={(e) =>
+                e.target.addEventListener(
+                  "wheel",
+                  function (e) {
+                    e.preventDefault();
+                  },
+                  { passive: false }
+                )
+              }
+              placeholder="Page No."
+              onChange={(e) => setGoto(Number(e.target.value))}
+              min="1"
+            />
+            <button
+              className="text-white bg-blue-600 hover:bg-blue-500 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-2 py-1 me-2  dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+              onClick={() => {
+                if (!goto || goto > totalPages || goto < 1) {
+                  alert("Page Not Found!");
+                } else {
+                  setCurrentPage(goto);
+                }
+              }}
+            >
+              Go
+            </button>
+          </div> */}
           <nav
-            className="isolate inline-flex -space-x-px rounded-md shadow-sm"
+            className="isolate inline-flex -space-x-px rounded-md shadow-sm cursor-pointer mr-3"
             aria-label="Pagination"
           >
             <div

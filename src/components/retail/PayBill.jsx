@@ -3,11 +3,14 @@ import React, { forwardRef } from "react";
 const PayBill = forwardRef(({ canclePay, confirmPay, formData }, ref) => {
   return (
     <div className="pt-3 px-3 w-[400px]">
-      <span className="material-icons text-[50px] text-gray-600 text-center w-full">
+      <span className="material-icons text-[50px] text-green-600 text-center w-full">
         paid
       </span>
       <p className="mb-4 text-gray-700 dark:text-gray-300 text-center">
-        Are you sure <span className="font-bold"> {formData.totalDue}</span>{" "}
+        Are you sure{" "}
+        <span className="font-medium text-red-500">
+          ₹ {formData.totalDue}/-
+        </span>{" "}
         recived for Bill No <span className="font-bold">{formData.BillNo}</span>{" "}
         ?
       </p>

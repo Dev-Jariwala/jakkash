@@ -73,7 +73,7 @@ const Table2 = () => {
                 <div className="flex items-center space-x-3 w-full md:w-auto">
                   {/* <ActionButton /> */}
                   {/* <FilterButton /> */}
-                  <OptionButton />
+                  {/* <OptionButton /> */}
                 </div>
               </div>
             </div>

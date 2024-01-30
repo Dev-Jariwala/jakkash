@@ -272,14 +272,7 @@ const PurchasePage = () => {
           ths={pmtableTHs}
           actions={actions}
           mainKeys={pmtableKeys}
-          filters={[
-            "date",
-            "invoiceNo.",
-            "supplierName",
-            "itemDescription",
-            "rate",
-            "quantity",
-          ]}
+          filters={[]}
           exportData={dateFixedPurchases}
           headers={pmtableHeaders}
           onexportPDF={onexportPDF}

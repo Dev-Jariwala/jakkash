@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import OptionButton from "./OptionButton";
+import FilterButton from "./FilterButton";
+import ActionButton from "./ActionButton";
 
 const Table2Features = ({
   filters,
@@ -48,6 +50,8 @@ const Table2Features = ({
           </div>
         </form>
         <div className="flex items-center space-x-3 w-full md:w-auto">
+          {/* <ActionButton /> */}
+          {/* <FilterButton /> */}
           <OptionButton
             filters={filters}
             selectedFilters={selectedFilters}

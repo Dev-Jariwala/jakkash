@@ -48,18 +48,27 @@ function RevenuePiechart() {
         ></Chart>
         <div className="flex font-semibold dark:text-gray-700">
           <div className="w-[250px] py-2 px-4 text-gray-200 rounded-md m-1 bg-retail-color">
-            Retail = ₹ {studentMarks[0]}/-
+            Retail = {Intl.NumberFormat("en-US").format(studentMarks[0])}/-
           </div>
           <div className="w-[250px] py-2 px-4 text-gray-300 rounded-md m-1 bg-wholesale-color">
-            Wholesale = ₹ {studentMarks[1]}/-
+            Wholesale = {Intl.NumberFormat("en-US").format(studentMarks[1])}/-
           </div>
         </div>
         <div className="flex font-semibold dark:text-gray-700">
           <div className="w-[250px] py-2 px-4 text-gray-600 rounded-md m-1 bg-investment-color">
-            Investment = ₹ {studentMarks[2]}/-
+            Investment = {Intl.NumberFormat("en-US").format(studentMarks[2])}/-
           </div>
-          <div className="w-[250px] py-2 px-4 text-gray-600 rounded-md m-1 bg-purple-200">
-            Profit = ₹{studentMarks[1] + studentMarks[0] - studentMarks[2]}
+          <div
+            className={`flex items-center w-[250px] py-2 px-4 rounded-md m-1 border ${
+              studentMarks[1] + studentMarks[0] - studentMarks[2] >= 0
+                ? "border-green-500 text-green-800 bg-green-100"
+                : "border-red-500 text-red-800 bg-red-100"
+            }`}
+          >
+            Profit ={" "}
+            {Intl.NumberFormat("en-US").format(
+              studentMarks[1] + studentMarks[0] - studentMarks[2]
+            )}
             /-
           </div>
         </div>
