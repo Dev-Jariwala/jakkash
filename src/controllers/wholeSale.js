@@ -41,3 +41,19 @@ export async function wholeSaleBillUpdate(wholeSaleId, formData) {
     throw error;
   }
 }
+// Update totalDue by ID
+export async function updateTotalDue(wholeSaleBill) {
+  try {
+    const response = await axios.put(
+      `${BACKEND_URL}wholesale/paid/${wholeSaleBill}`,
+      null,
+      {
+        withCredentials: true,
+      }
+    );
+    return response;
+  } catch (error) {
+    console.error("Error updating total Due:", error);
+    throw error;
+  }
+}

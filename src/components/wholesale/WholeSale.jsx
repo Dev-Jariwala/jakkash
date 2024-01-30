@@ -10,6 +10,7 @@ import { PDFViewer } from "@react-pdf/renderer";
 import { WholeSaleContext } from "../../store/wholeSaleBillContext";
 import {
   fetchAllWholeSaleBills,
+  updateTotalDue,
   wholeSaleBillCreate,
   wholeSaleBillUpdate,
 } from "../../controllers/wholeSale";
@@ -28,6 +29,7 @@ import { ClientContext } from "../../store/clientContext";
 import Table2Wrapper from "../table2/Table2Wrapper";
 import BillPDF from "../bill-pdf/BillPDF";
 import ExportPDF from "../table2/ExportPDF";
+import PayBill from "../retail/PayBill";
 
 const WholeSale = () => {
   const { wholeSaleBills, setWholeSaleBills, fetching } =
@@ -72,11 +74,18 @@ const WholeSale = () => {
       ...bill,
       totalDue: (
         <span
-          className={`inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium cursor-pointer ${
+          className={`inline-flex cursor-pointer items-center rounded-md px-2 py-1 text-xs font-medium ${
             bill.totalDue > 0
               ? "bg-red-50 text-red-700  ring-red-600/10"
-              : "bg-green-50 text-green-700 ring-green-600/20"
+              : "bg-green-100 text-green-700 ring-green-600/20"
           } ring-1 ring-inset`}
+          onClick={() => {
+            if (bill.totalDue > 0) {
+              setFormState({ status: "payBill", formData: bill });
+            } else {
+              toast.info("Bill Already Paid!");
+            }
+          }}
         >
           {bill.totalDue > 0 ? bill.totalDue : "Paid"}
         </span>
@@ -190,6 +199,27 @@ const WholeSale = () => {
       setLoading(false);
     }
   }
+  // Function to cancel/delete without confirmation
+  const canclePay = () => {
+    setFormState({ status: "", formData: {} });
+  };
+  // Function to handle actual product deletion
+  const confirmPay = async () => {
+    setLoading(true);
+    try {
+      await toast.promise(updateTotalDue(formState.formData._id), {
+        pending: "Paying bill...",
+        success: "Paid bill successfully! 👌",
+        error: "Error paying bill. Please try again. 🤯",
+      });
+      await reRenderData();
+    } catch (err) {
+      console.error("Error confirming delete:", err);
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
   const actions = [
     {
       button: (
@@ -242,6 +272,21 @@ const WholeSale = () => {
               <BillPDF bill={showPDF.bill} />
             </PDFViewer>
           </div>
+        </Modal>
+      )}
+      {/* pay Modal */}
+      {formState.status === "payBill" && (
+        <Modal
+          isOpen={formState.status === "payBill"}
+          onClose={canclePay}
+          title={"Mark Paid :"}
+        >
+          <PayBill
+            ref={focusRef}
+            formData={formState.formData}
+            canclePay={canclePay}
+            confirmPay={confirmPay}
+          />
         </Modal>
       )}
       <div className="bills">
