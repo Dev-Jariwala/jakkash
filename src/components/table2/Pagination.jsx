@@ -13,7 +13,7 @@ const Pagination = ({
 }) => {
   return (
     <div className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6 dark:bg-gray-800 dark:text-gray-200 ">
-      <div className="flex flex-1 justify-between sm:hidden">
+      {/* <div className="flex flex-1 justify-between sm:hidden">
         <div
           className="relative inline-flex items-center rounded-md border border-gray-300 bg-white dark:bg-gray-800 dark:text-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
           onClick={() => {
@@ -33,9 +33,9 @@ const Pagination = ({
         >
           Next
         </div>
-      </div>
+      </div> */}
       <div className="flex items-center text-sm justify-between sm:flex sm:flex-1 sm:items-center sm:justify-between">
-        <div>
+        <div className="hidden sm:block">
           <p className="text-sm text-gray-700 dark:text-white mr-5">
             Showing <span className="font-medium">{indexOfFirstRow}</span> to{" "}
             <span className="font-medium">{indexOfLastRow}</span> of{" "}
@@ -125,9 +125,6 @@ const Pagination = ({
                 {currentPage + 3}
               </div>
             )}
-            {/* <span className="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-700 ring-1 ring-inset ring-gray-300 focus:outline-offset-0">
-              ...
-            </span> */}
 
             <div
               className="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 dark:text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"

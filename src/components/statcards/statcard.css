@@ -23,6 +23,10 @@
     max-width: calc(50% - 20px);
     /* Adjust the max-width of each card */
   }
+  .statcards-container {
+    justify-content: center;
+    align-items: center;
+  }
 }
 
 /* Add a media query for smaller screens */
