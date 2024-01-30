@@ -101,8 +101,6 @@ const styles = StyleSheet.create({
 });
 
 const ExportPDF = ({ exportData, headers, title }) => {
-  console.log(exportData);
-  console.log(headers);
   return (
     <>
       <Document>

@@ -49,7 +49,11 @@ const SideMenu = ({ sidemenuProps, setAuth, children }) => {
               onClick={() => setSidebar((prev) => !prev)}
             >
               <i className="bx bx-search icon"></i>
-              <input type="text" placeholder="Search Ganes..." />
+              <input
+                id="searh-page"
+                type="text"
+                placeholder="Search Ganes..."
+              />
             </li>
 
             <ul className="menu-links">
