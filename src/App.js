@@ -25,6 +25,18 @@ const App = () => {
   // Check if auth status is stored in localStorage
   const storedAuth = localStorage.getItem("auth");
   const [auth, setAuth] = useState(storedAuth ? JSON.parse(storedAuth) : false);
+  const [isWideScreen, setIsWideScreen] = useState(window.innerWidth > 1000);
+  useEffect(() => {
+    const handleResize = () => {
+      setIsWideScreen(window.innerWidth > 1000);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
   // Update localStorage when auth status changes
   useEffect(() => {
     localStorage.setItem("auth", JSON.stringify(auth));
@@ -43,10 +55,50 @@ const App = () => {
                   <RetailBillProvider>
                     <WholeSaleProvider>
                       <ClientProvider>
-                        <SideMenu
-                          sidemenuProps={{ ...sidemenuProps }}
-                          setAuth={setAuth}
-                        >
+                        {isWideScreen && (
+                          <SideMenu
+                            sidemenuProps={{ ...sidemenuProps }}
+                            setAuth={setAuth}
+                          >
+                            <Routes>
+                              <Route
+                                path="/"
+                                element={<DashboardPage />}
+                              ></Route>
+                              <Route
+                                path="/products"
+                                element={<ProductPage />}
+                              ></Route>
+                              <Route
+                                path="/purchase"
+                                element={<PurchasePage />}
+                              ></Route>
+                              <Route
+                                path="/collection"
+                                element={<CollectionPage />}
+                              ></Route>
+                              <Route
+                                path="/stocks"
+                                element={<StockPage />}
+                              ></Route>
+                              <Route
+                                path="/bills"
+                                element={<BillPage />}
+                              ></Route>
+                              <Route
+                                path="/revenue"
+                                element={<Revenue />}
+                              ></Route>
+
+                              <Route
+                                path="/clients"
+                                element={<ClientPage />}
+                              ></Route>
+                              <Route path="*" element={<NotFound />}></Route>
+                            </Routes>
+                          </SideMenu>
+                        )}
+                        {!isWideScreen && (
                           <Routes>
                             <Route path="/" element={<DashboardPage />}></Route>
                             <Route
@@ -77,7 +129,7 @@ const App = () => {
                             ></Route>
                             <Route path="*" element={<NotFound />}></Route>
                           </Routes>
-                        </SideMenu>
+                        )}
                       </ClientProvider>
                     </WholeSaleProvider>
                   </RetailBillProvider>
