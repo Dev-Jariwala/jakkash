@@ -99,36 +99,44 @@ const App = () => {
                           </SideMenu>
                         )}
                         {!isWideScreen && (
-                          <Routes>
-                            <Route path="/" element={<DashboardPage />}></Route>
-                            <Route
-                              path="/products"
-                              element={<ProductPage />}
-                            ></Route>
-                            <Route
-                              path="/purchase"
-                              element={<PurchasePage />}
-                            ></Route>
-                            <Route
-                              path="/collection"
-                              element={<CollectionPage />}
-                            ></Route>
-                            <Route
-                              path="/stocks"
-                              element={<StockPage />}
-                            ></Route>
-                            <Route path="/bills" element={<BillPage />}></Route>
-                            <Route
-                              path="/revenue"
-                              element={<Revenue />}
-                            ></Route>
+                          <div className="bg-primary-light">
+                            <Routes>
+                              <Route
+                                path="/"
+                                element={<DashboardPage />}
+                              ></Route>
+                              <Route
+                                path="/products"
+                                element={<ProductPage />}
+                              ></Route>
+                              <Route
+                                path="/purchase"
+                                element={<PurchasePage />}
+                              ></Route>
+                              <Route
+                                path="/collection"
+                                element={<CollectionPage />}
+                              ></Route>
+                              <Route
+                                path="/stocks"
+                                element={<StockPage />}
+                              ></Route>
+                              <Route
+                                path="/bills"
+                                element={<BillPage />}
+                              ></Route>
+                              <Route
+                                path="/revenue"
+                                element={<Revenue />}
+                              ></Route>
 
-                            <Route
-                              path="/clients"
-                              element={<ClientPage />}
-                            ></Route>
-                            <Route path="*" element={<NotFound />}></Route>
-                          </Routes>
+                              <Route
+                                path="/clients"
+                                element={<ClientPage />}
+                              ></Route>
+                              <Route path="*" element={<NotFound />}></Route>
+                            </Routes>
+                          </div>
                         )}
                       </ClientProvider>
                     </WholeSaleProvider>

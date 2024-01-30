@@ -43,12 +43,12 @@ const Table2Wrapper = ({
   return (
     <div className="mx-auto mt-5 max-w-screen-xl px-4 lg:px-12">
       {/* Start coding here */}
-      <div className="bg-white flex items-center justify-between mb-3 py-3 px-4 dark:bg-gray-800  relative shadow-md sm:rounded-lg overflow">
-        <div className="text-sm mr-3 font-bold text-gray-600 uppercase dark:text-gray-400">
+      <div className="bg-white flex flex-col sm:flex-row items-center justify-between mb-3 py-3 px-4 dark:bg-gray-800  relative shadow-md rounded-lg overflow">
+        <div className=" text-l sm:text-sm mr-3 font-bold text-gray-600 uppercase dark:text-gray-400">
           {" "}
           ( {activeColl?.collectionName} ) {tableName}
         </div>
-        <div className="flex items-center">
+        <div className="flex items-center sm:justify-normal sm:w-auto sm:mt-0 justify-between w-full mt-2">
           {tableBtn && (
             <button
               className="bg-blue-600 text-white py-2 px-4 rounded-md text-xs"
@@ -111,7 +111,7 @@ const Table2Wrapper = ({
           )}
         </div>
       </div>
-      <div className="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
+      <div className="bg-white dark:bg-gray-800 relative shadow-md rounded-lg overflow-hidden">
         <Table2Features
           filters={filters}
           selectedFilters={selectedFilters}
