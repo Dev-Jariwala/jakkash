@@ -11,6 +11,7 @@ const NewProduct = forwardRef(({ formState, setFormState, onSubmit }, ref) => {
     >
       <div className="pt-3 px-3">
         <form className="max-w-md mx-auto my-4" onSubmit={(e) => onSubmit(e)}>
+          {/* Product Name */}
           <div className="relative z-0 w-full mb-5 group">
             <input
               id="np-pName"
@@ -39,6 +40,7 @@ const NewProduct = forwardRef(({ formState, setFormState, onSubmit }, ref) => {
           </div>
 
           <div className="grid md:grid-cols-2 md:gap-6">
+            {/* Retail Price */}
             <div className="relative z-0 w-full mb-5 group">
               <input
                 id="np-rPrice"
@@ -68,6 +70,7 @@ const NewProduct = forwardRef(({ formState, setFormState, onSubmit }, ref) => {
                 Retail Price
               </label>
             </div>
+            {/* Wholesale Price */}
             <div className="relative z-0 w-full mb-5 group">
               <input
                 id="np-wPrice"
@@ -98,6 +101,8 @@ const NewProduct = forwardRef(({ formState, setFormState, onSubmit }, ref) => {
               </label>
             </div>
           </div>
+
+          {/* Stock */}
           <div className="relative z-0 w-full mb-5 group">
             <input
               id="np-stock"
@@ -145,7 +150,59 @@ const NewProduct = forwardRef(({ formState, setFormState, onSubmit }, ref) => {
               </div>
             </div>
           </div>
-
+          {/* Labour */}
+          <div className="relative z-0 w-full mb-5 group">
+            <div
+              className="flex p-4 mb-4 text-sm text-blue-800 rounded-lg bg-blue-50 "
+              role="alert"
+            >
+              <svg
+                className="flex-shrink-0 inline w-4 h-4 me-3 mt-[2px]"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+              </svg>
+              <span className="sr-only">Info</span>
+              <div>
+                <span className="font-medium">
+                  Set product as <span className="font-semibold">Labour</span>.
+                </span>
+                <ul className="mt-1.5 list-disc list-inside text-xs text-justify">
+                  <li>Labour products will appear at bottom of bill.</li>
+                  <li>Labour products does not require stocks to be added.</li>
+                </ul>
+                {/* Toggle button to mute or unmute product */}
+                <label className="relative inline-flex items-center cursor-pointer mt-3">
+                  <input
+                    id="np-isLabour"
+                    type="checkbox"
+                    value=""
+                    className="sr-only peer"
+                    onChange={() =>
+                      setFormState((prev) => {
+                        return {
+                          ...prev,
+                          formData: {
+                            ...prev.formData,
+                            isLabour: !prev.formData.isLabour,
+                          },
+                        };
+                      })
+                    }
+                    checked={formState.formData.isLabour}
+                  />
+                  <div className="w-11 h-6 bg-blue-200 peer-focus:outline-none rounded-full peer peer-focus:ring-1 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                  <span className="ms-3 text-sm font-medium text-blue-800 ">
+                    {formState.formData.isLabour ? "Labour" : "Product"}
+                  </span>
+                </label>
+              </div>
+            </div>
+          </div>
+          {/* Create Product Button */}
           <div className="w-full flex items-center justify-center">
             <button
               type="submit"

@@ -113,7 +113,12 @@ const ProductPage = () => {
   const onNewProd = () =>
     setFormState({
       status: "newProduct",
-      formData: { productName: "", retailPrice: 0, wholesalePrice: 0 },
+      formData: {
+        productName: "",
+        retailPrice: 0,
+        wholesalePrice: 0,
+        isLabour: false,
+      },
     });
   // Function to handle delete confirmation
   const handleDeleteConfirmation = async (e, productId) => {

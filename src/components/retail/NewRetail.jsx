@@ -259,58 +259,60 @@ const NewRetail = forwardRef(({ formState, setFormState, onSubmit }, ref) => {
                           </button>
                           {/* Add Stock Button */}
 
-                          <button
-                            tabIndex={`-1`}
-                            className="block w-10 p-1 ml-1 text-black font-semibold border-2 border-gray-300 rounded-lg bg-gray-100  sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            onClick={async (e) => {
-                              e.preventDefault();
+                          {!prod.isLabour && (
+                            <button
+                              tabIndex={`-1`}
+                              className="block w-10 p-1 ml-1 text-black font-semibold border-2 border-gray-300 rounded-lg bg-gray-100  sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                              onClick={async (e) => {
+                                e.preventDefault();
 
-                              const addStock = Number(
-                                prompt(`Add Stock in "${prod.productName}": `)
-                              );
+                                const addStock = Number(
+                                  prompt(`Add Stock in "${prod.productName}": `)
+                                );
 
-                              try {
-                                if (
-                                  !addStock ||
-                                  isNaN(addStock) ||
-                                  addStock < 0
-                                ) {
-                                  return toast.warn("Invalid stock value!");
-                                } else {
-                                  await toast.promise(
-                                    stockCreate(prod._id, {
-                                      productId: prod._id,
-                                      productName: prod.productName,
-                                      addStock: Number(addStock),
-                                    }),
-                                    {
-                                      pending: "Adding Stock...",
-                                      success: "Stock added successfully! 👌",
-                                      error:
-                                        "Error adding Stock. Please try again. 🤯",
-                                    }
-                                  );
+                                try {
+                                  if (
+                                    !addStock ||
+                                    isNaN(addStock) ||
+                                    addStock < 0
+                                  ) {
+                                    return toast.warn("Invalid stock value!");
+                                  } else {
+                                    await toast.promise(
+                                      stockCreate(prod._id, {
+                                        productId: prod._id,
+                                        productName: prod.productName,
+                                        addStock: Number(addStock),
+                                      }),
+                                      {
+                                        pending: "Adding Stock...",
+                                        success: "Stock added successfully! 👌",
+                                        error:
+                                          "Error adding Stock. Please try again. 🤯",
+                                      }
+                                    );
 
-                                  setProducts(await fetchAllProducts());
-                                  setStocks(await fetchAllStocks());
+                                    setProducts(await fetchAllProducts());
+                                    setStocks(await fetchAllStocks());
+                                  }
+                                } catch (error) {
+                                  console.log(error);
+                                  throw error;
                                 }
-                              } catch (error) {
-                                console.log(error);
-                                throw error;
-                              }
-                            }}
-                          >
-                            +
-                          </button>
+                              }}
+                            >
+                              +
+                            </button>
+                          )}
                         </div>
                       </td>
                       <td className="px-4 py-3">
                         {" "}
                         <input
-                          type="number"
+                          type="text"
                           onFocus={preventScrollInNumber}
                           className="block w-full p-2 text-black font-semibold opacity-50 border-2 border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                          value={prod.stock}
+                          value={prod.isLabour ? "unlimited" : prod.stock}
                           disabled
                         />
                       </td>
@@ -324,7 +326,7 @@ const NewRetail = forwardRef(({ formState, setFormState, onSubmit }, ref) => {
                         />
                       </td>
                       <td className="px-4 py-3">
-                        {prod.stock > 0 ? (
+                        {prod.stock > 0 || prod.isLabour ? (
                           <input
                             id={`nr-qty-${indexOfProd}`}
                             type="number"
@@ -346,7 +348,10 @@ const NewRetail = forwardRef(({ formState, setFormState, onSubmit }, ref) => {
                                 const updatedProducts =
                                   prev.formData.products.map((product) => {
                                     if (product.productId === prod._id) {
-                                      if (newQty > prod.stock) {
+                                      if (
+                                        newQty > prod.stock &&
+                                        !prod.isLabour
+                                      ) {
                                         toast.warn("Insufficient stock!");
                                         alert("Insufficient stock!");
                                         return {
@@ -450,7 +455,7 @@ const NewRetail = forwardRef(({ formState, setFormState, onSubmit }, ref) => {
                             ...prev,
                             formData: {
                               ...prev.formData,
-                              totalFirki: totalQty,
+                              totalFirki: parseInt(totalQty),
                             },
                           };
                         });
