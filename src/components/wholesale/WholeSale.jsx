@@ -30,6 +30,7 @@ import Table2Wrapper from "../table2/Table2Wrapper";
 import BillPDF from "../bill-pdf/BillPDF";
 import ExportPDF from "../table2/ExportPDF";
 import PayBill from "../retail/PayBill";
+import BillReport from "../retail/BillReport";
 
 const WholeSale = () => {
   const { wholeSaleBills, setWholeSaleBills, fetching } =
@@ -250,15 +251,11 @@ const WholeSale = () => {
           onClose={() => setExportPDF({ status: false })}
           title={`Wholesale Report PDF:`}
         >
-          <div className="my-3">
-            <PDFViewer width="1000" height="600">
-              <ExportPDF
-                exportData={exportData}
-                headers={wbtableReport}
-                title={"WHOLESALE REPORT"}
-              />
-            </PDFViewer>
-          </div>
+          <BillReport
+            exportData={exportData}
+            headers={wbtableReport}
+            title={"WHOLESALE REPORT"}
+          />
         </Modal>
       )}
       {showPDF.status && (

@@ -28,8 +28,8 @@ import { fetchAllClients } from "../../controllers/client";
 import { ClientContext } from "../../store/clientContext";
 import Table2Wrapper from "../table2/Table2Wrapper";
 import BillPDF from "../bill-pdf/BillPDF";
-import ExportPDF from "../table2/ExportPDF";
 import PayBill from "./PayBill";
+import BillReport from "./BillReport";
 
 const Retail = () => {
   const { retailBills, setRetailBIlls, fetching } =
@@ -246,23 +246,21 @@ const Retail = () => {
   return (
     <>
       {loading && <Loader1 />}
+      {/* Report PDF */}
       {exportPDF.status && (
         <Modal
           isOpen={exportPDF.status}
           onClose={() => setExportPDF({ status: false })}
           title={`Retail Report PDF:`}
         >
-          <div className="my-3">
-            <PDFViewer width="1000" height="600">
-              <ExportPDF
-                exportData={exportData}
-                headers={rbtableReport}
-                title={"RETAIL REPORT"}
-              />
-            </PDFViewer>
-          </div>
+          <BillReport
+            exportData={exportData}
+            headers={rbtableReport}
+            title={"RETAIL REPORT"}
+          />
         </Modal>
       )}
+      {/* View Retail Bill */}
       {showPDF.status && (
         <Modal
           isOpen={showPDF.status}
@@ -276,7 +274,7 @@ const Retail = () => {
           </div>
         </Modal>
       )}
-      {/* Delete Modal */}
+      {/* Pay Bill Modal */}
       {formState.status === "payBill" && (
         <Modal
           isOpen={formState.status === "payBill"}
