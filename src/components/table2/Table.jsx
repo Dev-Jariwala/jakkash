@@ -32,7 +32,11 @@ const Table = ({
                   <tr
                     key={rowIndex}
                     className={`${
-                      row?.muted ? "bg-gray-100 opacity-50" : ""
+                      row?.isLabour ? "bg-gray-100 dark:bg-gray-700" : ""
+                    }${
+                      row?.muted
+                        ? "bg-gray-100 opacity-50 dark:bg-gray-700"
+                        : ""
                     }  border-b dark:border-gray-700`}
                   >
                     <Row

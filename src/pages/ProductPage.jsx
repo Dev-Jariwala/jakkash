@@ -43,7 +43,8 @@ const ProductPage = () => {
   });
   const focusRef = useRef(null);
   const releventProducts = [
-    ...products.filter((product) => !product.muted),
+    ...products.filter((product) => !product.muted && !product.isLabour),
+    ...products.filter((product) => !product.muted && product.isLabour),
     ...products.filter((product) => product.muted),
   ];
 
@@ -237,6 +238,9 @@ const ProductPage = () => {
       if (res.muted) {
         return toast.info("Product is muted!");
       }
+      if (res.isLabour) {
+        return toast.info("Product is Labour");
+      }
       setFormState({
         status: "addStock",
         formData: {
@@ -278,7 +282,7 @@ const ProductPage = () => {
   const actions = [
     {
       button: (
-        <TooltipItem position="left" tooltipsText="Add stock">
+        <TooltipItem position="top" tooltipsText="Add stock">
           <span className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 mr-2 text-xs font-medium text-blue-600 ring-1 ring-inset ring-blue-700/10">
             <span className="material-icons text-sm">add</span>
           </span>
@@ -301,7 +305,7 @@ const ProductPage = () => {
     },
     {
       button: (
-        <TooltipItem position="right" tooltipsText="Delete">
+        <TooltipItem position="top" tooltipsText="Delete">
           <span className="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-600 ring-1 ring-inset ring-red-600/10">
             <span className="material-icons text-sm">delete</span>
           </span>
