@@ -27,10 +27,9 @@ export const ptableHeaders = [
 ];
 export const ptableReport = [
   { label: "Product Name", key: "productName" },
-  { label: "Retail Price", key: "retailPrice" },
-  { label: "Wholesale Price", key: "wholesalePrice" },
-  { label: "Stock", key: "stock" },
-  { label: "Total Stock", key: "totalStock" },
+  { label: "Retail Qty", key: "retailQty" },
   { label: "Retail Sales", key: "retailSale" },
+  { label: "Wholesale Qty", key: "wholesaleQty" },
   { label: "Wholesale Sales", key: "wholesaleSale" },
+  { label: "Total Sales", key: "totalSales" },
 ];

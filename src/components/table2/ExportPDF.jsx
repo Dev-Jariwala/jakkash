@@ -3,7 +3,7 @@ import React from "react";
 import { Document, Page, Text, View, StyleSheet } from "@react-pdf/renderer";
 const styles = StyleSheet.create({
   billContainer: {
-    width: "80%",
+    width: "90%",
     margin: "auto",
     height: "100%",
     // backgroundColor: "yellow",
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
     fontSize: 10,
     borderTop: "1px solid black",
     borderBottom: "1px solid black",
-    padding: "4px 0",
+    padding: "7px 0",
   },
   tBody: {
     display: "flex",
@@ -86,16 +86,16 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    fontSize: 10,
+    fontSize: 9,
     borderBottom: "1px solid #ccc",
-    padding: "4px 0",
+    padding: "10px 0",
   },
   tH: {
-    width: "15%",
+    width: "17%",
     textAlign: "center",
   },
   tD: {
-    width: "15%",
+    width: "17%",
     textAlign: "center",
   },
 });

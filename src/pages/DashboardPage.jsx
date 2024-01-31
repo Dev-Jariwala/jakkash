@@ -76,7 +76,7 @@ const DashboardPage = ({ setAuth }) => {
             <StatCard
               icon={<span className="material-icons">paid</span>}
               color={"green"}
-              title={"Revenue"}
+              title={"PNL"}
               data={1}
               stat={1}
               link={"revenue"}

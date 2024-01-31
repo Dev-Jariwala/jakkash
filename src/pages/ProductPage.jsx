@@ -64,12 +64,15 @@ const ProductPage = () => {
             (product) => product.productId === prod._id
           );
           if (!existproduct) {
-            prod.retailSale = 0;
-            prod.wholesaleSale = 0;
+            prod.retailQty = 0;
+            prod.wholesaleQty = 0;
           } else {
-            prod.retailSale = existproduct.retail;
-            prod.wholesaleSale = existproduct.wholesale;
+            prod.retailQty = existproduct.retail;
+            prod.wholesaleQty = existproduct.wholesale;
           }
+          prod.retailSale = prod.retailPrice * prod.retailQty;
+          prod.wholesaleSale = prod.wholesalePrice * prod.wholesaleQty;
+          prod.totalSales = prod.retailSale + prod.wholesaleSale;
           return prod;
         });
         setExportData(exportReadyData);
