@@ -729,17 +729,8 @@ const NewRetail = forwardRef(({ formState, setFormState, onSubmit }, ref) => {
                       Discount
                       <input
                         className="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        type="number"
-                        onFocus={(e) =>
-                          e.target.addEventListener(
-                            "wheel",
-                            function (e) {
-                              e.preventDefault();
-                            },
-                            { passive: false }
-                          )
-                        }
-                        value={formData.discount}
+                        type="text"
+                        value={formData.discount || 0}
                         onChange={(e) => {
                           setFormState((prev) => {
                             const constSubTotal = parseFloat(
@@ -751,26 +742,29 @@ const NewRetail = forwardRef(({ formState, setFormState, onSubmit }, ref) => {
                             const enteredDiscount =
                               parseFloat(e.target.value) >= 0
                                 ? parseFloat(e.target.value)
-                                : "";
+                                : 0;
+
+                            // Ensure discount is not greater than available amount
+                            const maxDiscount =
+                              constSubTotal - prev.formData.advance;
+
+                            const validDiscount =
+                              enteredDiscount <= maxDiscount
+                                ? enteredDiscount
+                                : 0;
+                            if (enteredDiscount > maxDiscount) {
+                              toast.warn("Incorrect!");
+                            }
                             return {
                               ...prev,
                               formData: {
                                 ...prev.formData,
-                                discount:
-                                  enteredDiscount + prev.formData.advance <=
-                                  constSubTotal
-                                    ? enteredDiscount
-                                    : constSubTotal - prev.formData.advance,
+                                discount: validDiscount,
 
                                 totalDue:
                                   constSubTotal -
-                                    enteredDiscount -
-                                    prev.formData.advance <
-                                  0
-                                    ? 0
-                                    : constSubTotal -
-                                      prev.formData.advance -
-                                      enteredDiscount,
+                                  validDiscount -
+                                  prev.formData.advance,
                               },
                             };
                           });
@@ -790,40 +784,33 @@ const NewRetail = forwardRef(({ formState, setFormState, onSubmit }, ref) => {
                       Advance
                       <input
                         className="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        type="number"
-                        onFocus={(e) =>
-                          e.target.addEventListener(
-                            "wheel",
-                            function (e) {
-                              e.preventDefault();
-                            },
-                            { passive: false }
-                          )
-                        }
-                        value={formData.advance}
+                        type="text"
+                        value={formData.advance || 0}
                         onChange={(e) => {
                           const enteredAdvance =
                             parseInt(e.target.value) >= 0
                               ? parseInt(e.target.value)
-                              : "";
+                              : 0;
+
+                          // Ensure advance is not greater than available amount
+                          const maxAdvance =
+                            formData.subTotal - formData.discount;
+
+                          const validAdvance =
+                            enteredAdvance <= maxAdvance ? enteredAdvance : 0;
+                          if (enteredAdvance > maxAdvance) {
+                            toast.warn("Incorrect!");
+                          }
                           setFormState((prev) => {
                             return {
                               ...prev,
                               formData: {
                                 ...prev.formData,
-                                advance:
-                                  enteredAdvance + prev.formData.discount <=
-                                  prev.formData.subTotal
-                                    ? enteredAdvance
-                                    : prev.formData.subTotal -
-                                      prev.formData.discount,
+                                advance: validAdvance,
                                 totalDue:
-                                  enteredAdvance + prev.formData.discount >=
-                                  prev.formData.subTotal
-                                    ? 0
-                                    : prev.formData.subTotal -
-                                      prev.formData.discount -
-                                      enteredAdvance,
+                                  prev.formData.subTotal -
+                                  prev.formData.discount -
+                                  validAdvance,
                               },
                             };
                           });
