@@ -43,7 +43,11 @@ const EditRetail = forwardRef(({ formData, setFormState, onSubmit }, ref) => {
           {/* Mobile No. */}
           <div className="relative z-0 w-full mb-5 group">
             <input
-              type="number"
+              id="nr-mobile"
+              type="tel"
+              list="mobileNumbers"
+              // maxLength={"10"}
+              minLength={"10"}
               onFocus={(e) =>
                 e.target.addEventListener(
                   "wheel",
@@ -57,7 +61,17 @@ const EditRetail = forwardRef(({ formData, setFormState, onSubmit }, ref) => {
               placeholder=" "
               ref={ref}
               value={formData.mobileNumber}
-              onChange={(e) =>
+              onChange={(e) => {
+                if (e.target.value.length < 10 && e.target.value.length >= 0) {
+                  document.getElementById("nr-mobile").style.borderColor =
+                    "red";
+                } else {
+                  document.getElementById("nr-mobile").style.borderColor =
+                    "green";
+                }
+                if (e.target.value.length > 10) {
+                  return alert("Max 10 Digit Allowed!");
+                }
                 setFormState((prev) => {
                   return {
                     ...prev,
@@ -69,13 +83,17 @@ const EditRetail = forwardRef(({ formData, setFormState, onSubmit }, ref) => {
                           : "",
                     },
                   };
-                })
-              }
+                });
+              }}
               required
             />
             <label className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
               Mobile Number
             </label>
+            <datalist id="mobileNumbers">
+              <option value="7990176865">7990176865</option>
+              <option value="9925828460">9925828460</option>
+            </datalist>
           </div>
           {/* Name */}
           <div className="relative z-0 w-full mb-5 group">

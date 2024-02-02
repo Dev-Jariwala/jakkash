@@ -73,6 +73,7 @@ const ProductPage = () => {
           }
           prod.retailSale = prod.retailPrice * prod.retailQty;
           prod.wholesaleSale = prod.wholesalePrice * prod.wholesaleQty;
+          prod.totalQty = prod.retailQty + prod.wholesaleQty;
           prod.totalSales = prod.retailSale + prod.wholesaleSale;
           return prod;
         });

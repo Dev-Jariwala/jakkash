@@ -14,13 +14,16 @@ import Table2Wrapper from "../components/table2/Table2Wrapper";
 import Modal from "../components/modal/Modal";
 import { PDFViewer } from "@react-pdf/renderer";
 import ExportPDF from "../components/table2/ExportPDF";
-
+import Select from "react-select";
+import { toast } from "react-toastify";
+import ClientReport from "../components/client/ClientReport";
 const ClientPage = () => {
   const { clients, fetching } = useContext(ClientContext);
   const [formState, setFormState] = useState({ status: "", formData: {} });
   const [loading, setLoading] = useState(true);
   const [exportPDF, setExportPDF] = useState({
     status: false,
+    clientData: {},
   });
   const focusRef = useRef(null);
   useEffect(() => {
@@ -58,13 +61,7 @@ const ClientPage = () => {
           title={`Client Report PDF:`}
         >
           <div className="my-3">
-            <PDFViewer width="1000" height="600">
-              <ExportPDF
-                exportData={clients}
-                headers={cltableReport}
-                title={"CLIENT REPORT"}
-              />
-            </PDFViewer>
+            <ClientReport clients={clients} />
           </div>
         </Modal>
       )}
