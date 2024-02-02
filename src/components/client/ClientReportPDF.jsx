@@ -138,6 +138,253 @@ const ClientReportPDF = ({ client }) => {
                 </View>
               </View>
             </View>
+            {/* Products Table */}
+            <View
+              style={{
+                ...styles.billHead,
+                marginTop: 20,
+                borderTop: "1px solid black",
+              }}
+            >
+              <Text>PRODUCTS TABLE</Text>
+            </View>
+            <View
+              style={{
+                ...styles.table,
+              }}
+            >
+              {/* Table Header */}
+              <View
+                style={{
+                  ...styles.tableRow,
+                  borderBottom: "1px solid #ccc",
+                }}
+              >
+                <View
+                  style={{
+                    ...styles.tableCell,
+
+                    padding: "7px 10px",
+                  }}
+                >
+                  <Text>No.</Text>
+                </View>
+                <View
+                  style={{ ...styles.tableCell, flex: 3, padding: "7px 10px" }}
+                >
+                  <Text>PRODUCT NAME</Text>
+                </View>
+                <View style={{ ...styles.tableCell, padding: "7px 10px" }}>
+                  <Text>T.QTY</Text>
+                </View>
+                <View style={{ ...styles.tableCell, padding: "7px 10px" }}>
+                  <Text>RATE</Text>
+                </View>
+                <View style={{ ...styles.tableCell, padding: "7px 10px" }}>
+                  <Text>TOTAL</Text>
+                </View>
+                {/* Add more headers as needed */}
+              </View>
+              {/* Space */}
+              <View
+                style={{
+                  ...styles.tableRow,
+                  borderBottom: "1px solid #ccc",
+                  //   padding: "1px 0",
+                }}
+              >
+                <View
+                  style={{
+                    ...styles.tableCell,
+                    padding: "7px 10px",
+                    borderRight: "none",
+                  }}
+                >
+                  <Text></Text>
+                </View>
+                <View
+                  style={{
+                    ...styles.tableCell,
+                    padding: "7px 10px",
+                    flex: 3,
+                    textAlign: "right",
+                    fontSize: 10,
+                    borderRight: "none",
+                  }}
+                >
+                  <Text style={{ marginRight: "20px" }}></Text>
+                </View>
+                <View
+                  style={{
+                    ...styles.tableCell,
+                    padding: "7px 10px",
+                    fontSize: 10,
+                    borderRight: "none",
+                  }}
+                >
+                  <Text></Text>
+                </View>
+                <View
+                  style={{
+                    ...styles.tableCell,
+                    padding: "7px 10px",
+                    fontSize: 10,
+                    borderRight: "none",
+                  }}
+                >
+                  <Text></Text>
+                </View>
+                <View
+                  style={{
+                    ...styles.tableCell,
+                    padding: "7px 10px",
+                    fontSize: 10,
+                    borderRight: "none",
+                  }}
+                >
+                  <Text></Text>
+                </View>
+                {/* Add more cells for additional data */}
+              </View>
+              {/* Table Rows */}
+              {productsArray.map((prod, index) => (
+                <View
+                  style={{
+                    ...styles.tableRow,
+                    borderBottom: "1px solid #ccc",
+                  }}
+                  key={index}
+                >
+                  <View
+                    style={{
+                      ...styles.tableCell,
+                    }}
+                  >
+                    <Text>{index + 1}</Text>
+                  </View>
+                  <View
+                    style={{
+                      ...styles.tableCell,
+                      flex: 3,
+                      textAlign: "left",
+                    }}
+                  >
+                    <Text>{prod.productName}</Text>
+                  </View>
+                  <View style={{ ...styles.tableCell }}>
+                    <Text>{prod.quantity}</Text>
+                  </View>
+                  <View style={{ ...styles.tableCell }}>
+                    <Text>{prod.price}</Text>
+                  </View>
+                  <View style={{ ...styles.tableCell }}>
+                    <Text>{prod.totalSales}</Text>
+                  </View>
+                </View>
+              ))}
+              <View
+                style={{
+                  ...styles.tableRow,
+                  borderBottom: "1px solid #ccc",
+                }}
+              >
+                <View
+                  style={{
+                    ...styles.tableCell,
+                  }}
+                >
+                  <Text></Text>
+                </View>
+                <View
+                  style={{
+                    ...styles.tableCell,
+                    fontSize: 10,
+                    flex: 3,
+                    textAlign: "right",
+                  }}
+                >
+                  <Text>Total Firki</Text>
+                </View>
+                <View style={{ ...styles.tableCell, fontSize: 10 }}>
+                  <Text>
+                    {productsArray.reduce((acc, curr) => {
+                      return acc + curr.quantity;
+                    }, 0)}
+                  </Text>
+                </View>
+                <View style={{ ...styles.tableCell, fontSize: 10 }}>
+                  <Text>G.Total</Text>
+                </View>
+                <View style={{ ...styles.tableCell, fontSize: 10 }}>
+                  <Text>
+                    {productsArray.reduce((acc, curr) => {
+                      return acc + curr.totalSales;
+                    }, 0)}
+                  </Text>
+                </View>
+              </View>
+              {/* Space */}
+              <View
+                style={{
+                  ...styles.tableRow,
+                  borderBottom: "1px solid #ccc",
+                  //   padding: "1px 0",
+                }}
+              >
+                <View
+                  style={{
+                    ...styles.tableCell,
+                    padding: "7px 10px",
+                    borderRight: "none",
+                  }}
+                >
+                  <Text></Text>
+                </View>
+                <View
+                  style={{
+                    ...styles.tableCell,
+                    padding: "7px 10px",
+                    flex: 3,
+                    textAlign: "right",
+                    fontSize: 10,
+                    borderRight: "none",
+                  }}
+                >
+                  <Text style={{ marginRight: "20px" }}></Text>
+                </View>
+                <View
+                  style={{
+                    ...styles.tableCell,
+                    padding: "7px 10px",
+                    fontSize: 10,
+                    borderRight: "none",
+                  }}
+                >
+                  <Text></Text>
+                </View>
+                <View
+                  style={{
+                    ...styles.tableCell,
+                    padding: "7px 10px",
+                    fontSize: 10,
+                    borderRight: "none",
+                  }}
+                >
+                  <Text></Text>
+                </View>
+                <View
+                  style={{
+                    ...styles.tableCell,
+                    padding: "7px 10px",
+                    fontSize: 10,
+                    borderRight: "none",
+                  }}
+                >
+                  <Text></Text>
+                </View>
+                {/* Add more cells for additional data */}
+              </View>
+            </View>
             {/* Bill Table */}
             <View
               style={{
@@ -248,41 +495,43 @@ const ClientReportPDF = ({ client }) => {
               {/* Table Rows */}
               {wdBills.map((bill, index) => (
                 <View key={index}>
-                  {bill.products.map((prod, prodIndex) => (
-                    <View
-                      style={{
-                        ...styles.tableRow,
-                        borderBottom: "1px solid #ccc",
-                      }}
-                      key={prodIndex}
-                    >
+                  {bill.products.map((prod, prodIndex) => {
+                    return (
                       <View
                         style={{
-                          ...styles.tableCell,
+                          ...styles.tableRow,
+                          borderBottom: "1px solid #ccc",
                         }}
+                        key={prodIndex}
                       >
-                        <Text>{prodIndex === 0 && bill.BillNo}</Text>
+                        <View
+                          style={{
+                            ...styles.tableCell,
+                          }}
+                        >
+                          <Text>{prodIndex === 0 && bill.BillNo}</Text>
+                        </View>
+                        <View
+                          style={{
+                            ...styles.tableCell,
+                            flex: 3,
+                            textAlign: "left",
+                          }}
+                        >
+                          <Text>{prod.productName}</Text>
+                        </View>
+                        <View style={{ ...styles.tableCell }}>
+                          <Text>{prod.quantity}</Text>
+                        </View>
+                        <View style={{ ...styles.tableCell }}>
+                          <Text>{prod.price}</Text>
+                        </View>
+                        <View style={{ ...styles.tableCell }}>
+                          <Text>{prod.price * prod.quantity}</Text>
+                        </View>
                       </View>
-                      <View
-                        style={{
-                          ...styles.tableCell,
-                          flex: 3,
-                          textAlign: "left",
-                        }}
-                      >
-                        <Text>{prod.productName}</Text>
-                      </View>
-                      <View style={{ ...styles.tableCell }}>
-                        <Text>{prod.quantity}</Text>
-                      </View>
-                      <View style={{ ...styles.tableCell }}>
-                        <Text>{prod.price}</Text>
-                      </View>
-                      <View style={{ ...styles.tableCell }}>
-                        <Text>{prod.price * prod.quantity}</Text>
-                      </View>
-                    </View>
-                  ))}
+                    );
+                  })}
                   {/* Total */}
                   <View
                     style={{
@@ -559,253 +808,6 @@ const ClientReportPDF = ({ client }) => {
                   </View>
                 </View>
               ))}
-            </View>
-            {/* Bill Table */}
-            <View
-              style={{
-                ...styles.billHead,
-                marginTop: 20,
-                borderTop: "1px solid black",
-              }}
-            >
-              <Text>PRODUCTS TABLE</Text>
-            </View>
-            <View
-              style={{
-                ...styles.table,
-              }}
-            >
-              {/* Table Header */}
-              <View
-                style={{
-                  ...styles.tableRow,
-                  borderBottom: "1px solid #ccc",
-                }}
-              >
-                <View
-                  style={{
-                    ...styles.tableCell,
-
-                    padding: "7px 10px",
-                  }}
-                >
-                  <Text>No.</Text>
-                </View>
-                <View
-                  style={{ ...styles.tableCell, flex: 3, padding: "7px 10px" }}
-                >
-                  <Text>PRODUCT NAME</Text>
-                </View>
-                <View style={{ ...styles.tableCell, padding: "7px 10px" }}>
-                  <Text>T.QTY</Text>
-                </View>
-                <View style={{ ...styles.tableCell, padding: "7px 10px" }}>
-                  <Text>RATE</Text>
-                </View>
-                <View style={{ ...styles.tableCell, padding: "7px 10px" }}>
-                  <Text>TOTAL</Text>
-                </View>
-                {/* Add more headers as needed */}
-              </View>
-              {/* Space */}
-              <View
-                style={{
-                  ...styles.tableRow,
-                  borderBottom: "1px solid #ccc",
-                  //   padding: "1px 0",
-                }}
-              >
-                <View
-                  style={{
-                    ...styles.tableCell,
-                    padding: "7px 10px",
-                    borderRight: "none",
-                  }}
-                >
-                  <Text></Text>
-                </View>
-                <View
-                  style={{
-                    ...styles.tableCell,
-                    padding: "7px 10px",
-                    flex: 3,
-                    textAlign: "right",
-                    fontSize: 10,
-                    borderRight: "none",
-                  }}
-                >
-                  <Text style={{ marginRight: "20px" }}></Text>
-                </View>
-                <View
-                  style={{
-                    ...styles.tableCell,
-                    padding: "7px 10px",
-                    fontSize: 10,
-                    borderRight: "none",
-                  }}
-                >
-                  <Text></Text>
-                </View>
-                <View
-                  style={{
-                    ...styles.tableCell,
-                    padding: "7px 10px",
-                    fontSize: 10,
-                    borderRight: "none",
-                  }}
-                >
-                  <Text></Text>
-                </View>
-                <View
-                  style={{
-                    ...styles.tableCell,
-                    padding: "7px 10px",
-                    fontSize: 10,
-                    borderRight: "none",
-                  }}
-                >
-                  <Text></Text>
-                </View>
-                {/* Add more cells for additional data */}
-              </View>
-              {/* Table Rows */}
-              {productsArray.map((prod, index) => (
-                <View
-                  style={{
-                    ...styles.tableRow,
-                    borderBottom: "1px solid #ccc",
-                  }}
-                  key={index}
-                >
-                  <View
-                    style={{
-                      ...styles.tableCell,
-                    }}
-                  >
-                    <Text>{index + 1}</Text>
-                  </View>
-                  <View
-                    style={{
-                      ...styles.tableCell,
-                      flex: 3,
-                      textAlign: "left",
-                    }}
-                  >
-                    <Text>{prod.productName}</Text>
-                  </View>
-                  <View style={{ ...styles.tableCell }}>
-                    <Text>{prod.quantity}</Text>
-                  </View>
-                  <View style={{ ...styles.tableCell }}>
-                    <Text>{prod.price}</Text>
-                  </View>
-                  <View style={{ ...styles.tableCell }}>
-                    <Text>{prod.totalSales}</Text>
-                  </View>
-                </View>
-              ))}
-              <View
-                style={{
-                  ...styles.tableRow,
-                  borderBottom: "1px solid #ccc",
-                }}
-              >
-                <View
-                  style={{
-                    ...styles.tableCell,
-                  }}
-                >
-                  <Text></Text>
-                </View>
-                <View
-                  style={{
-                    ...styles.tableCell,
-                    fontSize: 10,
-                    flex: 3,
-                    textAlign: "right",
-                  }}
-                >
-                  <Text>Total Firki</Text>
-                </View>
-                <View style={{ ...styles.tableCell, fontSize: 10 }}>
-                  <Text>
-                    {productsArray.reduce((acc, curr) => {
-                      return acc + curr.quantity;
-                    }, 0)}
-                  </Text>
-                </View>
-                <View style={{ ...styles.tableCell, fontSize: 10 }}>
-                  <Text>G.Total</Text>
-                </View>
-                <View style={{ ...styles.tableCell, fontSize: 10 }}>
-                  <Text>
-                    {productsArray.reduce((acc, curr) => {
-                      return acc + curr.totalSales;
-                    }, 0)}
-                  </Text>
-                </View>
-              </View>
-              {/* Space */}
-              <View
-                style={{
-                  ...styles.tableRow,
-                  borderBottom: "1px solid #ccc",
-                  //   padding: "1px 0",
-                }}
-              >
-                <View
-                  style={{
-                    ...styles.tableCell,
-                    padding: "7px 10px",
-                    borderRight: "none",
-                  }}
-                >
-                  <Text></Text>
-                </View>
-                <View
-                  style={{
-                    ...styles.tableCell,
-                    padding: "7px 10px",
-                    flex: 3,
-                    textAlign: "right",
-                    fontSize: 10,
-                    borderRight: "none",
-                  }}
-                >
-                  <Text style={{ marginRight: "20px" }}></Text>
-                </View>
-                <View
-                  style={{
-                    ...styles.tableCell,
-                    padding: "7px 10px",
-                    fontSize: 10,
-                    borderRight: "none",
-                  }}
-                >
-                  <Text></Text>
-                </View>
-                <View
-                  style={{
-                    ...styles.tableCell,
-                    padding: "7px 10px",
-                    fontSize: 10,
-                    borderRight: "none",
-                  }}
-                >
-                  <Text></Text>
-                </View>
-                <View
-                  style={{
-                    ...styles.tableCell,
-                    padding: "7px 10px",
-                    fontSize: 10,
-                    borderRight: "none",
-                  }}
-                >
-                  <Text></Text>
-                </View>
-                {/* Add more cells for additional data */}
-              </View>
             </View>
           </View>
         </Page>
