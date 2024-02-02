@@ -52,6 +52,7 @@ const WholeSale = () => {
     discount: 0,
     advance: 0,
     totalDue: 0,
+    notes: "",
   };
   const [formState, setFormState] = useState({ status: "", formData: {} });
   const [showPDF, setShowPDF] = useState({ status: false, bill: {} });

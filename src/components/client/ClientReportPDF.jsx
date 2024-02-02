@@ -1,6 +1,9 @@
 import { Document, Page, Text, StyleSheet, View } from "@react-pdf/renderer";
 import React from "react";
 const styles = StyleSheet.create({
+  page: {
+    padding: "20px 0 20px",
+  },
   billContainer: {
     // backgroundColor: "yellow",
     width: "90%",
@@ -10,7 +13,6 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     // justifyContent: "space-between",
     alignItems: "center",
-    padding: "10px 0 10px",
   },
   billHead: {
     width: "100%",
@@ -93,7 +95,7 @@ const ClientReportPDF = ({ client }) => {
   return (
     <>
       <Document>
-        <Page size="A4">
+        <Page size="A4" style={styles.page}>
           <View style={styles.billContainer}>
             {/* Name */}
             <View style={styles.billHead}>
@@ -668,41 +670,81 @@ const ClientReportPDF = ({ client }) => {
               </View>
               {/* Table Rows */}
               {productsArray.map((prod, index) => (
-                <View key={index}>
+                <View
+                  style={{
+                    ...styles.tableRow,
+                    borderBottom: "1px solid #ccc",
+                  }}
+                  key={index}
+                >
                   <View
                     style={{
-                      ...styles.tableRow,
-                      borderBottom: "1px solid #ccc",
+                      ...styles.tableCell,
                     }}
                   >
-                    <View
-                      style={{
-                        ...styles.tableCell,
-                      }}
-                    >
-                      <Text>{index + 1}</Text>
-                    </View>
-                    <View
-                      style={{
-                        ...styles.tableCell,
-                        flex: 3,
-                        textAlign: "left",
-                      }}
-                    >
-                      <Text>{prod.productName}</Text>
-                    </View>
-                    <View style={{ ...styles.tableCell }}>
-                      <Text>{prod.quantity}</Text>
-                    </View>
-                    <View style={{ ...styles.tableCell }}>
-                      <Text>{prod.price}</Text>
-                    </View>
-                    <View style={{ ...styles.tableCell }}>
-                      <Text>{prod.totalSales}</Text>
-                    </View>
+                    <Text>{index + 1}</Text>
+                  </View>
+                  <View
+                    style={{
+                      ...styles.tableCell,
+                      flex: 3,
+                      textAlign: "left",
+                    }}
+                  >
+                    <Text>{prod.productName}</Text>
+                  </View>
+                  <View style={{ ...styles.tableCell }}>
+                    <Text>{prod.quantity}</Text>
+                  </View>
+                  <View style={{ ...styles.tableCell }}>
+                    <Text>{prod.price}</Text>
+                  </View>
+                  <View style={{ ...styles.tableCell }}>
+                    <Text>{prod.totalSales}</Text>
                   </View>
                 </View>
               ))}
+              <View
+                style={{
+                  ...styles.tableRow,
+                  borderBottom: "1px solid #ccc",
+                }}
+              >
+                <View
+                  style={{
+                    ...styles.tableCell,
+                  }}
+                >
+                  <Text></Text>
+                </View>
+                <View
+                  style={{
+                    ...styles.tableCell,
+                    fontSize: 10,
+                    flex: 3,
+                    textAlign: "right",
+                  }}
+                >
+                  <Text>Total Firki</Text>
+                </View>
+                <View style={{ ...styles.tableCell, fontSize: 10 }}>
+                  <Text>
+                    {productsArray.reduce((acc, curr) => {
+                      return acc + curr.quantity;
+                    }, 0)}
+                  </Text>
+                </View>
+                <View style={{ ...styles.tableCell, fontSize: 10 }}>
+                  <Text>G.Total</Text>
+                </View>
+                <View style={{ ...styles.tableCell, fontSize: 10 }}>
+                  <Text>
+                    {productsArray.reduce((acc, curr) => {
+                      return acc + curr.totalSales;
+                    }, 0)}
+                  </Text>
+                </View>
+              </View>
               {/* Space */}
               <View
                 style={{
