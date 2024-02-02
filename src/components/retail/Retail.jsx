@@ -30,6 +30,7 @@ import Table2Wrapper from "../table2/Table2Wrapper";
 import BillPDF from "../bill-pdf/BillPDF";
 import PayBill from "./PayBill";
 import BillReport from "./BillReport";
+import BillPDF2 from "../bill-pdf/BillPDF2";
 
 const Retail = () => {
   const { retailBills, setRetailBIlls, fetching } =
@@ -154,6 +155,9 @@ const Retail = () => {
     e.preventDefault();
     setLoading(true);
     try {
+      if (formState.formData.totalDue < 0) {
+        return toast.warn("TotalDue negative!");
+      }
       await toast.promise(retailbillCreate(formState.formData), {
         pending: "Creating Bill...",
         success: "Bill created successfully! 👌",
@@ -173,6 +177,9 @@ const Retail = () => {
     e.preventDefault();
     setLoading(true);
     try {
+      if (formData.totalDue < 0) {
+        return toast.warn("TotalDue negative!");
+      }
       await toast.promise(retailbillUpdate(billId, formData), {
         pending: "Editing Bill...",
         success: "Bill editied successfully! 👌",
@@ -268,9 +275,7 @@ const Retail = () => {
           title={`View Retail Bill PDF:`}
         >
           <div className="my-3">
-            <PDFViewer width="1000" height="600">
-              <BillPDF bill={showPDF.bill} />
-            </PDFViewer>
+            <BillPDF2 bill={showPDF.bill} />
           </div>
         </Modal>
       )}

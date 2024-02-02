@@ -347,20 +347,20 @@ const NewRetail = forwardRef(({ formState, setFormState, onSubmit }, ref) => {
                           {prod.stock > 0 || prod.isLabour ? (
                             <input
                               id={`nr-qty-${indexOfProd}`}
-                              type="number"
+                              type="text"
                               onFocus={preventScrollInNumber}
                               placeholder="Qty"
                               className="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                               value={
                                 formData.products.find(
                                   (product) => product.productId === prod._id
-                                )?.quantity || ""
+                                )?.quantity || 0
                               }
                               onChange={(e) => {
                                 const newQty =
                                   parseInt(e.target.value) >= 0
                                     ? parseInt(e.target.value)
-                                    : "";
+                                    : 0;
 
                                 setFormState((prev) => {
                                   const updatedProducts =
@@ -402,11 +402,15 @@ const NewRetail = forwardRef(({ formState, setFormState, onSubmit }, ref) => {
                                       acc + curr.price * curr.quantity,
                                     0
                                   );
+                                  const filteredProducts =
+                                    updatedProducts.filter(
+                                      (product) => product.quantity > 0
+                                    );
                                   return {
                                     ...prev,
                                     formData: {
                                       ...prev.formData,
-                                      products: updatedProducts,
+                                      products: filteredProducts,
                                       subTotal: calculateValue,
                                       totalDue:
                                         calculateValue -
@@ -484,56 +488,6 @@ const NewRetail = forwardRef(({ formState, setFormState, onSubmit }, ref) => {
                             >
                               {prod.productName}
                             </button>
-                            {/* Add Stock Button */}
-
-                            {!prod.isLabour && (
-                              <button
-                                tabIndex={`-1`}
-                                className="block w-10 p-1 ml-1 text-black font-semibold border-2 border-gray-300 rounded-lg bg-gray-100  sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                onClick={async (e) => {
-                                  e.preventDefault();
-
-                                  const addStock = Number(
-                                    prompt(
-                                      `Add Stock in "${prod.productName}": `
-                                    )
-                                  );
-
-                                  try {
-                                    if (
-                                      !addStock ||
-                                      isNaN(addStock) ||
-                                      addStock < 0
-                                    ) {
-                                      return toast.warn("Invalid stock value!");
-                                    } else {
-                                      await toast.promise(
-                                        stockCreate(prod._id, {
-                                          productId: prod._id,
-                                          productName: prod.productName,
-                                          addStock: Number(addStock),
-                                        }),
-                                        {
-                                          pending: "Adding Stock...",
-                                          success:
-                                            "Stock added successfully! 👌",
-                                          error:
-                                            "Error adding Stock. Please try again. 🤯",
-                                        }
-                                      );
-
-                                      setProducts(await fetchAllProducts());
-                                      setStocks(await fetchAllStocks());
-                                    }
-                                  } catch (error) {
-                                    console.log(error);
-                                    throw error;
-                                  }
-                                }}
-                              >
-                                +
-                              </button>
-                            )}
                           </div>
                         </td>
                         <td className="px-4 py-3">
@@ -559,20 +513,20 @@ const NewRetail = forwardRef(({ formState, setFormState, onSubmit }, ref) => {
                           {prod.stock > 0 || prod.isLabour ? (
                             <input
                               id={`nr-qty-${indexOfProd}`}
-                              type="number"
+                              type="text"
                               onFocus={preventScrollInNumber}
                               placeholder="Qty"
                               className="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                               value={
                                 formData.products.find(
                                   (product) => product.productId === prod._id
-                                )?.quantity || ""
+                                )?.quantity || 0
                               }
                               onChange={(e) => {
                                 const newQty =
                                   parseInt(e.target.value) >= 0
                                     ? parseInt(e.target.value)
-                                    : "";
+                                    : 0;
 
                                 setFormState((prev) => {
                                   const updatedProducts =
@@ -614,11 +568,15 @@ const NewRetail = forwardRef(({ formState, setFormState, onSubmit }, ref) => {
                                       acc + curr.price * curr.quantity,
                                     0
                                   );
+                                  const filteredProducts =
+                                    updatedProducts.filter(
+                                      (product) => product.quantity > 0
+                                    );
                                   return {
                                     ...prev,
                                     formData: {
                                       ...prev.formData,
-                                      products: updatedProducts,
+                                      products: filteredProducts,
                                       subTotal: calculateValue,
                                       totalDue:
                                         calculateValue -

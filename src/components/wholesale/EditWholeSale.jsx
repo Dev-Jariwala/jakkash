@@ -280,15 +280,6 @@ const EditWholeSale = forwardRef(
                           {" "}
                           <input
                             type="text"
-                            onFocus={(e) =>
-                              e.target.addEventListener(
-                                "wheel",
-                                function (e) {
-                                  e.preventDefault();
-                                },
-                                { passive: false }
-                              )
-                            }
                             className="block w-full p-2 text-black font-semibold opacity-50 border-2 border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             value={prod.isLabour ? "unlimited" : prod.stock}
                             disabled
@@ -297,15 +288,6 @@ const EditWholeSale = forwardRef(
                         <td className="px-4 py-3">
                           <input
                             type="number"
-                            onFocus={(e) =>
-                              e.target.addEventListener(
-                                "wheel",
-                                function (e) {
-                                  e.preventDefault();
-                                },
-                                { passive: false }
-                              )
-                            }
                             className="block w-full p-2 text-black font-semibold opacity-50 border-2 border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             value={prod.wholesalePrice}
                             disabled
@@ -324,7 +306,7 @@ const EditWholeSale = forwardRef(
                             />
                           ) : (
                             <input
-                              type="number"
+                              type="text"
                               onFocus={(e) =>
                                 e.target.addEventListener(
                                   "wheel",
@@ -335,13 +317,13 @@ const EditWholeSale = forwardRef(
                                 )
                               }
                               placeholder="Qty"
-                              value={currProduct[0]?.quantity}
+                              value={currProduct[0]?.quantity || 0}
                               className="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                               onChange={(e) => {
                                 const newQty =
                                   parseInt(e.target.value) >= 0
                                     ? parseInt(e.target.value)
-                                    : "";
+                                    : 0;
                                 setFormState((prev) => {
                                   const updatedProducts =
                                     prev.formData.products.map((product) => {
@@ -380,7 +362,7 @@ const EditWholeSale = forwardRef(
                                     updatedProducts.push({
                                       productId: prod._id,
                                       productName: prod.productName,
-                                      price: prod.retailPrice,
+                                      price: prod.wholesalePrice,
                                       quantity: newQty,
                                     });
                                   }
@@ -389,16 +371,21 @@ const EditWholeSale = forwardRef(
                                       acc + curr.price * curr.quantity,
                                     0
                                   );
+                                  const filteredProducts =
+                                    updatedProducts.filter(
+                                      (product) => product.quantity > 0
+                                    );
                                   return {
                                     ...prev,
                                     formData: {
                                       ...prev.formData,
-                                      products: updatedProducts,
+                                      products: filteredProducts,
                                       subTotal: calculateValue,
                                       totalDue:
                                         calculateValue -
                                         prev.formData.discount -
-                                        prev.formData.advance,
+                                        prev.formData.advance -
+                                        prev.formData.paid,
                                     },
                                   };
                                 });
@@ -410,19 +397,10 @@ const EditWholeSale = forwardRef(
                           {" "}
                           <input
                             type="number"
-                            onFocus={(e) =>
-                              e.target.addEventListener(
-                                "wheel",
-                                function (e) {
-                                  e.preventDefault();
-                                },
-                                { passive: false }
-                              )
-                            }
                             className="block w-full p-2 text-black font-semibold opacity-50 border-2 border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             placeholder="Total"
                             value={
-                              prod.retailPrice *
+                              prod.wholesalePrice *
                                 formData.products.find(
                                   (p) => p.productId === prod._id
                                 )?.quantity || 0
@@ -469,71 +447,12 @@ const EditWholeSale = forwardRef(
                             >
                               {prod.productName}
                             </button>
-                            {/* Add Stock Button */}
-
-                            {!prod.isLabour && (
-                              <button
-                                tabIndex={`-1`}
-                                className="block w-10 p-1 ml-1 text-black font-semibold border-2 border-gray-300 rounded-lg bg-gray-100  sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                onClick={async (e) => {
-                                  e.preventDefault();
-
-                                  const addStock = Number(
-                                    prompt(
-                                      `Add Stock in "${prod.productName}": `
-                                    )
-                                  );
-
-                                  try {
-                                    if (
-                                      !addStock ||
-                                      isNaN(addStock) ||
-                                      addStock < 0
-                                    ) {
-                                      return toast.warn("Invalid stock value!");
-                                    } else {
-                                      await toast.promise(
-                                        stockCreate(prod._id, {
-                                          productId: prod._id,
-                                          productName: prod.productName,
-                                          addStock: Number(addStock),
-                                        }),
-                                        {
-                                          pending: "Adding Stock...",
-                                          success:
-                                            "Stock added successfully! 👌",
-                                          error:
-                                            "Error adding Stock. Please try again. 🤯",
-                                        }
-                                      );
-
-                                      setProducts(await fetchAllProducts());
-                                      setStocks(await fetchAllStocks());
-                                    }
-                                  } catch (error) {
-                                    console.log(error);
-                                    throw error;
-                                  }
-                                }}
-                              >
-                                +
-                              </button>
-                            )}
                           </div>
                         </td>
                         <td className="px-4 py-3">
                           {" "}
                           <input
                             type="text"
-                            onFocus={(e) =>
-                              e.target.addEventListener(
-                                "wheel",
-                                function (e) {
-                                  e.preventDefault();
-                                },
-                                { passive: false }
-                              )
-                            }
                             className="block w-full p-2 text-black font-semibold opacity-50 border-2 border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             value={prod.isLabour ? "unlimited" : prod.stock}
                             disabled
@@ -542,15 +461,6 @@ const EditWholeSale = forwardRef(
                         <td className="px-4 py-3">
                           <input
                             type="number"
-                            onFocus={(e) =>
-                              e.target.addEventListener(
-                                "wheel",
-                                function (e) {
-                                  e.preventDefault();
-                                },
-                                { passive: false }
-                              )
-                            }
                             className="block w-full p-2 text-black font-semibold opacity-50 border-2 border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             value={prod.wholesalePrice}
                             disabled
@@ -569,7 +479,7 @@ const EditWholeSale = forwardRef(
                             />
                           ) : (
                             <input
-                              type="number"
+                              type="text"
                               onFocus={(e) =>
                                 e.target.addEventListener(
                                   "wheel",
@@ -580,13 +490,13 @@ const EditWholeSale = forwardRef(
                                 )
                               }
                               placeholder="Qty"
-                              value={currProduct[0]?.quantity}
+                              value={currProduct[0]?.quantity || 0}
                               className="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                               onChange={(e) => {
                                 const newQty =
                                   parseInt(e.target.value) >= 0
                                     ? parseInt(e.target.value)
-                                    : "";
+                                    : 0;
                                 setFormState((prev) => {
                                   const updatedProducts =
                                     prev.formData.products.map((product) => {
@@ -625,7 +535,7 @@ const EditWholeSale = forwardRef(
                                     updatedProducts.push({
                                       productId: prod._id,
                                       productName: prod.productName,
-                                      price: prod.retailPrice,
+                                      price: prod.wholesalePrice,
                                       quantity: newQty,
                                     });
                                   }
@@ -634,16 +544,21 @@ const EditWholeSale = forwardRef(
                                       acc + curr.price * curr.quantity,
                                     0
                                   );
+                                  const filteredProducts =
+                                    updatedProducts.filter(
+                                      (product) => product.quantity > 0
+                                    );
                                   return {
                                     ...prev,
                                     formData: {
                                       ...prev.formData,
-                                      products: updatedProducts,
+                                      products: filteredProducts,
                                       subTotal: calculateValue,
                                       totalDue:
                                         calculateValue -
                                         prev.formData.discount -
-                                        prev.formData.advance,
+                                        prev.formData.advance -
+                                        prev.formData.paid,
                                     },
                                   };
                                 });
@@ -655,19 +570,10 @@ const EditWholeSale = forwardRef(
                           {" "}
                           <input
                             type="number"
-                            onFocus={(e) =>
-                              e.target.addEventListener(
-                                "wheel",
-                                function (e) {
-                                  e.preventDefault();
-                                },
-                                { passive: false }
-                              )
-                            }
                             className="block w-full p-2 text-black font-semibold opacity-50 border-2 border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             placeholder="Total"
                             value={
-                              prod.retailPrice *
+                              prod.wholesalePrice *
                                 formData.products.find(
                                   (p) => p.productId === prod._id
                                 )?.quantity || 0
@@ -765,6 +671,7 @@ const EditWholeSale = forwardRef(
                     </label>
                   </td>
                 </tr>
+                {/* Discount */}
                 <tr>
                   <td className="px-4 py-3"></td>
                   <td className="px-4 py-3"></td>
@@ -774,7 +681,7 @@ const EditWholeSale = forwardRef(
                     <label>
                       Discount
                       <input
-                        type="number"
+                        type="text"
                         onFocus={(e) =>
                           e.target.addEventListener(
                             "wheel",
@@ -785,7 +692,7 @@ const EditWholeSale = forwardRef(
                           )
                         }
                         className="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        value={formData.discount}
+                        value={formData.discount || 0}
                         onChange={(e) => {
                           setFormState((prev) => {
                             const constSubTotal = parseFloat(
@@ -797,7 +704,7 @@ const EditWholeSale = forwardRef(
                             const enteredDiscount =
                               parseFloat(e.target.value) >= 0
                                 ? parseFloat(e.target.value)
-                                : "";
+                                : 0;
 
                             // Ensure discount is not greater than available amount
                             const maxDiscount =
@@ -808,8 +715,10 @@ const EditWholeSale = forwardRef(
                             const validDiscount =
                               enteredDiscount <= maxDiscount
                                 ? enteredDiscount
-                                : maxDiscount;
-
+                                : 0;
+                            if (enteredDiscount > maxDiscount) {
+                              toast.warn("Incorrect!");
+                            }
                             return {
                               ...prev,
                               formData: {
@@ -819,15 +728,9 @@ const EditWholeSale = forwardRef(
                                 // Adjust totalDue considering the entered discount
                                 totalDue:
                                   constSubTotal -
-                                    validDiscount -
-                                    prev.formData.advance -
-                                    prev.formData.paid >=
-                                  0
-                                    ? constSubTotal -
-                                      validDiscount -
-                                      prev.formData.advance -
-                                      prev.formData.paid
-                                    : 0,
+                                  validDiscount -
+                                  prev.formData.advance -
+                                  prev.formData.paid,
                               },
                             };
                           });
@@ -837,6 +740,7 @@ const EditWholeSale = forwardRef(
                     </label>
                   </td>
                 </tr>
+                {/* Advance */}
                 <tr>
                   <td className="px-4 py-3"></td>
                   <td className="px-4 py-3"></td>
@@ -846,7 +750,7 @@ const EditWholeSale = forwardRef(
                     <label>
                       Advance
                       <input
-                        type="number"
+                        type="text"
                         onFocus={(e) =>
                           e.target.addEventListener(
                             "wheel",
@@ -857,12 +761,12 @@ const EditWholeSale = forwardRef(
                           )
                         }
                         className="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        value={formData.advance}
+                        value={formData.advance || 0}
                         onChange={(e) => {
                           const enteredAdvance =
                             parseInt(e.target.value) >= 0
                               ? parseInt(e.target.value)
-                              : "";
+                              : 0;
 
                           // Ensure advance is not greater than available amount
                           const maxAdvance =
@@ -871,10 +775,10 @@ const EditWholeSale = forwardRef(
                             formData.paid;
 
                           const validAdvance =
-                            enteredAdvance <= maxAdvance
-                              ? enteredAdvance
-                              : maxAdvance;
-
+                            enteredAdvance <= maxAdvance ? enteredAdvance : 0;
+                          if (enteredAdvance > maxAdvance) {
+                            toast.warn("Incorrect!");
+                          }
                           setFormState((prev) => {
                             return {
                               ...prev,
@@ -883,15 +787,9 @@ const EditWholeSale = forwardRef(
                                 advance: validAdvance,
                                 totalDue:
                                   formData.subTotal -
-                                    formData.discount -
-                                    validAdvance -
-                                    formData.paid >=
-                                  0
-                                    ? formData.subTotal -
-                                      formData.discount -
-                                      validAdvance -
-                                      formData.paid
-                                    : 0,
+                                  formData.discount -
+                                  validAdvance -
+                                  formData.paid,
                               },
                             };
                           });
@@ -901,6 +799,7 @@ const EditWholeSale = forwardRef(
                     </label>
                   </td>
                 </tr>
+                {/* paid */}
                 <tr>
                   <td className="px-4 py-3"></td>
                   <td className="px-4 py-3"></td>
@@ -910,7 +809,7 @@ const EditWholeSale = forwardRef(
                     <label>
                       Paid
                       <input
-                        type="number"
+                        type="text"
                         onFocus={(e) =>
                           e.target.addEventListener(
                             "wheel",
@@ -921,37 +820,35 @@ const EditWholeSale = forwardRef(
                           )
                         }
                         className="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        value={formData.paid}
+                        value={formData.paid || 0}
                         onChange={(e) => {
                           const enteredPaid =
-                            parseInt(e.target.value) >= 0
+                            parseInt(e.target.value) > 0
                               ? parseInt(e.target.value)
-                              : "";
+                              : 0;
+
+                          // Ensure advance is not greater than available amount
+                          const maxPaid =
+                            formData.subTotal -
+                            formData.discount -
+                            formData.advance;
+
+                          const validPaid =
+                            enteredPaid <= maxPaid ? enteredPaid : 0;
+                          if (enteredPaid > maxPaid) {
+                            toast.warn("Incorrect!");
+                          }
                           setFormState((prev) => {
                             return {
                               ...prev,
                               formData: {
                                 ...prev.formData,
-                                paid:
-                                  enteredPaid <=
-                                  prev.formData.subTotal -
-                                    prev.formData.discount -
-                                    prev.formData.advance
-                                    ? enteredPaid
-                                    : prev.formData.subTotal -
-                                      prev.formData.discount -
-                                      prev.formData.advance,
+                                paid: validPaid,
                                 totalDue:
-                                  prev.formData.subTotal -
-                                    prev.formData.discount -
-                                    prev.formData.advance -
-                                    enteredPaid >=
-                                  0
-                                    ? prev.formData.subTotal -
-                                      prev.formData.discount -
-                                      prev.formData.advance -
-                                      enteredPaid
-                                    : 0,
+                                  formData.subTotal -
+                                  formData.discount -
+                                  formData.advance -
+                                  validPaid,
                               },
                             };
                           });
@@ -961,6 +858,7 @@ const EditWholeSale = forwardRef(
                     </label>
                   </td>
                 </tr>
+                {/* Total due */}
                 <tr>
                   <td className="px-4 py-3"></td>
                   <td className="px-4 py-3"></td>

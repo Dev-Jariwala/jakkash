@@ -31,6 +31,7 @@ import BillPDF from "../bill-pdf/BillPDF";
 import ExportPDF from "../table2/ExportPDF";
 import PayBill from "../retail/PayBill";
 import BillReport from "../retail/BillReport";
+import BillPDF2 from "../bill-pdf/BillPDF2";
 
 const WholeSale = () => {
   const { wholeSaleBills, setWholeSaleBills, fetching } =
@@ -154,6 +155,9 @@ const WholeSale = () => {
     e.preventDefault();
     setLoading(true);
     try {
+      if (formState.formData.totalDue < 0) {
+        return toast.warn("TotalDue negative!");
+      }
       await toast.promise(wholeSaleBillCreate(formState.formData), {
         pending: "Creating Bill...",
         success: "Bill created successfully! 👌",
@@ -173,6 +177,9 @@ const WholeSale = () => {
     e.preventDefault();
     setLoading(true);
     try {
+      if (formData.totalDue < 0) {
+        return toast.warn("TotalDue negative!");
+      }
       await toast.promise(wholeSaleBillUpdate(billId, formData), {
         pending: "Editing Bill...",
         success: "Bill editied successfully! 👌",
@@ -265,9 +272,7 @@ const WholeSale = () => {
           title={"View Wholesale Bill PDF :"}
         >
           <div className="my-3">
-            <PDFViewer width="1000" height="600">
-              <BillPDF bill={showPDF.bill} />
-            </PDFViewer>
+            <BillPDF2 bill={showPDF.bill} />
           </div>
         </Modal>
       )}
