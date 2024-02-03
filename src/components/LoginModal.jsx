@@ -6,10 +6,11 @@ import {
   fetchAllCollections,
   setActiveCollection,
 } from "../controllers/collection";
+import { fetchAdmin } from "../controllers/admin";
 const LodingModal = ({ setAuth }) => {
   const [loginData, setLoginData] = useState({
-    email: "admin@admin.com",
-    password: "Admin@123",
+    adminName: "",
+    adminPassword: "",
   });
   const { collections, setCollections, activeColl } =
     useContext(CollectionContext);
@@ -47,13 +48,18 @@ const LodingModal = ({ setAuth }) => {
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
           <form
             className="space-y-6"
-            onSubmit={(e) => {
+            onSubmit={async (e) => {
               e.preventDefault();
-              if (
-                loginData.email.trim() === "admin@admin.com" &&
-                loginData.password === "Admin@123"
-              ) {
-                setAuth(true);
+              const res = await fetchAdmin({
+                adminName: loginData.adminName,
+                adminPassword: loginData.adminPassword,
+              });
+              // console.log(res);
+              if (res !== "Invalid") {
+                setAuth({
+                  adminName: loginData.adminName,
+                  adminPassword: loginData.adminPassword,
+                });
                 return toast.success("Loged in!");
               }
               return toast.error("Invalid Inputs");
@@ -61,17 +67,17 @@ const LodingModal = ({ setAuth }) => {
           >
             <div>
               <label className="block text-sm font-medium leading-6 text-gray-900">
-                Email address
+                User Name
               </label>
               <div className="mt-2">
                 <input
                   id="email"
                   name="email"
-                  type="email"
-                  value={loginData.email}
+                  type="text"
+                  value={loginData.adminName}
                   onChange={(e) =>
                     setLoginData((prev) => {
-                      return { ...prev, email: e.target.value };
+                      return { ...prev, adminName: e.target.value };
                     })
                   }
                   placeholder="me@example.com"
@@ -93,11 +99,11 @@ const LodingModal = ({ setAuth }) => {
                   id="password"
                   name="password"
                   type="password"
-                  value={loginData.password}
+                  value={loginData.adminPassword}
                   placeholder="••••••••••"
                   onChange={(e) =>
                     setLoginData((prev) => {
-                      return { ...prev, password: e.target.value };
+                      return { ...prev, adminPassword: e.target.value };
                     })
                   }
                   required

@@ -18,11 +18,13 @@ const BillReport = ({ exportData, headers, title }) => {
             className="max-w-md mx-auto my-4"
             onSubmit={(e) => {
               e.preventDefault();
-              const filteredBills = exportData?.filter(
-                (bill) =>
-                  bill.BillNo >= showReportPDF.range.fromBill &&
-                  bill.BillNo <= showReportPDF.range.toBill
-              );
+              const filteredBills = exportData
+                ?.reverse()
+                ?.filter(
+                  (bill) =>
+                    bill.BillNo >= showReportPDF.range.fromBill &&
+                    bill.BillNo <= showReportPDF.range.toBill
+                );
               if (filteredBills.length <= 0) {
                 return toast.info("No Bills Found!");
               } else {

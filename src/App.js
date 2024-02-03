@@ -21,6 +21,7 @@ import PurchasePage from "./pages/PurchasePage";
 import { PurchasesProvider } from "./store/purchaseContext";
 import Revenue from "./pages/Revenue";
 import { toast } from "react-toastify";
+import { AdminProvider } from "./store/adminContext";
 
 const App = () => {
   // Check if auth status is stored in localStorage
@@ -50,101 +51,103 @@ const App = () => {
           {!auth && <LoginModal setAuth={setAuth}></LoginModal>}
 
           {auth && (
-            <ProductsProvider>
-              <PurchasesProvider>
-                <StockProvider>
-                  <RetailBillProvider>
-                    <WholeSaleProvider>
-                      <ClientProvider>
-                        {isWideScreen && (
-                          <SideMenu
-                            sidemenuProps={{ ...sidemenuProps }}
-                            setAuth={setAuth}
-                          >
-                            <Routes>
-                              <Route
-                                path="/"
-                                element={<DashboardPage />}
-                              ></Route>
-                              <Route
-                                path="/products"
-                                element={<ProductPage />}
-                              ></Route>
-                              <Route
-                                path="/purchase"
-                                element={<PurchasePage />}
-                              ></Route>
-                              <Route
-                                path="/collection"
-                                element={<CollectionPage />}
-                              ></Route>
-                              <Route
-                                path="/stocks"
-                                element={<StockPage />}
-                              ></Route>
-                              <Route
-                                path="/bills"
-                                element={<BillPage />}
-                              ></Route>
-                              <Route
-                                path="/revenue"
-                                element={<Revenue />}
-                              ></Route>
+            <AdminProvider>
+              <ProductsProvider>
+                <PurchasesProvider>
+                  <StockProvider>
+                    <RetailBillProvider>
+                      <WholeSaleProvider>
+                        <ClientProvider>
+                          {isWideScreen && (
+                            <SideMenu
+                              sidemenuProps={{ ...sidemenuProps }}
+                              setAuth={setAuth}
+                            >
+                              <Routes>
+                                <Route
+                                  path="/"
+                                  element={<DashboardPage />}
+                                ></Route>
+                                <Route
+                                  path="/products"
+                                  element={<ProductPage />}
+                                ></Route>
+                                <Route
+                                  path="/purchase"
+                                  element={<PurchasePage />}
+                                ></Route>
+                                <Route
+                                  path="/collection"
+                                  element={<CollectionPage />}
+                                ></Route>
+                                <Route
+                                  path="/stocks"
+                                  element={<StockPage />}
+                                ></Route>
+                                <Route
+                                  path="/bills"
+                                  element={<BillPage />}
+                                ></Route>
+                                <Route
+                                  path="/revenue"
+                                  element={<Revenue />}
+                                ></Route>
 
-                              <Route
-                                path="/clients"
-                                element={<ClientPage />}
-                              ></Route>
-                              <Route path="*" element={<NotFound />}></Route>
-                            </Routes>
-                          </SideMenu>
-                        )}
-                        {!isWideScreen && (
-                          <div className="bg-primary-light">
-                            <Routes>
-                              <Route
-                                path="/"
-                                element={<DashboardPage setAuth={setAuth} />}
-                              ></Route>
-                              <Route
-                                path="/products"
-                                element={<ProductPage />}
-                              ></Route>
-                              <Route
-                                path="/purchase"
-                                element={<PurchasePage />}
-                              ></Route>
-                              <Route
-                                path="/collection"
-                                element={<CollectionPage />}
-                              ></Route>
-                              <Route
-                                path="/stocks"
-                                element={<StockPage />}
-                              ></Route>
-                              <Route
-                                path="/bills"
-                                element={<BillPage />}
-                              ></Route>
-                              <Route
-                                path="/revenue"
-                                element={<Revenue />}
-                              ></Route>
+                                <Route
+                                  path="/clients"
+                                  element={<ClientPage />}
+                                ></Route>
+                                <Route path="*" element={<NotFound />}></Route>
+                              </Routes>
+                            </SideMenu>
+                          )}
+                          {!isWideScreen && (
+                            <div className="bg-primary-light">
+                              <Routes>
+                                <Route
+                                  path="/"
+                                  element={<DashboardPage setAuth={setAuth} />}
+                                ></Route>
+                                <Route
+                                  path="/products"
+                                  element={<ProductPage />}
+                                ></Route>
+                                <Route
+                                  path="/purchase"
+                                  element={<PurchasePage />}
+                                ></Route>
+                                <Route
+                                  path="/collection"
+                                  element={<CollectionPage />}
+                                ></Route>
+                                <Route
+                                  path="/stocks"
+                                  element={<StockPage />}
+                                ></Route>
+                                <Route
+                                  path="/bills"
+                                  element={<BillPage />}
+                                ></Route>
+                                <Route
+                                  path="/revenue"
+                                  element={<Revenue />}
+                                ></Route>
 
-                              <Route
-                                path="/clients"
-                                element={<ClientPage />}
-                              ></Route>
-                              <Route path="*" element={<NotFound />}></Route>
-                            </Routes>
-                          </div>
-                        )}
-                      </ClientProvider>
-                    </WholeSaleProvider>
-                  </RetailBillProvider>
-                </StockProvider>
-              </PurchasesProvider>
-            </ProductsProvider>
+                                <Route
+                                  path="/clients"
+                                  element={<ClientPage />}
+                                ></Route>
+                                <Route path="*" element={<NotFound />}></Route>
+                              </Routes>
+                            </div>
+                          )}
+                        </ClientProvider>
+                      </WholeSaleProvider>
+                    </RetailBillProvider>
+                  </StockProvider>
+                </PurchasesProvider>
+              </ProductsProvider>
+            </AdminProvider>
           )}
         </CollectionProvider>
       </BrowserRouter>
